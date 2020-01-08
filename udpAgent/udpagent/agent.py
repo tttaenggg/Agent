@@ -106,7 +106,7 @@ class Udpagent(Agent):
         
         # TODO : Send Command Here unpack message body
         
-    @Core.periodic(30)
+    @Core.periodic(60)
     def on_interval(self):
         # Broadcast Message from UDP Server
         _log.info(msg="Send Command to module to get status")
