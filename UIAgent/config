@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "uiagent", #Integers
+  "message": "I am UI Agent", #strings
+  "log-level": "INFO",
+  
+}

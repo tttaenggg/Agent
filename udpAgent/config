@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "udpagent", #Integers
+  "message": "I am UDP Server", #strings
+  "log-level": "INFO",
+  
+}
