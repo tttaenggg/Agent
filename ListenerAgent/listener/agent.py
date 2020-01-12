@@ -97,12 +97,23 @@ class ListenerAgent(Agent):
         query = Query(self.core)
         _log.info('query: %r', query.query('serverkey').get())
 
-    @PubSub.subscribe('pubsub', 'some/test/topic')
-    def on_match(self, peer, sender, bus,  topic, headers, message):
+    @PubSub.subscribe('pubsub', 'ui/mode/control')
+    def on_match_mode(self, peer, sender, bus,  topic, headers, message):
         """Use match_all to receive all messages and print them out."""
+        _log.debug(msg="---> UI MODE MSG Receive --->")
         self._logfn(
             "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
             "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
+        
+        
+    @PubSub.subscribe('pubsub', 'ui/command/conf')
+    def on_match_command(self, peer, sender, bus,  topic, headers, message):
+        """Use match_all to receive all messages and print them out."""
+        _log.debug(msg="---> UI COMMAND MSG Receive --->")
+        self._logfn(
+            "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
+            "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
+        
 
 
 def main(argv=sys.argv):
