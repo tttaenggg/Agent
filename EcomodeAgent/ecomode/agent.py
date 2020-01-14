@@ -50,7 +50,7 @@ utils.setup_logging()
 _log = logging.getLogger(__name__)
 __version__ = '3.3'
 DEFAULT_MESSAGE = 'Listener Message'
-DEFAULT_AGENTID = "listener"
+DEFAULT_AGENTID = "netatmo"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
@@ -96,24 +96,44 @@ class ListenerAgent(Agent):
             self.vip.health.set_status(STATUS_GOOD, self._message)
         query = Query(self.core)
         _log.info('query: %r', query.query('serverkey').get())
+        self.temp = 25
+        self.humidity = 50
 
-    @PubSub.subscribe('pubsub', 'ui/mode/control')
-    def on_match_mode(self, peer, sender, bus,  topic, headers, message):
+    # @PubSub.subscribe('pubsub', '')
+    # def on_match(self, peer, sender, bus,  topic, headers, message):
+    #     """Use match_all to receive all messages and print them out."""
+    #     self._logfn(
+    #         "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
+    #         "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
+
+    @PubSub.subscribe('pubsub', 'os/weather01/device1')
+    def on_netatmo(self, peer, sender, bus,  topic, headers, message):
         """Use match_all to receive all messages and print them out."""
-        _log.debug(msg="---> UI MODE MSG Receive --->")
         self._logfn(
             "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
             "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-        
-        
-    @PubSub.subscribe('pubsub', 'ui/command/conf')
-    def on_match_command(self, peer, sender, bus,  topic, headers, message):
-        """Use match_all to receive all messages and print them out."""
-        _log.debug(msg="---> UI COMMAND MSG Receive --->")
-        self._logfn(
-            "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
-            "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-        
+        msg = message
+        self.temp = msg['temperature']
+        self.humidity = msg['humidity']
+        print ("revieve in put data from netatmo")
+        print("temperature from netatmo".format(self.temp))
+        print("humidity from netatmo".format(self.humidity))
+
+    # #todo AC
+    # @PubSub.subscribe('pubsub', 'os/weather01/device1')
+    # def on_netatmo(self, peer, sender, bus,  topic, headers, message):
+    #     """Use match_all to receive all messages and print them out."""
+    #     self._logfn(
+    #         "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
+    #         "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
+    #     msg = message
+    #     self.temp = msg['temperature']
+    #     self.humidity = msg['humidity']
+    #     print ("revieve in put data from netatmo")
+    #     print("temperature from netatmo".format(self.temp))
+    #     print("humidity from netatmo".format(self.humidity))
+
+    #to do Fuzzy logic and control every 10 min
 
 
 def main(argv=sys.argv):

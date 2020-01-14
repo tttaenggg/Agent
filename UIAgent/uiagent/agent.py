@@ -10,6 +10,7 @@ from volttron.platform.agent import utils
 from volttron.platform.vip.agent import Agent, Core, RPC, PubSub
 from tkinter import *
 import tkinter
+import json
 
 
 _log = logging.getLogger(__name__)
@@ -30,6 +31,14 @@ class Uiagent(Agent):
                  **kwargs):
         super().__init__(**kwargs)
         self.config = utils.load_config(config_path)
+        
+        # self.current_conf = {} # Alway get current status.
+        self.command_conf = {
+                                "control": "ON",
+                                "mode" : "COLD",
+                                "fan": "FAN1",
+                                "set-point": 25
+                                }
         
         log_level = self.config.get('log-level', 'INFO')
         if log_level == 'ERROR':
@@ -165,45 +174,60 @@ class Uiagent(Agent):
             if self._mode == 'dr': # DR Mode for Enable Trigger Signal from Outside.
                 print("DR Mode Actived")
                 # TODO : Send msg to Agent Optimizer Here.
+                self.vip.pubsub.publish('pubsub', "ui/mode/control", 
+                                        message=json.dumps(
+                                            {'control':'dr'})
+                                        )
+                                        
                 
             elif self._mode == 'eco': # ECO Mode is Automation adjust Temperature.
                 print("ECO Mode Activated")
-                # TODO : Send msg to Agent Optimizer Here.
+                self.vip.pubsub.publish('pubsub', "ui/mode/control",
+                                        message=json.dumps(
+                                            {'control':'eco'})
+                                        )
+                
         else:
             self.ok_btn['state'] = NORMAL
             print("MANUAL Mode Activated")
             # TODO : Send msg to Agent Optimizer for stop all automatic task and wait command from USER Only.
-    
-    def callBack_control(self):
+            self.vip.pubsub.publish('pubsub', "ui/mode/control", 
+                                    message=json.dumps(
+                                        {'control':'manual'})
+                                    )
+            
+            
+    def callBack_control(self): # Function to handle ON/OFF A.C.
         self._control = self.control_variable.get()
+        if self._control == 1:
+            self.command_conf['control'] = "ON"
+        else:
+            self.command_conf['control'] = "OFF"
     
-    def callBack_up(self):
-        # self._temp = self.temp_variable.get()
+    def callBack_up(self): # Increase temperature for 1 step handle function
         self.temperature = self.temperature + 1
         self.lbl.config(text=str(float(self.temperature)))
+        self.command_conf['set-point'] = self.temperature
         
-    def callBack_down(self):
-        # self._temp = self.temp_variable.get()
+    def callBack_down(self): # Reduce temperature for 1 step handle function
         self.temperature = self.temperature - 1
         self.lbl.config(text=str(float(self.temperature)))
+        self.command_conf['set-point'] = self.temperature
     
-    def doSendCommand(self):
-        print(self.switch_variable.get())
-        # print(self.control_variable.get())
-        # print(self.temp_variable.get())
-        if self._control:
-            self._control = "ON"
-        else:
-            self._control = "OFF"
-        print({'CONTROL': self._control, "SETPOINT": self.temperature, 
-                    "FANLEVEL": self.switch_variable.get()})
+    def doSendCommand(self): # OK Button Pressed handler function
+        self.command_conf['fan'] = self.switch_variable.get()
+        _log.info(msg="Command Configuration Send : {}".format(self.command_conf))
+        self.vip.pubsub.publish('pubsub', "ui/command/conf", 
+                                    message=json.dumps(
+                                        self.command_conf
+                                        )
+                                )
         
                 
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
         self._ui = self.build_ui()
-        
-        
+        _log.info(msg="UI Agent Started.")
         
     @Core.receiver("onstop")
     def onstop(self, sender, **kwargs):
@@ -211,18 +235,16 @@ class Uiagent(Agent):
         This method is called when the Agent is about to shutdown, but before it disconnects from
         the message bus.
         """
-        self._ui.top.quit()
-    
-    
-    @RPC.export
-    def rpc_method(self, arg1, arg2, kwarg1=None, kwarg2=None):
-        """
-        RPC method
+        _log.debug(msg="UI Agent is shuting down ...")
+        self.build_ui.top.quit()
+        
+    # @RPC.export
+    # def rpc_method(self, arg1, arg2, kwarg1=None, kwarg2=None):
+    #     """
+    #     RPC method
 
-        May be called from another agent via self.core.rpc.call """
-        return self.setting1 + arg1 - arg2
-
-
+    #     May be called from another agent via self.core.rpc.call """
+    #     return self.setting1 + arg1 - arg2
 
 def main():
     """Main method called to start the agent."""

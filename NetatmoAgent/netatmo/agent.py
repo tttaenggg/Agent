@@ -45,12 +45,14 @@ from volttron.platform.agent import utils
 from volttron.platform.messaging.health import STATUS_GOOD
 from volttron.platform.vip.agent import Agent, Core, PubSub
 from volttron.platform.vip.agent.subsystems.query import Query
+from volttron.platform.scheduling import periodic
+import importlib
 
 utils.setup_logging()
 _log = logging.getLogger(__name__)
 __version__ = '3.3'
 DEFAULT_MESSAGE = 'Listener Message'
-DEFAULT_AGENTID = "listener"
+DEFAULT_AGENTID = "netatmo2"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
@@ -66,6 +68,18 @@ class ListenerAgent(Agent):
         self._message = self.config.get('message', DEFAULT_MESSAGE)
         self._heartbeat_period = self.config.get('heartbeat_period',
                                                  DEFAULT_HEARTBEAT_PERIOD)
+
+        self._address = self.config.get('address')
+        self._url = self.config.get('url')
+        self._client_id = self.config.get('client_id')
+        self._username = self.config.get('username')
+        self._password = self.config.get('password')
+        self._client_secret = self.config.get('client_secret')
+        self.apiLib = importlib.import_module("Agents.NetatmoAgent.netatmo.netatmo_driver")
+        self.netatmo = self.apiLib.API(address=self._address, url=self._url, client_id=self._client_id,
+                                       username=self._username, password=self._password,
+                                       client_secret=self._client_secret)
+
         try:
             self._heartbeat_period = int(self._heartbeat_period)
         except:
@@ -97,24 +111,38 @@ class ListenerAgent(Agent):
         query = Query(self.core)
         _log.info('query: %r', query.query('serverkey').get())
 
-    @PubSub.subscribe('pubsub', 'ui/mode/control')
-    def on_match_mode(self, peer, sender, bus,  topic, headers, message):
+    @PubSub.subscribe('pubsub', '')
+    def on_match(self, peer, sender, bus,  topic, headers, message):
         """Use match_all to receive all messages and print them out."""
-        _log.debug(msg="---> UI MODE MSG Receive --->")
         self._logfn(
             "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
             "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-        
-        
-    @PubSub.subscribe('pubsub', 'ui/command/conf')
-    def on_match_command(self, peer, sender, bus,  topic, headers, message):
-        """Use match_all to receive all messages and print them out."""
-        _log.debug(msg="---> UI COMMAND MSG Receive --->")
-        self._logfn(
-            "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
-            "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-        
 
+    def publish_response(self, resp_topic, publish_items):
+        headers = {'weatherheader'
+        }
+
+        resp_topic = 'os/weather01'
+
+        self.vip.pubsub.publish(peer='pubsub',
+                                topic=resp_topic,
+                                message='publish_items_weather',
+                                headers=headers)
+
+    @Core.schedule(periodic(10))
+    def lookup_data(self):
+        print("")
+
+        self.netatmo.getDeviceStatus()
+
+        headers = {'weatherheader'
+                   }
+
+        resp_topic = 'os/weather01/device1'
+
+        self.vip.pubsub.publish(peer='pubsub',
+                                topic=resp_topic,
+                                message=self.netatmo.variables)
 
 def main(argv=sys.argv):
     '''Main method called by the eggsecutable.'''

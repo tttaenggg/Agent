@@ -1,0 +1,15 @@
+{
+    "agentid": "listener1",
+    "message": "hello",
+    "address":"https://api.netatmo.net/api/devicelist",
+    "url":"https://api.netatmo.net/oauth2/token",
+    "client_id":"592fc89f743c360b3a8b53e9",
+    "username":"smarthome.pea@gmail.com",
+    "password":"28Sep1960",
+    "client_secret":"nPoa7wZfyq7VbCbF7Gqzo5bI1V5",
+    # log-level can be DEBUG, INFO, WARN or ERROR
+    # verbosity is decreased from left to right above
+    # default: INFO
+    "log-level": "INFO"
+}
+
