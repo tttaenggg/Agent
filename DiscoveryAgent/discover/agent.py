@@ -102,9 +102,10 @@ class Discover(Agent):
                 # TODO : Publish Msg to Other Agent for handle here
                 if self.module_set != self._module_set:
                     self._module_set = self.module_set
-                    msg = json.dumps({'module':self.module_set})
-                    self.vip.pubsub.publish('pubsub', topic="discoveryagent/send/command", 
+                    msg = json.dumps({'module':list(self.module_set)})
+                    self.vip.pubsub.publish('pubsub', topic="discovery/send/command", 
                                             message=msg)
+                    _log.debug(msg="MODULE LIST ---> {}".format(msg))
         
         except Exception as e:
             _log.error("Error : {}".format(e))

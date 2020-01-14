@@ -34,10 +34,10 @@ class Uiagent(Agent):
         
         # self.current_conf = {} # Alway get current status.
         self.command_conf = {
-                                "control": "ON",
+                                "power": "ON",
                                 "mode" : "COLD",
                                 "fan": "FAN1",
-                                "set-point": 25
+                                "setpoint": 25
                                 }
         
         log_level = self.config.get('log-level', 'INFO')
@@ -97,16 +97,16 @@ class Uiagent(Agent):
 
         self.switch_variable = tkinter.StringVar(value="medium")
         self.aut_button = tkinter.Radiobutton(self.switch_frame, text="Auto", variable=self.switch_variable,
-                                    indicatoron=False, value="auto", width=8, height=2)
+                                    indicatoron=False, value="FANA", width=8, height=2)
 
         self.low_button = tkinter.Radiobutton(self.switch_frame, text="Low", variable=self.switch_variable,
-                                    indicatoron=False, value="low", width=8, height=2)
+                                    indicatoron=False, value="FAN1", width=8, height=2)
 
         self.med_button = tkinter.Radiobutton(self.switch_frame, text="Medium", variable=self.switch_variable,
-                                    indicatoron=False, value="medium", width=8, height=2)
+                                    indicatoron=False, value="FAN2", width=8, height=2)
 
         self.high_button = tkinter.Radiobutton(self.switch_frame, text="High", variable=self.switch_variable,
-                                    indicatoron=False, value="high", width=8, height=2)
+                                    indicatoron=False, value="FAN3", width=8, height=2)
 
         self.aut_button.pack(side="left")
         self.low_button.pack(side="left")
@@ -200,28 +200,26 @@ class Uiagent(Agent):
     def callBack_control(self): # Function to handle ON/OFF A.C.
         self._control = self.control_variable.get()
         if self._control == 1:
-            self.command_conf['control'] = "ON"
+            self.command_conf['power'] = "ON"
         else:
-            self.command_conf['control'] = "OFF"
+            self.command_conf['power'] = "OFF"
     
     def callBack_up(self): # Increase temperature for 1 step handle function
         self.temperature = self.temperature + 1
         self.lbl.config(text=str(float(self.temperature)))
-        self.command_conf['set-point'] = self.temperature
+        self.command_conf['setpoint'] = self.temperature
         
     def callBack_down(self): # Reduce temperature for 1 step handle function
         self.temperature = self.temperature - 1
         self.lbl.config(text=str(float(self.temperature)))
-        self.command_conf['set-point'] = self.temperature
+        self.command_conf['setpoint'] = self.temperature
     
     def doSendCommand(self): # OK Button Pressed handler function
         self.command_conf['fan'] = self.switch_variable.get()
         _log.info(msg="Command Configuration Send : {}".format(self.command_conf))
-        self.vip.pubsub.publish('pubsub', "ui/command/conf", 
-                                    message=json.dumps(
-                                        self.command_conf
-                                        )
-                                )
+        conf = json.dumps(self.command_conf)
+        self.vip.pubsub.publish('pubsub', topic="ui/command/conf", message=conf)
+        _log.debug(msg="Publish Message : {}".format(conf))
         
                 
     @Core.receiver("onstart")
@@ -237,14 +235,6 @@ class Uiagent(Agent):
         """
         _log.debug(msg="UI Agent is shuting down ...")
         self.build_ui.top.quit()
-        
-    # @RPC.export
-    # def rpc_method(self, arg1, arg2, kwarg1=None, kwarg2=None):
-    #     """
-    #     RPC method
-
-    #     May be called from another agent via self.core.rpc.call """
-    #     return self.setting1 + arg1 - arg2
 
 def main():
     """Main method called to start the agent."""
