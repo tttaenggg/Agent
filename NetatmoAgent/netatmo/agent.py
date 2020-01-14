@@ -75,7 +75,7 @@ class ListenerAgent(Agent):
         self._username = self.config.get('username')
         self._password = self.config.get('password')
         self._client_secret = self.config.get('client_secret')
-        self.apiLib = importlib.import_module("Agents.NetatmoAgent.netatmo.netatmo_driver")
+        self.apiLib = importlib.import_module("Agent.NetatmoAgent.multisensor.netatmo_driver")
         self.netatmo = self.apiLib.API(address=self._address, url=self._url, client_id=self._client_id,
                                        username=self._username, password=self._password,
                                        client_secret=self._client_secret)

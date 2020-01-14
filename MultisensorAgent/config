@@ -1,0 +1,11 @@
+{
+    "agentid": "multisensor",
+    "message": "hello",
+    "bearer":"Bearer c654f55b-a254-4800-b536-0fbb354ee800",
+    "url":"https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/7833689d-a39e-40e3-bf80-67253469cd65/illuminances/",
+    "device":"6fa190f7-9349-49c3-b132-ca7d52c3773e",
+    # log-level can be DEBUG, INFO, WARN or ERROR
+    # verbosity is decreased from left to right above
+    # default: INFO
+    "log-level": "INFO"
+}

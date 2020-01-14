@@ -45,12 +45,14 @@ from volttron.platform.agent import utils
 from volttron.platform.messaging.health import STATUS_GOOD
 from volttron.platform.vip.agent import Agent, Core, PubSub
 from volttron.platform.vip.agent.subsystems.query import Query
+from volttron.platform.scheduling import periodic
+import importlib
 
 utils.setup_logging()
 _log = logging.getLogger(__name__)
 __version__ = '3.3'
 DEFAULT_MESSAGE = 'Listener Message'
-DEFAULT_AGENTID = "multisensor"
+DEFAULT_AGENTID = "multisensor2"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
@@ -66,6 +68,18 @@ class ListenerAgent(Agent):
         self._message = self.config.get('message', DEFAULT_MESSAGE)
         self._heartbeat_period = self.config.get('heartbeat_period',
                                                  DEFAULT_HEARTBEAT_PERIOD)
+
+        self._bearer = self.config.get('bearer')
+        self._url = self.config.get('url')
+        self._device = self.config.get('device')
+
+        print(self._url)
+        print(self._bearer)
+        print(self._device)
+
+        self.apiLib = importlib.import_module("Agent.MultisensorAgent.multisensor.multisensor_driver")
+        self.multisensor = self.apiLib.API(bearer=self._bearer, url=self._url, device=self._device)
+
         try:
             self._heartbeat_period = int(self._heartbeat_period)
         except:
@@ -96,47 +110,35 @@ class ListenerAgent(Agent):
             self.vip.health.set_status(STATUS_GOOD, self._message)
         query = Query(self.core)
         _log.info('query: %r', query.query('serverkey').get())
-        self.temp = 25
-        self.humidity = 50
 
-    # @PubSub.subscribe('pubsub', '')
-    # def on_match(self, peer, sender, bus,  topic, headers, message):
-    #     """Use match_all to receive all messages and print them out."""
-    #     self._logfn(
-    #         "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
-    #         "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-
-    @PubSub.subscribe('pubsub', 'os/multisensor/aeotech02')
-    def on_netatmo(self, peer, sender, bus,  topic, headers, message):
+    @PubSub.subscribe('pubsub', '')
+    def on_match(self, peer, sender, bus,  topic, headers, message):
         """Use match_all to receive all messages and print them out."""
         self._logfn(
             "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
             "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-        msg = message
-        print(msg)
-        self.temp = msg['temperature']
-        self.humidity = msg['humidity']
-        print (self.temp)
-        print ("revieve in put data from multisensor")
-        print("temperature from multisensor = {}".format(self.temp))
-        print("humidity from multisensor = {}".format(self.humidity))
 
-    # #todo AC
-    # @PubSub.subscribe('pubsub', 'os/weather01/device1')
-    # def on_netatmo(self, peer, sender, bus,  topic, headers, message):
-    #     """Use match_all to receive all messages and print them out."""
-    #     self._logfn(
-    #         "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
-    #         "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-    #     msg = message
-    #     self.temp = msg['temperature']
-    #     self.humidity = msg['humidity']
-    #     print ("revieve in put data from multisensor")
-    #     print("temperature from multisensor".format(self.temp))
-    #     print("humidity from multisensor".format(self.humidity))
+    def publish_response(self, resp_topic, publish_items):
+        headers = {'weatherheader'
+        }
 
-    #to do Fuzzy logic and control every 10 min
+        resp_topic = 'os/weather01'
 
+        self.vip.pubsub.publish(peer='pubsub',
+                                topic=resp_topic,
+                                message='publish_items_weather',
+                                headers=headers)
+
+    @Core.schedule(periodic(10))
+    def lookup_data(self):
+        self.multisensor.getDeviceStatus()
+
+        headers = {'weatherheader'
+                   }
+        resp_topic = 'os/multisensor/aeotech02'
+        self.vip.pubsub.publish(peer='pubsub',
+                                topic=resp_topic,
+                                message=self.multisensor.variables)
 
 def main(argv=sys.argv):
     '''Main method called by the eggsecutable.'''
