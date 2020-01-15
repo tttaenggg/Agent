@@ -106,13 +106,15 @@ class ListenerAgent(Agent):
             "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
         
         
-    @PubSub.subscribe('pubsub', 'ui/command/conf')
+    @PubSub.subscribe('pubsub', '')
     def on_match_command(self, peer, sender, bus,  topic, headers, message):
         """Use match_all to receive all messages and print them out."""
         _log.debug(msg="---> UI COMMAND MSG Receive --->")
         self._logfn(
             "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
             "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
+
+
         
 
 

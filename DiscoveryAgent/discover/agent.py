@@ -37,6 +37,9 @@ class Discover(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
         
         self._module_set = None
+        self._socket =None
+
+
         try:
             self._heartbeat_period = int(self._heartbeat_period)
         except:
@@ -67,14 +70,13 @@ class Discover(Agent):
         s.connect(("8.8.8.8", 80))
         self._ipaddress = s.getsockname()[0]
         s.close()
-        
+        _log.info(msg="Server IP : {}".format(self._ipaddress))
         self.on_search()
         self._socket.close()
         
     def on_search(self):
         try:
-            self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 
-                                        socket.IPPROTO_UDP)
+            self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
             self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
             self._socket.bind(("", self.port))

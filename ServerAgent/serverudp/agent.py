@@ -45,16 +45,19 @@ from volttron.platform.agent import utils
 from volttron.platform.messaging.health import STATUS_GOOD
 from volttron.platform.vip.agent import Agent, Core, PubSub
 from volttron.platform.vip.agent.subsystems.query import Query
+import socket
+from .extension import protocol
+import datetime ,time
 
 utils.setup_logging()
 _log = logging.getLogger(__name__)
 __version__ = '3.3'
 DEFAULT_MESSAGE = 'Listener Message'
-DEFAULT_AGENTID = "listener"
+DEFAULT_AGENTID = "serverudp"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
-class ListenerAgent(Agent):
+class ServerAgent(Agent):
     """Listens to everything and publishes a heartbeat according to the
     heartbeat period specified in the settings module.
     """
@@ -71,6 +74,8 @@ class ListenerAgent(Agent):
         except:
             _log.warning('Invalid heartbeat period specified setting to default')
             self._heartbeat_period = DEFAULT_HEARTBEAT_PERIOD
+
+
         log_level = self.config.get('log-level', 'INFO')
         if log_level == 'ERROR':
             self._logfn = _log.error
@@ -81,39 +86,86 @@ class ListenerAgent(Agent):
         else:
             self._logfn = _log.info
 
+        self.incomimg = None
+        self.buffer = None
+        self.issue = None
+        self.port = 38360
+        self.protocol = protocol.Protocol()
+
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            self.server_ip = s.getsockname()[0]
+            s.close()
+            _log.info("Agent Initial Constructor Found Server IP : {}".format(self.server_ip))
+
+        except Exception as e:
+            _log.error(msg= "Error -> {}".format(e))
+
+
+    def udpserver(self):
+
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.bind((self.server_ip, self.port))
+
+        while True:
+            data, addr = self.socket.recvfrom(1024)
+            yield (data)
+
+
     @Core.receiver('onsetup')
     def onsetup(self, sender, **kwargs):
         # Demonstrate accessing a value from the config file
         _log.info(self.config.get('message', DEFAULT_MESSAGE))
         self._agent_id = self.config.get('agentid')
+        # -- Start UDP Server Wakeup
+        # initial UDP Server to Listening
+
+        self.udpserver()
+
+
 
     @Core.receiver('onstart')
     def onstart(self, sender, **kwargs):
-        _log.debug("VERSION IS: {}".format(self.core.version()))
-        if self._heartbeat_period != 0:
-            _log.debug(f"Heartbeat starting for {self.core.identity}, published every {self._heartbeat_period}s")
-            self.vip.heartbeat.start_with_period(self._heartbeat_period)
-            self.vip.health.set_status(STATUS_GOOD, self._message)
-        query = Query(self.core)
-        _log.info('query: %r', query.query('serverkey').get())
+        _log.info(msg="Server UDP Start Listening")
+        for data in self.udpserver():
+            print(data)
+            print(len(data))
+            if len(data) > 20:
+                self.protocol.decode(recv=data.hex().upper())
+                _log.info(msg="Message Decoded : {}".format(self.protocol.interpret))
+                # # do update to filebase here
+                # db.child("ihub").child("attribute").update(a.interpret)
 
-    @PubSub.subscribe('pubsub', 'ui/mode/control')
+
+            else:
+                now = datetime.datetime.now()
+                hb = time.mktime(now.timetuple())
+                _log.info(msg="Time : {} , Module Airconet Alive".format(hb))
+
+                # db.child("ihub").child("attribute").update({"HeartBeat": time.mktime(now.timetuple())})
+                # do update firebase
+
+
+
+    @PubSub.subscribe('pubsub', 'udpagent/get/status')
     def on_match_mode(self, peer, sender, bus,  topic, headers, message):
-        """Use match_all to receive all messages and print them out."""
-        _log.debug(msg="---> UI MODE MSG Receive --->")
-        self._logfn(
-            "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
-            "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-        
-        
-    @PubSub.subscribe('pubsub', '')
-    def on_match_command(self, peer, sender, bus,  topic, headers, message):
-        """Use match_all to receive all messages and print them out."""
-        _log.debug(msg="---> UI COMMAND MSG Receive --->")
+
         self._logfn(
             "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
             "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
 
+
+
+        
+    # @PubSub.subscribe('pubsub', '')
+    # def on_match_command(self, peer, sender, bus,  topic, headers, message):
+    #
+    #
+    #     self._logfn(
+    #         "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
+    #         "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
+    #
 
         
 
@@ -121,7 +173,7 @@ class ListenerAgent(Agent):
 def main(argv=sys.argv):
     '''Main method called by the eggsecutable.'''
     try:
-        utils.vip_main(ListenerAgent, version=__version__)
+        utils.vip_main(ServerAgent, version=__version__)
     except Exception as e:
         _log.exception('unhandled exception')
 

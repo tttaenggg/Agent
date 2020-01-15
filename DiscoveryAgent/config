@@ -1,6 +1,6 @@
 {
   # VOLTTRON config files are JSON with support for python style comments.
-  "agentid": "discovery",
+  "agentid": "discoverID",
   "topic_prefix": "platform/discover/new", #strings
   "conf_path": "./module.json" ,#Booleans: remember that in JSON true and false are not capitalized.
   "log-level": "INFO",

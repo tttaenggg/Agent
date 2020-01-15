@@ -11,8 +11,7 @@ from volttron.platform.vip.agent import Agent, Core, RPC, PubSub
 from pprint import pformat
 import json
 import socket
-# from extension.Protocol import encode
-# from extension.Protocol import decode
+from .extension import protocol
 
 
 _log = logging.getLogger(__name__)
@@ -27,72 +26,6 @@ DEFAULT_HEARTBEAT_PERIOD = 5
 #------
 import crcmod
 
-
-class Protocol:
-    
-    def __init__(self, *args, **kwargs):
-        print("------------------------- > Adaptor Protocol Execute")
-        self.tx = None
-        self.rx = None
-        self.msg = None
-        self.command = None
-        self.power = {'55': 'ON', 'AA': 'OFF'}
-        
-        self.mode = {'11': 'COLD', '22': 'HOT', '33': 
-                    'AUTO', '44': 'FAN', '55': 'DRY'}
-        
-        self.fan = {'01': 'FAN1','02': 'FAN2','03': 'FAN3', '00' : 'FANA'}
-        
-        self.setpoint = {'00A0':'16', '00AA':'17', '00B4':'18', '00BE':'19' ,
-                        '00C8':'20', '00D2':'21', '00DC':'22', '00E6': '23', 
-                        '00F0': '24', '00FA': '25', '0104': '26', '010E':'27' }
-        
-    def crccal(self, hexstr): # Calculation CRC-16 from Command 
-        crc16 = crcmod.mkCrcFun(0x18005,0xFFFF, True, 0x0000) # Initial State of CRC
-        tmp = hex(crc16(bytes.fromhex(hexstr)))
-        print("CRC = {}".format(tmp))
-        tmp = tmp.split('x')[-1]
-        
-        while len(tmp) < 4 :
-            tmp = "0"+tmp
-        
-        return hexstr+"{}{}".format(tmp[2:4], tmp[0:2])
-    
-    def encode(self, conf):  #Build Command for sending
-        print("-------------------->  Method Encode Execute")
-        print(conf) 
-        self.msg = conf['msg']
-        if self.msg == 'on_fix':
-            self.command = '01069C4000556671'
-        
-        elif self.msg == 'off_fix':
-            self.command = '01069C4000AA2631'
-        
-        elif self.msg == 'status':
-            self.command = '01039C4000086B88'
-        
-        elif self.msg == 'variable_tx':
-            print("------->  ENCODE FUNCTION EXECUTE <------------------")
-            # if kwargs['power'] in self.power.values():
-            power = dict((v,k) for k,v in self.power.items())[conf['power']]
-            print(power)
-            mode = dict((v,k) for k,v in self.mode.items())[conf['mode']]
-            print(mode)
-            setpoint = dict((v,k) for k,v in self.setpoint.items())[str(conf['setpoint'])]
-            print(setpoint)
-            fan = dict((v,k) for k,v in self.fan.items())[conf['fan']]
-            print(fan)
-            # print("ARGS : {}".format(kwargs['fan']))
-            print({'power': power, 'mode': mode, 'fan': fan, 'setpoint':setpoint})
-            # print({'power': power })
-            
-            self.tx_template = '01109C4000081000{power}000000{mode}00{fan}00000000{setpoint}0B01'.format(power=power, mode=mode, fan=fan, setpoint=setpoint)
-
-            self.command = (self.crccal(self.tx_template)).upper()
-            return self.command
-        else:
-            print("Not Found MSG Key")
-            return None
 
 # -----
 class Udpagent(Agent):
@@ -117,6 +50,8 @@ class Udpagent(Agent):
                                 }
         
         self.port = 22533
+        self.protocol = protocol.Protocol()
+        self.adaptor = None
         
         try:
             self._heartbeat_period = int(self._heartbeat_period)
@@ -133,7 +68,7 @@ class Udpagent(Agent):
         else:
             self._logfn = _log.info
     
-    def sendconf(self, ipaddress):
+    def sendconf(self, ipaddress, conf):
         
         try:
             self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 
@@ -141,7 +76,7 @@ class Udpagent(Agent):
             self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
             self._socket.bind(("", self.port))
-            payload = bytes.fromhex(self.adaptor)
+            payload = bytes.fromhex(conf)
             # print(payload)
             sent = self._socket.sendto(payload, (ipaddress, self.port))
 
@@ -198,8 +133,7 @@ class Udpagent(Agent):
             elif self.command_conf['power'] == "ON":
                 # TODO : Send Only ON command
                 self.command_conf.update({'msg': "on_fix"})
-                
-                
+
             elif self.command_conf['power'] == "OFF":
                 self.command_conf.update({'msg': "off_fix"})
                 
@@ -207,9 +141,8 @@ class Udpagent(Agent):
             self.command_conf.update({'msg': 'variable_tx'})
         
         _log.debug(msg="Complete Command : {}".format(self.command_conf))  
-        
-        self.protocol = Protocol()
-        self.adaptor = self.protocol.encode(self.command_conf)
+
+        command = self.protocol.encode(self.command_conf)
         
         print("Log Command Encoded : {}".format(self.adaptor))
         
@@ -217,7 +150,7 @@ class Udpagent(Agent):
         # TODO : Send Command via UDP Server
         for ipaddress in self._module_set:
             print("IP Module : {}".format(ipaddress))
-            self.sendconf(ipaddress)
+            self.sendconf(ipaddress, conf=command)
     
     @PubSub.subscribe('pubsub', "discovery/send/command")
     def on_match_discover(self, peer, sender, bus,  topic, headers, message):
@@ -232,23 +165,25 @@ class Udpagent(Agent):
         _log.info(msg="Found Module : {}".format(self._module_set))
         
 
-    
-    # @Core.periodic(60)
-    # def on_interval(self):
-    #     # Broadcast Message from UDP Server
-    #     _log.info(msg="Send Command to module to get status")
-        
-    #     try:
-    #         self._socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 
-    #                                     socket.IPPROTO_UDP)
-    #         self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    #         self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-    #         self._socket.bind(("", self.port))
+    @Core.periodic(60)
+    def on_interval(self):
+        # Broadcast Message from UDP Server
+        _log.info(msg="Send Command to module to get status")
 
-    #         sent = self._socket.sendto(self.broadcast_msg, ('<broadcast>', self.port))
+        if self._module_set is None:
+            # TODO : publish to discovery agent to get IPADDRESS
+            _log.info(msg="Module Set IP address Not Found")
 
-    #     except Exception as e:
-    #         _log.error(msg="Error : {}".format(e))
+        else:
+
+            command = self.protocol.encode({'msg': 'status'})
+            try:
+                for ipaddress in self._module_set:
+                    _log.info(msg="Send Status Request to {} with Commmand : {}".format(ipaddress, command))
+                    self.sendconf(ipaddress=ipaddress, conf=command)
+
+            except Exception as e:
+                _log.error(msg="Error : {}".format(e))
         
 
 
