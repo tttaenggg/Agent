@@ -3,8 +3,5 @@
 
     "agentid": "serverudp",
     "message": "Hi I'm Here",
-    # log-level can be DEBUG, INFO, WARN or ERROR
-    # verbosity is decreased from left to right above
-    # default: INFO
     "log-level": "INFO"
 }

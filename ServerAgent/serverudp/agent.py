@@ -53,7 +53,7 @@ utils.setup_logging()
 _log = logging.getLogger(__name__)
 __version__ = '3.3'
 DEFAULT_MESSAGE = 'Listener Message'
-DEFAULT_AGENTID = "serverudp"
+DEFAULT_AGENTID = "serverudp_listen"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
@@ -93,6 +93,7 @@ class ServerAgent(Agent):
         self.protocol = protocol.Protocol()
 
         try:
+            print("---------> Debug Try")
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.connect(("8.8.8.8", 80))
             self.server_ip = s.getsockname()[0]
@@ -103,11 +104,11 @@ class ServerAgent(Agent):
             _log.error(msg= "Error -> {}".format(e))
 
 
-    def udpserver(self):
+    def udpserver_listen(self):
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.bind((self.server_ip, self.port))
-
+        _log.info(msg="Socket Server Created")
         while True:
             data, addr = self.socket.recvfrom(1024)
             yield (data)
@@ -120,15 +121,15 @@ class ServerAgent(Agent):
         self._agent_id = self.config.get('agentid')
         # -- Start UDP Server Wakeup
         # initial UDP Server to Listening
-
-        self.udpserver()
+        print("---------->  <------------")
+        self.udpserver_listen()
 
 
 
     @Core.receiver('onstart')
     def onstart(self, sender, **kwargs):
         _log.info(msg="Server UDP Start Listening")
-        for data in self.udpserver():
+        for data in self.udpserver_listen():
             print(data)
             print(len(data))
             if len(data) > 20:
