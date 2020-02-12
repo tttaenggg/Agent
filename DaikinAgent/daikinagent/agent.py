@@ -18,13 +18,13 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Tplink Plug Agent'
-DEFAULT_AGENTID = "TplinkAgent"
+DEFAULT_MESSAGE = 'I am a Daikin Agent'
+DEFAULT_AGENTID = "DaikinAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
 
-class Plugagent(Agent):
+class Daikinagent(Agent):
     """
     Document agent constructor here.
     """
@@ -67,12 +67,13 @@ class Plugagent(Agent):
         # _log.info("Found in Config File: {}".format(self.config.get('members')))
         #
         # for k,v in self.members.items():
-        # ip = self.members.get('plug001')
-        # self.plug = api.API(model='TPlinkPlug', api='API3', agent_id='TPlinkPlugAgent',types='plug', ip=ip,
-        #           port=9999)
-        # self.plug.getDeviceStatus()
-        # self.plug.setDeviceStatus({"status": "OFF"})
-        # self.plug.getDeviceStatus()
+        ip = self.members.get('air001')
+        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ip,
+                              port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
+
+        self.daikin.getDeviceStatus()
+        # self.daikin.setDeviceStatus({"status": "ON"})
+        # self.daikin.getDeviceStatus()
         pass
 
     # @Core.receiver("onstop")
@@ -83,7 +84,7 @@ class Plugagent(Agent):
     #     """
     #     pass
 
-    @PubSub.subscribe('pubsub', "web/control/tplinkplug")
+    @PubSub.subscribe('pubsub', "web/control/daikin")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
         _log.info("Get Message : {}".format(message))
@@ -99,19 +100,17 @@ class Plugagent(Agent):
 
         print(ipaddress)
 
+        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url='http://192.168.10.234',
+                              port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
 
-        self.plug = api.API(model='TPlinkPlug', api='API3',
-                            agent_id='TPlinkPlugAgent', types='plug',
-                            ip=ipaddress, port=9999)
-
-        self.plug.getDeviceStatus()
-        self.plug.setDeviceStatus({'status': status})
-        self.plug.getDeviceStatus()
+        self.daikin.getDeviceStatus()
+        self.daikin.setDeviceStatus({'status': status})
+        self.daikin.getDeviceStatus()
 
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Plugagent,
+    utils.vip_main(Daikinagent,
                    version=__version__)
 
 

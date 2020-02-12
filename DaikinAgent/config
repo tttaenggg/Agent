@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "daikinagent", #Integers
+  "message": "Hello From Daikin", #strings
+  "log-level": "INFO",
+  "pathconf" : "Agent/DaikinAgent/iplist.json"
+}
