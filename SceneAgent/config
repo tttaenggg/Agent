@@ -1,0 +1,10 @@
+{
+
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "sceneagent", #Integers
+  "message": "Hello From Scene Agent", #strings
+  "log-level": "INFO",
+  "scenelistpath": "Agent/SceneAgent/scenelist.json"
+
+
+}
