@@ -39,7 +39,11 @@ class Plugagent(Agent):
         self._heartbeat_period = self.config.get('heartbeat_period',
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
-        self.members = None
+        self.iplist_path = self.config.get('pathconf')
+        self.members = json.load(open(self.iplist_path))
+
+        _log.debug("IP List : {}".format(self.members))
+
         try:
             self._heartbeat_period = int(self._heartbeat_period)
         except:
@@ -55,45 +59,61 @@ class Plugagent(Agent):
         else:
             self._logfn = _log.info
 
-
             
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
         
         # TODO :  Start Server Listener Here
-        _log.info("Found in Config File: {}".format(self.config.get('members')))
-        self.members = self.config.get('members')
 
-
-    @Core.receiver("onstop")
-    def onstop(self, sender, **kwargs):
-        """
-        This method is called when the Agent is about to shutdown, but before it disconnects from
-        the message bus.
-        """
         pass
 
-    @PubSub.subscribe('pubsub', "web/control/tplinkplug")
+    # -- Direct Control From Web Application
+    @PubSub.subscribe('pubsub', "web/control/plug")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
         _log.info("Get Message : {}".format(message))
-        msg = json.loads(message)
-        device_id = msg.get('device_id')
+        msg = message
+        # print(msg)
+        deviceid = msg.get('deviceid')
         status = msg.get('status')
 
-        print(device_id)
+        print(deviceid)
         print(status)
         print("----------------------------------------------")
-        print(self.members)
-        ipaddress = self.members.get(device_id)
-
-        print(ipaddress)
-
+        ipaddress = self.members.get(deviceid)
 
         self.plug = api.API(model='TPlinkPlug', api='API3',
                             agent_id='TPlinkPlugAgent', types='plug',
                             ip=ipaddress, port=9999)
+
+        # self.plug.getDeviceStatus()
         self.plug.setDeviceStatus({'status': status})
+        # self.plug.getDeviceStatus()
+        del self.plug
+
+
+
+    # -- Scene Agent Control
+    # @PubSub.subscribe('pubsub', "scene/control/plug")
+    # def on_match_scenecommand(self, peer, sender, bus,  topic, headers, message):
+    #
+    #     _log.debug(" >> Executed by Scene Agent")
+    #     deviceid = message.get('deviceid')
+    #     ipaddress = self.members.get(deviceid)
+    #     status = message.get('status')
+    #
+    #     self.plug = api.API(model='TPlinkPlug', api='API3',
+    #                        agent_id='TPlinkPlugAgent', types='plug',
+    #                        ip=ipaddress, port=9999)
+    #
+    #     bef = self.plug.getDeviceStatus()
+    #     self.plug.setDeviceStatus({'status': status})
+    #     aft = self.plug.getDeviceStatus()
+    #     if bef != aft :
+    #         _log.debug("Scene Execute status : {} Successful".format(status))
+    #
+    #     self.plug = None
+
 
 
 def main():

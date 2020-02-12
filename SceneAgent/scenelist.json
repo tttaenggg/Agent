@@ -1,22 +1,22 @@
 {
 
-    "topic" : "scene/control/{}",
+    "topic" : "web/control/",
     "scenelist" : [
                     {
                         "sceneid" : "scene001",
                         "scenecontrol" :[
+                                            {
+                                                "device_control": {"deviceid": "plug001", "status" : "OFF"},
+                                                "device_type": "PLUG"
+                                            },
+
                                             {
                                                 "device_control": {"deviceid": "plug001", "status" : "ON"},
                                                 "device_type": "PLUG"
                                             },
 
                                             {
-                                                "device_control": {"deviceid": "plug002", "status" : "ON"},
-                                                "device_type": "PLUG"
-                                            },
-
-                                            {
-                                                "device_control": {"deviceid": "air001","status": "ON", "stemp": "25", "mode": "COLD"},
+                                                "device_control": {"deviceid": "air001","status": "OFF"},
                                                 "device_type" : "AIRCON"
 
                                             }
@@ -33,12 +33,12 @@
                                             },
 
                                             {
-                                                "device_control": {"deviceid": "plug002", "status" : "OFF"},
+                                                "device_control": {"deviceid": "plug001", "status" : "ON"},
                                                 "device_type": "PLUG"
                                             },
 
                                             {
-                                                "device_control": {"deviceid": "air001","status": "OFF", "stemp": "25", "mode": "COLD"},
+                                                "device_control": {"deviceid": "air001","status": "ON"},
                                                 "device_type" : "AIRCON"
 
                                             }
@@ -50,7 +50,7 @@
                         "sceneid" : "scene003",
                         "scenecontrol" :[
                                             {
-                                                "device_control": {"deviceid": "plug001", "status" : "ON"},
+                                                "device_control": {"deviceid": "plug001", "status" : "OFF"},
                                                 "device_type": "PLUG"
                                             },
 

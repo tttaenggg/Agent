@@ -11,19 +11,23 @@ from volttron.platform.vip.agent import Agent, Core, RPC, PubSub
 from pprint import pformat
 import json
 import socket
-import time
+from .extension import api
+
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Scene Agent'
-DEFAULT_AGENTID = "SceneAgent"
+DEFAULT_MESSAGE = 'I am a Daikin Agent'
+DEFAULT_AGENTID = "DaikinAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
 
-class Sceneagent(Agent):
+class Daikinagent(Agent):
+    """
+    Document agent constructor here.
+    """
 
     def __init__(self, config_path,
                  **kwargs):
@@ -34,16 +38,11 @@ class Sceneagent(Agent):
         self._message = self.config.get('message', DEFAULT_MESSAGE)
         self._heartbeat_period = self.config.get('heartbeat_period',
                                                  DEFAULT_HEARTBEAT_PERIOD)
-        self._scenelist_path = self.config.get('scenelistpath')
-        self.sceneconf = json.load(open(self._scenelist_path))
 
-        _log.info(">>> : Found {} Scene Control List".format(len(self.sceneconf.get('scenelist'))))
+        self.iplist_path = self.config.get('pathconf')
+        self.members = json.load(open(self.iplist_path))
 
-        self.scenelist = self.sceneconf.get('scenelist')
-        self.sceneid = [scene.get('sceneid') for scene in self.scenelist]
-        _log.info(">>> : Scene ID : {}".format(self.sceneid))
-
-
+        _log.debug("IP List : {}".format(self.members))
 
         try:
             self._heartbeat_period = int(self._heartbeat_period)
@@ -60,48 +59,53 @@ class Sceneagent(Agent):
         else:
             self._logfn = _log.info
 
-
             
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
         
         # TODO :  Start Server Listener Here
-
+        # _log.info("Found in Config File: {}".format(self.config.get('members')))
+        #
+        # for k,v in self.members.items():
+        # ip = self.members.get('air004')
+        # self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ip,
+        #                       port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
+        #
+        # self.daikin.getDeviceStatus()
+        # self.daikin.setDeviceStatus({"status": "ON"})
+        # self.daikin.getDeviceStatus()
         pass
 
-    @PubSub.subscribe('pubsub', "web/control/scene")
+
+
+    @PubSub.subscribe('pubsub','web/control/aircon')
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
-        _topic = self.sceneconf.get('topic')
-        sceneid = message.get('sceneid')
 
-        if sceneid in self.sceneid:
-            _log.debug(" >>> :Scene ID matched")
-            for i in self.scenelist:
+        _log.info("Get Message : {}".format(message))
 
-                if sceneid == i.get('sceneid'):
-                    # - do stuff control Device
-                    scenecontrol = i.get('scenecontrol')
-                    _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
-                    break
+        msg = message
+        deviceid = msg.get('deviceid')
+        msg.pop('deviceid')
+        status = msg
 
-            for device in scenecontrol:
+        print(deviceid)
+        print(status)
+        print("----------------------------------------------")
+        ipaddress = self.members.get(deviceid)
+        print(ipaddress)
 
-                pub_topic = _topic+(device.get('device_type')).lower()
-                pub_body = device.get('device_control')
+        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ipaddress,
+                              port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
 
-                _log.debug("TOPIC PUB : {}".format(pub_topic))
-                _log.debug("BODY : {}".format(pub_body))
-                _log.debug("----------------------------------------------")
+        self.daikin.getDeviceStatus()
+        self.daikin.setDeviceStatus(status)
+        self.daikin.getDeviceStatus()
+        del self.daikin
 
-                self.vip.pubsub.publish('pubsub', pub_topic,
-                                message=pub_body
-                                )
-                _log.info("Published")
-                time.sleep(2)
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Sceneagent,
+    utils.vip_main(Daikinagent,
                    version=__version__)
 
 
