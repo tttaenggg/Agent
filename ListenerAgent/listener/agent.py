@@ -41,6 +41,8 @@ import logging
 import sys
 from pprint import pformat
 
+import time, os, pika, json
+
 from volttron.platform.agent import utils
 from volttron.platform.messaging.health import STATUS_GOOD
 from volttron.platform.vip.agent import Agent, Core, PubSub
@@ -87,35 +89,34 @@ class ListenerAgent(Agent):
         _log.info(self.config.get('message', DEFAULT_MESSAGE))
         self._agent_id = self.config.get('agentid')
 
+        self.url_rabbitmq = os.environ.get('CLOUDAMQP_URL',
+                             'amqp://zlfcmyqb:ma5_8XUI2NyatDHgFW-Z2PBmfFG1_9ID@mustang.rmq.cloudamqp.com/zlfcmyqb')
+
+        self.params = pika.URLParameters(self.url_rabbitmq)
+        self.connection = pika.BlockingConnection(self.params)
+        self.channel = self.connection.channel()  # start a channel
+        self.channel.queue_declare(queue='pdfprocess')
+        self.channel.basic_consume('pdfprocess', self.callback, auto_ack=True)
+
+
     @Core.receiver('onstart')
     def onstart(self, sender, **kwargs):
-        _log.debug("VERSION IS: {}".format(self.core.version()))
-        if self._heartbeat_period != 0:
-            _log.debug(f"Heartbeat starting for {self.core.identity}, published every {self._heartbeat_period}s")
-            self.vip.heartbeat.start_with_period(self._heartbeat_period)
-            self.vip.health.set_status(STATUS_GOOD, self._message)
-        query = Query(self.core)
-        _log.info('query: %r', query.query('serverkey').get())
-
-    @PubSub.subscribe('pubsub', 'ui/mode/control')
-    def on_match_mode(self, peer, sender, bus,  topic, headers, message):
-        """Use match_all to receive all messages and print them out."""
-        _log.debug(msg="---> UI MODE MSG Receive --->")
-        self._logfn(
-            "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
-            "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
-        
-        
-    @PubSub.subscribe('pubsub', '')
-    def on_match_command(self, peer, sender, bus,  topic, headers, message):
-        """Use match_all to receive all messages and print them out."""
-        _log.debug(msg="---> UI COMMAND MSG Receive --->")
-        self._logfn(
-            "Peer: {0}, Sender: {1}:, Bus: {2}, Topic: {3}, Headers: {4}, "
-            "Message: \n{5}".format(peer, sender, bus, topic, headers, pformat(message)))
+        _log.debug("Start CloudAMQP Consume services ")
+        self.channel.start_consuming()
+        self.connection.close()
 
 
-        
+
+    def callback(self, ch, method, properties, body):
+        print("Got Message : {}".format(body))
+        msg = dict(json.loads(body))
+        topic = msg.get('topic', 'web/control/error')
+        message = msg.get('body', {})
+        _log.info(">> TOPIC : {}".format(topic))
+        _log.info(">> COMMAND : {}".format(message))
+        self.vip.pubsub.publish('pubsub', topic,
+                                message=json.dumps(message)
+                                )
 
 
 def main(argv=sys.argv):

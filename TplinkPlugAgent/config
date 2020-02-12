@@ -1,0 +1,12 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "plugagent", #Integers
+  "message": "Hello From TpLink Smart Plug", #strings
+  "log-level": "INFO",
+  "members": {
+
+             'plug001' : '192.168.10.123',
+             'plug002' : '192.168.10.124'
+
+             }
+}
