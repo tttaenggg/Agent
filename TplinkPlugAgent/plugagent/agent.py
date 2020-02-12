@@ -64,49 +64,56 @@ class Plugagent(Agent):
     def onstart(self, sender, **kwargs):
         
         # TODO :  Start Server Listener Here
-        # _log.info("Found in Config File: {}".format(self.config.get('members')))
-        #
-        # for k,v in self.members.items():
-        # ip = self.members.get('plug001')
-        # self.plug = api.API(model='TPlinkPlug', api='API3', agent_id='TPlinkPlugAgent',types='plug', ip=ip,
-        #           port=9999)
-        # self.plug.getDeviceStatus()
-        # self.plug.setDeviceStatus({"status": "OFF"})
-        # self.plug.getDeviceStatus()
+
         pass
 
-    # @Core.receiver("onstop")
-    # def onstop(self, sender, **kwargs):
-    #     """
-    #     This method is called when the Agent is about to shutdown, but before it disconnects from
-    #     the message bus.
-    #     """
-    #     pass
-
-    @PubSub.subscribe('pubsub', "web/control/tplinkplug")
+    # -- Direct Control From Web Application
+    @PubSub.subscribe('pubsub', "web/control/plug")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
         _log.info("Get Message : {}".format(message))
-        msg = json.loads(message)
-        device_id = msg.get('device_id')
+        msg = message
+        # print(msg)
+        deviceid = msg.get('deviceid')
         status = msg.get('status')
 
-        print(device_id)
+        print(deviceid)
         print(status)
         print("----------------------------------------------")
-        print(self.members)
-        ipaddress = self.members.get(device_id)
-
-        print(ipaddress)
-
+        ipaddress = self.members.get(deviceid)
 
         self.plug = api.API(model='TPlinkPlug', api='API3',
                             agent_id='TPlinkPlugAgent', types='plug',
                             ip=ipaddress, port=9999)
 
-        self.plug.getDeviceStatus()
+        # self.plug.getDeviceStatus()
         self.plug.setDeviceStatus({'status': status})
-        self.plug.getDeviceStatus()
+        # self.plug.getDeviceStatus()
+        del self.plug
+
+
+
+    # -- Scene Agent Control
+    # @PubSub.subscribe('pubsub', "scene/control/plug")
+    # def on_match_scenecommand(self, peer, sender, bus,  topic, headers, message):
+    #
+    #     _log.debug(" >> Executed by Scene Agent")
+    #     deviceid = message.get('deviceid')
+    #     ipaddress = self.members.get(deviceid)
+    #     status = message.get('status')
+    #
+    #     self.plug = api.API(model='TPlinkPlug', api='API3',
+    #                        agent_id='TPlinkPlugAgent', types='plug',
+    #                        ip=ipaddress, port=9999)
+    #
+    #     bef = self.plug.getDeviceStatus()
+    #     self.plug.setDeviceStatus({'status': status})
+    #     aft = self.plug.getDeviceStatus()
+    #     if bef != aft :
+    #         _log.debug("Scene Execute status : {} Successful".format(status))
+    #
+    #     self.plug = None
+
 
 
 def main():

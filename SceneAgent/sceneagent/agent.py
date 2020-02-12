@@ -11,7 +11,7 @@ from volttron.platform.vip.agent import Agent, Core, RPC, PubSub
 from pprint import pformat
 import json
 import socket
-
+import time
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -86,7 +86,7 @@ class Sceneagent(Agent):
 
             for device in scenecontrol:
 
-                pub_topic = _topic.format(device.get('device_type')).lower()
+                pub_topic = _topic+(device.get('device_type')).lower()
                 pub_body = device.get('device_control')
 
                 _log.debug("TOPIC PUB : {}".format(pub_topic))
@@ -96,7 +96,8 @@ class Sceneagent(Agent):
                 self.vip.pubsub.publish('pubsub', pub_topic,
                                 message=pub_body
                                 )
-
+                _log.info("Published")
+                time.sleep(2)
 
 def main():
     """Main method called to start the agent."""

@@ -67,45 +67,40 @@ class Daikinagent(Agent):
         # _log.info("Found in Config File: {}".format(self.config.get('members')))
         #
         # for k,v in self.members.items():
-        ip = self.members.get('air001')
-        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ip,
-                              port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
-
-        self.daikin.getDeviceStatus()
+        # ip = self.members.get('air004')
+        # self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ip,
+        #                       port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
+        #
+        # self.daikin.getDeviceStatus()
         # self.daikin.setDeviceStatus({"status": "ON"})
         # self.daikin.getDeviceStatus()
         pass
 
-    # @Core.receiver("onstop")
-    # def onstop(self, sender, **kwargs):
-    #     """
-    #     This method is called when the Agent is about to shutdown, but before it disconnects from
-    #     the message bus.
-    #     """
-    #     pass
 
-    @PubSub.subscribe('pubsub', "web/control/daikin")
+
+    @PubSub.subscribe('pubsub','web/control/aircon')
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
         _log.info("Get Message : {}".format(message))
-        msg = json.loads(message)
-        device_id = msg.get('device_id')
-        status = msg.get('status')
 
-        print(device_id)
+        msg = message
+        deviceid = msg.get('deviceid')
+        msg.pop('deviceid')
+        status = msg
+
+        print(deviceid)
         print(status)
         print("----------------------------------------------")
-        print(self.members)
-        ipaddress = self.members.get(device_id)
-
+        ipaddress = self.members.get(deviceid)
         print(ipaddress)
 
-        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url='http://192.168.10.234',
+        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ipaddress,
                               port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
 
         self.daikin.getDeviceStatus()
-        self.daikin.setDeviceStatus({'status': status})
+        self.daikin.setDeviceStatus(status)
         self.daikin.getDeviceStatus()
+        del self.daikin
 
 
 def main():
