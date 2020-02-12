@@ -75,19 +75,19 @@ class API:
 def main():
 
     # -------------Kittchen----------------
-    TpG = API(model='TPlinkPlug', api='API3', agent_id='TPlinkPlugAgent',types='plug', ip='192.168.1.114',
+    TPLINK = API(model='TPlinkPlug', api='API3', agent_id='TPlinkPlugAgent',types='plug', ip='192.168.1.114',
                   port=9999)
 
-    TpG.getDeviceStatus()
-    TpG.setDeviceStatus({"status": "ON"})
+    TPLINK.getDeviceStatus()
+    TPLINK.setDeviceStatus({"status": "ON"})
     time.sleep(3)
-    TpG.getDeviceStatus()
-    TpG.setDeviceStatus({"status": "OFF"})
+    TPLINK.getDeviceStatus()
+    TPLINK.setDeviceStatus({"status": "OFF"})
     time.sleep(3)
-    TpG.getDeviceStatus()
-    TpG.setDeviceStatus({"status": "ON"})
+    TPLINK.getDeviceStatus()
+    TPLINK.setDeviceStatus({"status": "ON"})
     time.sleep(3)
-    TpG.getDeviceStatus()
+    TPLINK.getDeviceStatus()
 
 if __name__ == "__main__": main()
 
