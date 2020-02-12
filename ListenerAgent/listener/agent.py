@@ -115,7 +115,7 @@ class ListenerAgent(Agent):
         _log.info(">> TOPIC : {}".format(topic))
         _log.info(">> COMMAND : {}".format(message))
         self.vip.pubsub.publish('pubsub', topic,
-                                message=json.dumps(message)
+                                message=message
                                 )
 
 
