@@ -26,7 +26,6 @@ DEFAULT_HEARTBEAT_PERIOD = 5
 #------
 import crcmod
 
-
 # -----
 class Udpagent(Agent):
     """
