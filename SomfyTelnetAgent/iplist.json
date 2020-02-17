@@ -1,0 +1,32 @@
+{
+    "SC101001" : {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": "curtain#conference#left#"
+    },
+    "SC101002" : {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": "curtain#conference#right#"
+    },
+    "SC101003" : {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": "curtain#office1#left#"
+    },
+    "SC101004" : {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": "curtain#office1#right#"
+    },
+    "SC101005" : {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": "curtain#office2#"
+    },
+    "PT101001" : {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": "screen#"
+    }
+}

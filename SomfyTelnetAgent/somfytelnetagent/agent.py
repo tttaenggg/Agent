@@ -18,13 +18,13 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Daikin Agent'
-DEFAULT_AGENTID = "DaikinAgent"
+DEFAULT_MESSAGE = 'I am a Somfy (Telnet) Agent'
+DEFAULT_AGENTID = "SomfyTelnetAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
 
-class Daikinagent(Agent):
+class Curtainagent(Agent):
     """
     Document agent constructor here.
     """
@@ -59,50 +59,64 @@ class Daikinagent(Agent):
         else:
             self._logfn = _log.info
 
+            
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
         
         # TODO :  Start Server Listener Here
-        # _log.info("Found in Config File: {}".format(self.config.get('members')))
-        #
-        # for k,v in self.members.items():
-        # ip = self.members.get('air004')
-        # self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ip,
-        #                       port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
-        #
-        # self.daikin.getDeviceStatus()
-        # self.daikin.setDeviceStatus({"status": "ON"})
-        # self.daikin.getDeviceStatus()
+
         pass
 
-    @PubSub.subscribe('pubsub','web/control/aircon')
+    # -- Direct Control From Web Application
+    @PubSub.subscribe('pubsub', "web/control/curtain")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
         _log.info("Get Message : {}".format(message))
-
         msg = message
+        # print(msg)
         deviceid = msg.get('deviceid')
-        msg.pop('deviceid')
-        status = msg
+        status = msg.get('status')
 
         print(deviceid)
         print(status)
         print("----------------------------------------------")
         ipaddress = self.members.get(deviceid)
-        print(ipaddress)
 
-        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ipaddress,
-                              port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
+        self.curtain = api.API(model='Somfy', api='API3', agent_id='08SOMSC101001', types='curtain', ip='192.168.10.11', port=93)
 
-        self.daikin.getDeviceStatus()
-        self.daikin.setDeviceStatus(status)
-        self.daikin.getDeviceStatus()
-        del self.daikin
+        # self.plug.getDeviceStatus()
+        self.curtain.setDeviceStatus({'status': status})
+        # self.plug.getDeviceStatus()
+        del self.curtain
+
+
+
+    # -- Scene Agent Control
+    @PubSub.subscribe('pubsub', "scene/control/plug")
+    def on_match_scenecommand(self, peer, sender, bus,  topic, headers, message):
+
+        _log.debug(" >> Executed by Scene Agent")
+        deviceid = message.get('deviceid')
+        ipaddress = self.members.get(deviceid)
+        status = message.get('status')
+
+        self.plug = api.API(model='TPlinkPlug', api='API3',
+                           agent_id='TPlinkPlugAgent', types='plug',
+                           ip=ipaddress, port=9999)
+
+        bef = self.plug.getDeviceStatus()
+        self.plug.setDeviceStatus({'status': status})
+        aft = self.plug.getDeviceStatus()
+        if bef != aft :
+            _log.debug("Scene Execute status : {} Successful".format(status))
+
+        self.plug = None
+
 
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Daikinagent,
+    utils.vip_main(Curtainagent,
                    version=__version__)
 
 

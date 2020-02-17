@@ -18,13 +18,13 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Daikin Agent'
-DEFAULT_AGENTID = "DaikinAgent"
+DEFAULT_MESSAGE = 'I am a Openclosed Agent'
+DEFAULT_AGENTID = "OpenclosedAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
 
-class Daikinagent(Agent):
+class Openclosedagent(Agent):
     """
     Document agent constructor here.
     """
@@ -59,6 +59,7 @@ class Daikinagent(Agent):
         else:
             self._logfn = _log.info
 
+            
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
         
@@ -66,43 +67,44 @@ class Daikinagent(Agent):
         # _log.info("Found in Config File: {}".format(self.config.get('members')))
         #
         # for k,v in self.members.items():
-        # ip = self.members.get('air004')
-        # self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ip,
-        #                       port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
-        #
-        # self.daikin.getDeviceStatus()
-        # self.daikin.setDeviceStatus({"status": "ON"})
-        # self.daikin.getDeviceStatus()
+        info_openclosed = self.members.get('DS101001')
+
+        self.openclosed = api.API(model='OpenClose', types='contactSensors', api='API3', agent_id='18ORC_OpenCloseAgent',
+                                  url=info_openclosed['url'], bearer=info_openclosed['bearer'], device=info_openclosed['device'])
+
+        self.openclosed.getDeviceStatus()
         pass
 
-    @PubSub.subscribe('pubsub','web/control/aircon')
-    def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
-        _log.info("Get Message : {}".format(message))
 
-        msg = message
-        deviceid = msg.get('deviceid')
-        msg.pop('deviceid')
-        status = msg
-
-        print(deviceid)
-        print(status)
-        print("----------------------------------------------")
-        ipaddress = self.members.get(deviceid)
-        print(ipaddress)
-
-        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ipaddress,
-                              port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
-
-        self.daikin.getDeviceStatus()
-        self.daikin.setDeviceStatus(status)
-        self.daikin.getDeviceStatus()
-        del self.daikin
+    # @PubSub.subscribe('pubsub','web/control/aircon')
+    # def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
+    #
+    #     _log.info("Get Message : {}".format(message))
+    #
+    #     msg = message
+    #     deviceid = msg.get('deviceid')
+    #     msg.pop('deviceid')
+    #     status = msg
+    #
+    #     print(deviceid)
+    #     print(status)
+    #     print("----------------------------------------------")
+    #     ipaddress = self.members.get(deviceid)
+    #     print(ipaddress)
+    #
+    #     self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ipaddress,
+    #                           port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
+    #
+    #     self.daikin.getDeviceStatus()
+    #     self.daikin.setDeviceStatus(status)
+    #     self.daikin.getDeviceStatus()
+    #     del self.daikin
 
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Daikinagent,
+    utils.vip_main(Openclosedagent,
                    version=__version__)
 
 
