@@ -16,5 +16,5 @@
  
  
  **4. After Clone Agent Folder**
-    > cd into ../volttron/Agent/
-    > pip install -r requirement.txt
+    - cd into ../volttron/Agent/
+    - pip install -r requirement.txt
