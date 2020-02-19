@@ -83,7 +83,7 @@ class Sceneagent(Agent):
         _log.debug("BODY : {}".format(pub_body))
         _log.debug("----------------------------------------------")
 
-        await self.vip.pubsub.publish('pubsub', pub_topic,
+        self.vip.pubsub.publish('pubsub', pub_topic,
                                 message=pub_body
                                 )
 
@@ -115,8 +115,10 @@ class Sceneagent(Agent):
                 data = {"topic": pub_topic, "body": pub_body,"id": i}
                 # self.sendCommand(data=data)
 
-                asyncio.run(self.sendCommand(device))
+                # asyncio.run(self.sendCommand(device))
 
+                loop = asyncio.get_event_loop()
+                loop.run_until_complete(self.sendCommand(data))
                 # i += 1
                 # proc = Process(target=self.sendCommand, args=(data,))
                 # procs.append(proc)
