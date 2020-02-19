@@ -6,7 +6,7 @@
  **2.Follow Installation Guide**
  
  **3. Clone Agent Reposity**
- - Becarefule :
+ - Becareful :
      - project Tree look like :
      `~\workspace\platform-name\volttron\Agent`
  
@@ -16,5 +16,7 @@
  
  
  **4. After Clone Agent Folder**
-    - cd into ../volttron/Agent/
-    - pip install -r requirement.txt
+ 
+ - cd into > ../volttron/Agent/
+ 
+ - > pip install -r requirement.txt
