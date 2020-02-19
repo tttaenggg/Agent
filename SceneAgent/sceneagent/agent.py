@@ -12,6 +12,7 @@ from pprint import pformat
 import json
 import socket
 import time
+from multiprocessing import Process
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -69,10 +70,30 @@ class Sceneagent(Agent):
 
         pass
 
+    def sendCommand(self, *args, **kwargs):
+
+        pub_topic = kwargs['pub_topic']
+        pub_body = kwargs['pub_body']
+        pid = kwargs['id']
+
+        _log.debug(msg="MultiProcess : {}".format(pid))
+        _log.debug("TOPIC PUB : {}".format(pub_topic))
+        _log.debug("BODY : {}".format(pub_body))
+        _log.debug("----------------------------------------------")
+
+        self.vip.pubsub.publish('pubsub', pub_topic,
+                                message=pub_body
+                                )
+
+        _log.info("Published")
+
+
     @PubSub.subscribe('pubsub', "web/control/scene")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
         _topic = self.sceneconf.get('topic')
         sceneid = message.get('sceneid')
+
+        procs = []
 
         if sceneid in self.sceneid:
             _log.debug(" >>> :Scene ID matched")
@@ -83,21 +104,30 @@ class Sceneagent(Agent):
                     scenecontrol = i.get('scenecontrol')
                     _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
                     break
-
+            i = 0
             for device in scenecontrol:
 
-                pub_topic = _topic+(device.get('device_type')).lower()
+                pub_topic = _topic + (device.get('device_type')).lower()
                 pub_body = device.get('device_control')
 
-                _log.debug("TOPIC PUB : {}".format(pub_topic))
-                _log.debug("BODY : {}".format(pub_body))
-                _log.debug("----------------------------------------------")
+                args = {
+                            "topic": pub_topic,
+                            "body": pub_body,
+                            "id": i
+                }
 
-                self.vip.pubsub.publish('pubsub', pub_topic,
-                                message=pub_body
-                                )
-                _log.info("Published")
-                time.sleep(2)
+                proc = Process(target=self.sendCommand, args=(args,))
+                procs.append(proc)
+                proc.start()
+                del proc
+
+            # TODO : remove if no need waitting
+            for proc in procs:
+                pid = proc.pid
+                proc.join()
+                _log.info(msg="Process ID : {} Completed".format(pid))
+
+
 
 def main():
     """Main method called to start the agent."""

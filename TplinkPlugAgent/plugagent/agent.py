@@ -49,6 +49,7 @@ class Plugagent(Agent):
                     update value to Firebase
 
             """
+
         except Exception as err:
             pass
 
