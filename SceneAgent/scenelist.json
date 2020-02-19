@@ -11,7 +11,7 @@
                                             },
 
                                             {
-                                                "device_control": {"deviceid": "plug001", "status" : "ON"},
+                                                "device_control": {"deviceid": "plug002", "status" : "ON"},
                                                 "device_type": "PLUG"
                                             },
 

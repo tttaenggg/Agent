@@ -13,6 +13,7 @@ import json
 import socket
 import time
 from multiprocessing import Process
+import asyncio
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -70,18 +71,19 @@ class Sceneagent(Agent):
 
         pass
 
-    def sendCommand(self, *args, **kwargs):
 
-        pub_topic = kwargs['pub_topic']
-        pub_body = kwargs['pub_body']
-        pid = kwargs['id']
+    async def sendCommand(self, data):
+
+        pub_topic = data.get('topic')
+        pub_body = data.get('body')
+        pid = data.get('id')
 
         _log.debug(msg="MultiProcess : {}".format(pid))
         _log.debug("TOPIC PUB : {}".format(pub_topic))
         _log.debug("BODY : {}".format(pub_body))
         _log.debug("----------------------------------------------")
 
-        self.vip.pubsub.publish('pubsub', pub_topic,
+        await self.vip.pubsub.publish('pubsub', pub_topic,
                                 message=pub_body
                                 )
 
@@ -102,7 +104,7 @@ class Sceneagent(Agent):
                 if sceneid == i.get('sceneid'):
                     # - do stuff control Device
                     scenecontrol = i.get('scenecontrol')
-                    _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
+                    # _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
                     break
             i = 0
             for device in scenecontrol:
@@ -110,22 +112,22 @@ class Sceneagent(Agent):
                 pub_topic = _topic + (device.get('device_type')).lower()
                 pub_body = device.get('device_control')
 
-                args = {
-                            "topic": pub_topic,
-                            "body": pub_body,
-                            "id": i
-                }
+                data = {"topic": pub_topic, "body": pub_body,"id": i}
+                # self.sendCommand(data=data)
 
-                proc = Process(target=self.sendCommand, args=(args,))
-                procs.append(proc)
-                proc.start()
-                del proc
+                asyncio.run(self.sendCommand(device))
+
+                # i += 1
+                # proc = Process(target=self.sendCommand, args=(data,))
+                # procs.append(proc)
+                # proc.start()
+
 
             # TODO : remove if no need waitting
-            for proc in procs:
-                pid = proc.pid
-                proc.join()
-                _log.info(msg="Process ID : {} Completed".format(pid))
+            # for proc in procs:
+            #     pid = proc.pid
+            #     proc.join()
+            #     _log.info(msg="Process ID : {} Completed".format(pid))
 
 
 
