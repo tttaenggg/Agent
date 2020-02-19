@@ -11,3 +11,8 @@
      `~\workspace\platform-name\volttron\Agent`
  
  ![alt text](https://github.com/Soulweed/Agent/blob/master/tree.png)
+ 
+ 
+ **4. After Clone Agent Folder
+    - cd into ../volttron/Agent/
+    - pip install -r requirement.txt
