@@ -12,7 +12,8 @@ from pprint import pformat
 import json
 import socket
 from .extension import api
-
+from volttron.platform.scheduling import periodic
+from multiprocessing import Process
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -28,6 +29,30 @@ class Plugagent(Agent):
     """
     Document agent constructor here.
     """
+
+    # TODO -- Need Revise again
+    def getstatus_proc(self, devices): # Function for MultiProcess
+
+        # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
+
+        _log.info(msg="Start Get Status from {}".format(devices[1]))
+
+        try:
+            plug = api.API(model='TPlinkPlug', api='API3',
+                               agent_id='TPlinkPlugAgent', types='plug',
+                               ip=devices[1], port=9999)
+
+            _status = plug.getDeviceStatus()
+
+            # TODO : Update Firebase with _status variable
+            """
+                    update value to Firebase
+
+            """
+
+        except Exception as err:
+            pass
+
 
     def __init__(self, config_path,
                  **kwargs):
@@ -91,28 +116,22 @@ class Plugagent(Agent):
         # self.plug.getDeviceStatus()
         del self.plug
 
+    @Core.schedule(periodic(60))
+    def updatestatus(self):
+        _log.info(msg="Get Current Status")
+        procs = []
+
+        for k, v in self.members.items():
+
+            devices = (k, v)
+            proc = Process(target=self.getstatus_proc, args=(devices,))
+            procs.append(proc)
+            proc.start()
 
 
-    # -- Scene Agent Control
-    # @PubSub.subscribe('pubsub', "scene/control/plug")
-    # def on_match_scenecommand(self, peer, sender, bus,  topic, headers, message):
-    #
-    #     _log.debug(" >> Executed by Scene Agent")
-    #     deviceid = message.get('deviceid')
-    #     ipaddress = self.members.get(deviceid)
-    #     status = message.get('status')
-    #
-    #     self.plug = api.API(model='TPlinkPlug', api='API3',
-    #                        agent_id='TPlinkPlugAgent', types='plug',
-    #                        ip=ipaddress, port=9999)
-    #
-    #     bef = self.plug.getDeviceStatus()
-    #     self.plug.setDeviceStatus({'status': status})
-    #     aft = self.plug.getDeviceStatus()
-    #     if bef != aft :
-    #         _log.debug("Scene Execute status : {} Successful".format(status))
-    #
-    #     self.plug = None
+        # TODO : if you want to wait the process completed Uncomment code below
+        # for proc in procs:
+        #     proc.join()
 
 
 

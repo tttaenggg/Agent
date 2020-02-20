@@ -12,6 +12,8 @@ from pprint import pformat
 import json
 import socket
 import time
+from multiprocessing import Process
+import asyncio
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -69,10 +71,31 @@ class Sceneagent(Agent):
 
         pass
 
+
+    async def sendCommand(self, data):
+
+        pub_topic = data.get('topic')
+        pub_body = data.get('body')
+        pid = data.get('id')
+
+        _log.debug(msg="MultiProcess : {}".format(pid))
+        _log.debug("TOPIC PUB : {}".format(pub_topic))
+        _log.debug("BODY : {}".format(pub_body))
+        _log.debug("----------------------------------------------")
+
+        self.vip.pubsub.publish('pubsub', pub_topic,
+                                message=pub_body
+                                )
+
+        _log.info("Published")
+
+
     @PubSub.subscribe('pubsub', "web/control/scene")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
         _topic = self.sceneconf.get('topic')
         sceneid = message.get('sceneid')
+
+        procs = []
 
         if sceneid in self.sceneid:
             _log.debug(" >>> :Scene ID matched")
@@ -81,23 +104,34 @@ class Sceneagent(Agent):
                 if sceneid == i.get('sceneid'):
                     # - do stuff control Device
                     scenecontrol = i.get('scenecontrol')
-                    _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
+                    # _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
                     break
-
+            i = 0
             for device in scenecontrol:
 
-                pub_topic = _topic+(device.get('device_type')).lower()
+                pub_topic = _topic + (device.get('device_type')).lower()
                 pub_body = device.get('device_control')
 
-                _log.debug("TOPIC PUB : {}".format(pub_topic))
-                _log.debug("BODY : {}".format(pub_body))
-                _log.debug("----------------------------------------------")
+                data = {"topic": pub_topic, "body": pub_body,"id": i}
+                # self.sendCommand(data=data)
 
-                self.vip.pubsub.publish('pubsub', pub_topic,
-                                message=pub_body
-                                )
-                _log.info("Published")
-                time.sleep(2)
+                # asyncio.run(self.sendCommand(device))
+
+                loop = asyncio.get_event_loop()
+                loop.run_until_complete(self.sendCommand(data))
+                # i += 1
+                # proc = Process(target=self.sendCommand, args=(data,))
+                # procs.append(proc)
+                # proc.start()
+
+
+            # TODO : remove if no need waitting
+            # for proc in procs:
+            #     pid = proc.pid
+            #     proc.join()
+            #     _log.info(msg="Process ID : {} Completed".format(pid))
+
+
 
 def main():
     """Main method called to start the agent."""
