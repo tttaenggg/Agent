@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "Smokeagent", #Integers
+  "message": "Hello From First Alert Smoke Detector", #strings
+  "log-level": "INFO",
+  "pathconf" : "Agent/SmokeAgent/iplist.json"
+}

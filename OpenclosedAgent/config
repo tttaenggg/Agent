@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "openclosedagent", #Integers
+  "message": "Hello From SmartThings OpenClosed", #strings
+  "log-level": "INFO",
+  "pathconf" : "Agent/OpenclosedAgent/iplist.json"
+}

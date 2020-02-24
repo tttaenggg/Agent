@@ -22,8 +22,8 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Tplink Plug Agent'
-DEFAULT_AGENTID = "TplinkAgent"
+DEFAULT_MESSAGE = 'I am a Openclosed Agent'
+DEFAULT_AGENTID = "OpenclosedAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 gateway_id = settings.gateway_id
@@ -44,35 +44,30 @@ except Exception as er:
 
 
 
-class Plugagent(Agent):
+class Openclosedagent(Agent):
     """
     Document agent constructor here.
     """
 
     # TODO -- Need Revise again
-    def getstatus_proc(self, devices): # Function for MultiProcess
+    def getstatus_proc(self, devices):  # Function for MultiProcess
 
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
 
         _log.info(msg="Start Get Status from {}".format(devices[1]))
 
         try:
-            plug = api.API(model='TPlinkPlug', api='API3',
-                               agent_id='TPlinkPlugAgent', types='plug',
-                               ip=devices[1], port=9999)
+            openclosed = api.API(model='OpenClose', types='contactSensors', api='API3', agent_id='18ORC_OpenCloseAgent',
+                                 url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
 
-            plug.getDeviceStatus()
+            openclosed.getDeviceStatus()
 
             # TODO : Update Firebase with _status variable
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('STATUS').set(plug.variables['status'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('POWER').set(plug.variables['power'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('CURRENT').set(plug.variables['current'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('VOLTAGE').set(plug.variables['voltage'])
+            db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('DT').set(openclosed.variables['unitTime'])
+            db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('STATUS').set(openclosed.variables['status'])
 
         except Exception as err:
             pass
-
 
     def __init__(self, config_path,
                  **kwargs):
@@ -106,34 +101,10 @@ class Plugagent(Agent):
 
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
-        
+
         # TODO :  Start Server Listener Here
 
         pass
-
-    # -- Direct Control From Web Application
-    @PubSub.subscribe('pubsub', "web/control/plug")
-    def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
-
-        _log.info("Get Message : {}".format(message))
-        msg = message
-        # print(msg)
-        deviceid = msg.get('deviceid')
-        command = msg.get('command')
-
-        print(deviceid)
-        print(command)
-        print("----------------------------------------------")
-        ipaddress = self.members.get(deviceid)
-
-        self.plug = api.API(model='TPlinkPlug', api='API3',
-                            agent_id='TPlinkPlugAgent', types='plug',
-                            ip=ipaddress, port=9999)
-
-        # self.plug.getDeviceStatus()
-        self.plug.setDeviceStatus(command)
-        # self.plug.getDeviceStatus()
-        del self.plug
 
     @Core.schedule(periodic(60))
     def updatestatus(self):
@@ -141,12 +112,10 @@ class Plugagent(Agent):
         procs = []
 
         for k, v in self.members.items():
-
             devices = (k, v)
             proc = Process(target=self.getstatus_proc, args=(devices,))
             procs.append(proc)
             proc.start()
-
 
         # TODO : if you want to wait the process completed Uncomment code below
         # for proc in procs:
@@ -156,7 +125,7 @@ class Plugagent(Agent):
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Plugagent,
+    utils.vip_main(Openclosedagent,
                    version=__version__)
 
 

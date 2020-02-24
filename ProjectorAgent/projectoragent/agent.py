@@ -18,13 +18,13 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Daikin Agent'
-DEFAULT_AGENTID = "DaikinAgent"
+DEFAULT_MESSAGE = 'I am a Projector Agent'
+DEFAULT_AGENTID = "ProjectorAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
 
-class Daikinagent(Agent):
+class Projectoragent(Agent):
     """
     Document agent constructor here.
     """
@@ -59,50 +59,40 @@ class Daikinagent(Agent):
         else:
             self._logfn = _log.info
 
+            
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
         
         # TODO :  Start Server Listener Here
-        # _log.info("Found in Config File: {}".format(self.config.get('members')))
-        #
-        # for k,v in self.members.items():
-        # ip = self.members.get('air004')
-        # self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ip,
-        #                       port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
-        #
-        # self.daikin.getDeviceStatus()
-        # self.daikin.setDeviceStatus({"status": "ON"})
-        # self.daikin.getDeviceStatus()
+
         pass
 
-    @PubSub.subscribe('pubsub','web/control/aircon')
+    # -- Direct Control From Web Application
+    @PubSub.subscribe('pubsub', "web/control/projector")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
         _log.info("Get Message : {}".format(message))
-
         msg = message
-        deviceid = msg.get('deviceid')
-        msg.pop('deviceid')
-        status = msg
+        # print(msg)
+        device_id = msg.get('device_id')
+        command = msg.get('command')
 
-        print(deviceid)
-        print(status)
+        print(device_id)
+        print(command)
         print("----------------------------------------------")
-        ipaddress = self.members.get(deviceid)
-        print(ipaddress)
+        device_info = self.members.get(device_id)
 
-        self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ipaddress,
-                              port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
+        self.projector = api.API(model='Optoma', api='API3', agent_id='25PROPT101001', types='projector',
+                                 ip=device_info['ip'], port=device_info['port'], command=device_info['command'])
 
-        self.daikin.getDeviceStatus()
-        self.daikin.setDeviceStatus(status)
-        self.daikin.getDeviceStatus()
-        del self.daikin
+        self.projector.setDeviceStatus(command)
+        del self.projector
+
 
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Daikinagent,
+    utils.vip_main(Projectoragent,
                    version=__version__)
 
 

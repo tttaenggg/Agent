@@ -1,0 +1,7 @@
+{
+    "MS202001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/illuminances/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "fde4cb0d-9200-4a39-a293-7aac47daf9ea"
+    }
+}

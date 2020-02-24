@@ -40,9 +40,9 @@
 import logging
 import sys
 from pprint import pformat
-
+from volttron.platform.scheduling import periodic
 import time, os, pika, json
-
+import threading
 from volttron.platform.agent import utils
 from volttron.platform.messaging.health import STATUS_GOOD
 from volttron.platform.vip.agent import Agent, Core, PubSub
@@ -68,6 +68,9 @@ class ListenerAgent(Agent):
         self._message = self.config.get('message', DEFAULT_MESSAGE)
         self._heartbeat_period = self.config.get('heartbeat_period',
                                                  DEFAULT_HEARTBEAT_PERIOD)
+
+        self.flag = None
+
         try:
             self._heartbeat_period = int(self._heartbeat_period)
         except:
@@ -83,46 +86,104 @@ class ListenerAgent(Agent):
         else:
             self._logfn = _log.info
 
+
     @Core.receiver('onsetup')
     def onsetup(self, sender, **kwargs):
         # Demonstrate accessing a value from the config file
         _log.info(self.config.get('message', DEFAULT_MESSAGE))
         self._agent_id = self.config.get('agentid')
 
-        self.url_rabbitmq = os.environ.get('CLOUDAMQP_URL',
-                             'amqp://zlfcmyqb:ma5_8XUI2NyatDHgFW-Z2PBmfFG1_9ID@mustang.rmq.cloudamqp.com/zlfcmyqb')
-
-        self.params = pika.URLParameters(self.url_rabbitmq)
-        self.connection = pika.BlockingConnection(self.params)
-        self.channel = self.connection.channel()  # start a channel
-        self.channel.queue_declare(queue='pdfprocess')
-        self.channel.basic_consume('pdfprocess', self.callback, auto_ack=True)
 
 
     @Core.receiver('onstart')
     def onstart(self, sender, **kwargs):
-        _log.debug("Start CloudAMQP Consume services ")
-        self.channel.start_consuming()
-        self.connection.close()
+        self.flag = True
+
+        # listener = threading.Thread(target=self.amqp_listener())
+        # _log.debug("Start CloudAMQP Consume services ")
+        # _log.info("Start Threading for Listener Services")
+        # listener.daemon = True
+        # listener.start()
 
 
+        # listener = threading.Thread(target=self.amqp_listener)
+        # # checker = threading.Thread(target=self.worker)
+        #
+        # _log.debug("Start CloudAMQP Consume services ")
+        # _log.info("Start Threading for Listener Services")
+        #
+        #
+        # listener.start()
+        # checker.start()
 
-    def callback(self, ch, method, properties, body):
-        print("Got Message : {}".format(body))
+
+    def worker(self):
+        _log.info("Worker Thread")
+        for i in range(1,100):
+            print(i)
+            time.sleep(1)
+
+
+    def callback(self,ch, method, properties, body):
+        # print("Got Message : {}".format(body))
+
         msg = dict(json.loads(body))
         topic = msg.get('topic', 'web/control/error')
         message = msg.get('body', {})
+
         _log.info(">> TOPIC : {}".format(topic))
         _log.info(">> COMMAND : {}".format(message))
+
         self.vip.pubsub.publish('pubsub', topic,
                                 message=message
                                 )
+
+
+    def amqp_listener(self):
+
+        try:
+
+            _log.info(">>> : Thread Started")
+            self.url_rabbitmq = os.environ.get('CLOUDAMQP_URL',
+                                               'amqp://zlfcmyqb:ma5_8XUI2NyatDHgFW-Z2PBmfFG1_9ID@mustang.rmq.cloudamqp.com/zlfcmyqb')
+
+            self.params = pika.URLParameters(self.url_rabbitmq)
+            self.connection = pika.BlockingConnection(self.params)
+            self.channel = self.connection.channel()  # start a channel
+            self.channel.queue_declare(queue='pdfprocess')
+            self.channel.basic_consume('pdfprocess', self.callback, auto_ack=True)
+            self.channel.start_consuming()
+            self.connection.close()
+
+
+        except:
+            _log.error("Services AMPQ Has a Problem")
+
+    @Core.schedule(periodic(60))
+    def on_interval(self):
+        # Broadcast Message from UDP Server
+        _log.info(msg=">>> : Is Listener Alive ?")
+        if self.flag:
+            self.flag = False
+            self.listener = threading.Thread(target=self.amqp_listener)
+            _log.debug("Start CloudAMQP Consume services ")
+            _log.info("Start Threading for Listener Services")
+            self.listener.start()
+
+        if not self.flag:
+            if self.listener.is_alive() is True:
+                _log.info(msg="<<< : Listener Thread is Alive")
+            else:
+                self.flag = True
+                del self.listener
 
 
 def main(argv=sys.argv):
     '''Main method called by the eggsecutable.'''
     try:
         utils.vip_main(ListenerAgent, version=__version__)
+
+
     except Exception as e:
         _log.exception('unhandled exception')
 
