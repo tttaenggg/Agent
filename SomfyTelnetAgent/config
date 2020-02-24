@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "somfyagent", #Integers
+  "message": "Hello From Somfy", #strings
+  "log-level": "INFO",
+  "pathconf" : "Agent/SomfyTelnetAgent/iplist.json"
+}
