@@ -1,0 +1,37 @@
+{
+    "SD101001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/smoke/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "ffc7f6ee-0594-4ec4-960e-0afae4bd315c"
+    },
+    "SD101002" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/smoke/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "c250139c-09bb-4a85-b3e0-1f7d79260ff5"
+    },
+    "SD103001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/smoke/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "877fc1e2-be0b-4bcc-9d2c-1b2ed0e42460"
+    },
+    "SD104001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/smoke/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "9d8da1a3-801a-4602-8b4d-e8d77a690da9"
+    },
+    "SD201001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/smoke/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "32a98c38-96b2-47df-90c3-f9533952b1ff"
+    },
+    "SD202001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/smoke/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "6e22eed6-01bf-4e61-a168-a03713e43db6"
+    },
+    "SD203001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/smoke/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "35bc791b-6e3a-4741-86bf-f0bb83443c57"
+    }
+}

@@ -42,6 +42,31 @@ class API:
     '''
 
     # ----------------------------------------------------------------------
+    # getDeviceStatus(), printDeviceStatus()
+    def getDeviceStatus(self):
+        try:
+            print("Get Status Telnet - Projetor")
+            # open connection
+            # tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
+            # print(tn)
+
+            # tn.set_debuglevel(100)
+
+            # read data
+            # data = tn.read_all()
+            # print("Data: {}".format(data))
+
+            # closed connection
+            # tn.close()
+
+        except Exception as err:
+            print("Error: cannot connect host/port")
+
+    def printDeviceStatus(self):
+        # now we can access the contents of the JSON like any other Python object
+        print(" the current status is as follows:")
+        print(" label = {}".format(self.get_variable('label')))
+
     # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
     def setDeviceStatus(self, postmsg):
         setDeviceStatusResult = True
@@ -58,7 +83,7 @@ class API:
             # print(tn)
 
             # send data
-            key_buttom = ['up', 'down', "stop"]
+            key_buttom = ['power', 'home', "menu", "up", "down", "left", "right", "ok", "back", "vup", "vdown", "mute", "source", "info", "displaymode"]
             try:
                 if _data in key_buttom:
                     send_mess = self.get_variable("command") + _data
@@ -69,7 +94,7 @@ class API:
 
             except:
                 # tn.close()
-                print("ERROR: classAPI_Telnet_Somfy_Curtain connection failure! @ setDeviceStatus")
+                print("ERROR: classAPI_Telnet_Projector connection failure! @ setDeviceStatus")
                 setDeviceStatusResult = False
         else:
             print("The POST message is invalid, try again\n")
@@ -85,7 +110,7 @@ class API:
         msgToDevice = ""
 
         if ('status' in postmsg.keys()):
-            msgToDevice = postmsg['status'].lower() # open, close, stop
+            msgToDevice = postmsg['status'].lower()
             self.set_variable('status', msgToDevice)
             print(msgToDevice)
 
@@ -97,13 +122,11 @@ class API:
 # This main method will not be executed when this class is used as a module
 def main():
     # -------------Kittchen----------------
-    curtain = API(model='Somfy', api='API3', agent_id='08SOMSC101001', types='curtain', ip='192.168.10.11', port=93, command='#')
+    projector = API(model='Optoma', api='API3', agent_id='25PROPT101001', types='projector', ip='192.168.10.11', port=93, command='#')
 
-    curtain.setDeviceStatus({"status": "up"})
-    # time.sleep(7)
-    # curtain.setDeviceStatus({"status": "stop"})
-    # time.sleep(3)
-    # curtain.setDeviceStatus({"status": "down"})
+    # curtain.getDeviceStatus()
+    projector.setDeviceStatus({"status": "sou"})
+    time.sleep(3)
 
 
 if __name__ == "__main__": main()

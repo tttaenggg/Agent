@@ -27,12 +27,10 @@ class API:
     label            GET          label in string
     type             GET          type
     unitTime         GET          time
-    motion           GET          
-    temperature      GET          
-    battery          GET          
-    tamper           GET          
-    humidity         GET          
-    illuminance      GET          
+    smoke            GET          clear/alarm
+    carbonMonoxide   GET          clear/alarm
+    battery          GET          battery
+    alarmState       GET          clear/alarm
      ------------------------------------------------------------------------------------------
 
     '''
@@ -40,7 +38,7 @@ class API:
     '''
     API3 available methods:
     1. getDeviceStatus() GET
-    '''    
+    '''
 
     # ----------------------------------------------------------------------
     # getDeviceStatus(), getDeviceStatusJson(data), printDeviceStatus()
@@ -78,34 +76,30 @@ class API:
         self.set_variable('device_type', str(conve_json["type"]).upper())
         self.set_variable('unitTime', str(conve_json["unitTime"]))
         self.set_variable('device_label', str(conve_json["label"]).upper())
-        self.set_variable('motion', str(conve_json["motion"]).upper())
-        self.set_variable('temperature', str(conve_json["temperature"]).upper())
+        self.set_variable('smoke', str(conve_json["smoke"]).upper())
+        self.set_variable('carbonMonoxide', str(conve_json["carbonMonoxide"]).upper())
         self.set_variable('battery', str(conve_json["battery"]).upper())
-        self.set_variable('tamper', str(conve_json["tamper"]).upper())
-        self.set_variable('humidity', str(conve_json["humidity"]).upper())
-        self.set_variable('illuminance', str(conve_json["illuminance"]).upper())
+        self.set_variable('alarmState', str(conve_json["alarmState"]).upper())
 
     def printDeviceStatus(self):
         print(" the current status is as follows:")
         print(" unitTime = {}".format(self.get_variable('unitTime')))
         print(" device_type = {}".format(self.get_variable('device_type')))
         print(" device_label = {}".format(self.get_variable('device_label')))
-        print(" motion = {}".format(self.get_variable('motion')))
-        print(" temperature = {}".format(self.get_variable('temperature')))
+        print(" smoke = {}".format(self.get_variable('smoke')))
+        print(" carbonMonoxide = {}".format(self.get_variable('carbonMonoxide')))
         print(" battery = {}".format(self.get_variable('battery')))
-        print(" tamper = {}".format(self.get_variable('tamper')))
-        print(" humidity = {}".format(self.get_variable('humidity')))
-        print(" illuminance = {}".format(self.get_variable('illuminance')))
+        print(" alarmState = {}".format(self.get_variable('alarmState')))
         print("---------------------------------------------")
 
 def main():
 
 
-    multisensor = API(model='Sensor',types='illuminances',api='API3', agent_id='18ORC_OpenCloseAgent',
-                      url = 'https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/illuminances/',
-                      bearer = 'Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1',
-                      device = 'fde4cb0d-9200-4a39-a293-7aac47daf9ea')
-    multisensor.getDeviceStatus()
+    FirstAlert = API(model='Smoke',types='smoke',api='API3', agent_id='18ORC_OpenCloseAgent',
+                     url = 'https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/smoke/',
+                     bearer = 'Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1',
+                     device = 'ffc7f6ee-0594-4ec4-960e-0afae4bd315c')
+    FirstAlert.getDeviceStatus()
 
 
 if __name__ == "__main__": main()

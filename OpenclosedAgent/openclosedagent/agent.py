@@ -8,11 +8,15 @@ import logging
 import sys
 from volttron.platform.agent import utils
 from volttron.platform.vip.agent import Agent, Core, RPC, PubSub
+from volttron.platform.scheduling import periodic
 from pprint import pformat
 import json
 import socket
 from .extension import api
-
+from multiprocessing import Process
+import settings
+import pyrebase
+from datetime import datetime
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -22,12 +26,48 @@ DEFAULT_MESSAGE = 'I am a Openclosed Agent'
 DEFAULT_AGENTID = "OpenclosedAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
+gateway_id = settings.gateway_id
+
+# firebase config
+try:
+    config = {
+        "apiKey": settings.FIREBASE['apiKeyLight'],
+        "authDomain": settings.FIREBASE['authLight'],
+        "databaseURL": settings.FIREBASE['databaseLight'],
+        "storageBucket": settings.FIREBASE['storageLight']
+    }
+    firebase = pyrebase.initialize_app(config)
+    db =firebase.database()
+
+except Exception as er:
+    _log.debug(er)
+
 
 
 class Openclosedagent(Agent):
     """
     Document agent constructor here.
     """
+
+    # TODO -- Need Revise again
+    def getstatus_proc(self, devices):  # Function for MultiProcess
+
+        # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
+
+        _log.info(msg="Start Get Status from {}".format(devices[1]))
+
+        try:
+            openclosed = api.API(model='OpenClose', types='contactSensors', api='API3', agent_id='18ORC_OpenCloseAgent',
+                                 url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
+
+            openclosed.getDeviceStatus()
+
+            # TODO : Update Firebase with _status variable
+            db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('DT').set(openclosed.variables['unitTime'])
+            db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('STATUS').set(openclosed.variables['status'])
+
+        except Exception as err:
+            pass
 
     def __init__(self, config_path,
                  **kwargs):
@@ -59,47 +99,28 @@ class Openclosedagent(Agent):
         else:
             self._logfn = _log.info
 
-            
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
-        
+
         # TODO :  Start Server Listener Here
-        # _log.info("Found in Config File: {}".format(self.config.get('members')))
-        #
-        # for k,v in self.members.items():
-        info_openclosed = self.members.get('DS101001')
 
-        self.openclosed = api.API(model='OpenClose', types='contactSensors', api='API3', agent_id='18ORC_OpenCloseAgent',
-                                  url=info_openclosed['url'], bearer=info_openclosed['bearer'], device=info_openclosed['device'])
-
-        self.openclosed.getDeviceStatus()
         pass
 
+    @Core.schedule(periodic(60))
+    def updatestatus(self):
+        _log.info(msg="Get Current Status")
+        procs = []
 
+        for k, v in self.members.items():
+            devices = (k, v)
+            proc = Process(target=self.getstatus_proc, args=(devices,))
+            procs.append(proc)
+            proc.start()
 
-    # @PubSub.subscribe('pubsub','web/control/aircon')
-    # def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
-    #
-    #     _log.info("Get Message : {}".format(message))
-    #
-    #     msg = message
-    #     deviceid = msg.get('deviceid')
-    #     msg.pop('deviceid')
-    #     status = msg
-    #
-    #     print(deviceid)
-    #     print(status)
-    #     print("----------------------------------------------")
-    #     ipaddress = self.members.get(deviceid)
-    #     print(ipaddress)
-    #
-    #     self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=ipaddress,
-    #                           port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
-    #
-    #     self.daikin.getDeviceStatus()
-    #     self.daikin.setDeviceStatus(status)
-    #     self.daikin.getDeviceStatus()
-    #     del self.daikin
+        # TODO : if you want to wait the process completed Uncomment code below
+        # for proc in procs:
+        #     proc.join()
+
 
 
 def main():

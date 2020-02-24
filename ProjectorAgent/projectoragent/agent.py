@@ -18,13 +18,13 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Somfy (Telnet) Agent'
-DEFAULT_AGENTID = "SomfyTelnetAgent"
+DEFAULT_MESSAGE = 'I am a Projector Agent'
+DEFAULT_AGENTID = "ProjectorAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 
 
-class Curtainagent(Agent):
+class Projectoragent(Agent):
     """
     Document agent constructor here.
     """
@@ -68,7 +68,7 @@ class Curtainagent(Agent):
         pass
 
     # -- Direct Control From Web Application
-    @PubSub.subscribe('pubsub', "web/control/curtain")
+    @PubSub.subscribe('pubsub', "web/control/projector")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
         _log.info("Get Message : {}".format(message))
@@ -82,20 +82,17 @@ class Curtainagent(Agent):
         print("----------------------------------------------")
         device_info = self.members.get(device_id)
 
-        self.curtain = api.API(model='Somfy', api='API3', agent_id='08SOMSC101001', types='curtain',
-                               ip=device_info['ip'], port=device_info['port'],
-                               command=device_info['command'])
+        self.projector = api.API(model='Optoma', api='API3', agent_id='25PROPT101001', types='projector',
+                                 ip=device_info['ip'], port=device_info['port'], command=device_info['command'])
 
-        # self.plug.getDeviceStatus()
-        self.curtain.setDeviceStatus(command)
-        # self.plug.getDeviceStatus()
-        del self.curtain
+        self.projector.setDeviceStatus(command)
+        del self.projector
 
 
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Curtainagent,
+    utils.vip_main(Projectoragent,
                    version=__version__)
 
 
