@@ -24,7 +24,7 @@ DEFAULT_HEARTBEAT_PERIOD = 5
 
 
 
-class Projectoragent(Agent):
+class KVMSwitchagent(Agent):
     """
     Document agent constructor here.
     """
@@ -68,7 +68,7 @@ class Projectoragent(Agent):
         pass
 
     # -- Direct Control From Web Application
-    @PubSub.subscribe('pubsub', "web/control/projector")
+    @PubSub.subscribe('pubsub', "web/control/kvmswitch")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
 
         _log.info("Get Message : {}".format(message))
@@ -82,17 +82,17 @@ class Projectoragent(Agent):
         print("----------------------------------------------")
         device_info = self.members.get(device_id)
 
-        self.projector = api.API(model='Optoma', api='API3', agent_id='25PROPT101001', types='projector',
-                                 ip=device_info['ip'], port=device_info['port'], command=device_info['command'])
+        self.switch = api.API(model='kvmswitch', api='API3', agent_id='08SOMSC101001', types='curtain',
+                              ip=device_info['ip'], port=device_info['port'], command=device_info['command'])
 
-        self.projector.setDeviceStatus(command)
-        del self.projector
+        self.switch.setDeviceStatus(command)
+        del self.switch
 
 
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Projectoragent,
+    utils.vip_main(KVMSwitchagent,
                    version=__version__)
 
 

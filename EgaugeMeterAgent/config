@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "egaugemeteragent", #Integers
+  "message": "Hello From Egauge", #strings
+  "log-level": "INFO",
+  "pathconf" : "Agent/EgaugeMeterAgent/iplist.json"
+}
