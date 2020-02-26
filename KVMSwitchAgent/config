@@ -1,7 +1,7 @@
 {
   # VOLTTRON config files are JSON with support for python style comments.
-  "agentid": "projectoragent", #Integers
-  "message": "Hello From Projector", #strings
+  "agentid": "kvmswitchagent", #Integers
+  "message": "Hello From KVMSwitch", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/ProjectorAgent/iplist.json"
+  "pathconf" : "Agent/KVMSwitchAgent/iplist.json"
 }

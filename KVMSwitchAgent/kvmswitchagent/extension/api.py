@@ -83,7 +83,7 @@ class API:
             # print(tn)
 
             # send data
-            key_buttom = ['input1', 'input2', "input3", "input4"]
+            key_buttom = ['input1', 'input2', 'input3', 'input4']
             try:
                 if _data in key_buttom:
                     send_mess = self.get_variable("command") + _data

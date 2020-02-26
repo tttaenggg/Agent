@@ -1,7 +1,7 @@
 {
-    "PT101001" : {
+    "KS101001" : {
         "ip" : "192.168.10.11",
         "port": 93,
-        "command": "projector#"
+        "command": "kvm#"
     }
 }

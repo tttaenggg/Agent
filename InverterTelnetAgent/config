@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "invertertelnetagent", #Integers
+  "message": "Hello From Growatt", #strings
+  "log-level": "INFO",
+  "pathconf" : "Agent/InverterTelnetAgent/iplist.json"
+}
