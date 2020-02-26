@@ -17,6 +17,7 @@ from multiprocessing import Process
 import settings
 import pyrebase
 from datetime import datetime
+import asyncio, concurrent.futures
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -146,6 +147,7 @@ class Plugagent(Agent):
             proc = Process(target=self.getstatus_proc, args=(devices,))
             procs.append(proc)
             proc.start()
+
 
 
         # TODO : if you want to wait the process completed Uncomment code below
