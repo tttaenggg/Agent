@@ -1,0 +1,12 @@
+{
+    "LT20RC01" : {
+        "uuid" : "d7536693-b6cc-45d3-a132-efe153c4c105",
+        "FL": "2",
+        "name": "L2 Women WC"
+    },
+    "LT20RC02" : {
+        "uuid" : "884471be-eaf3-4e9c-abeb-05e0b19eb9af",
+        "FL": "2",
+        "name": "Hall Stair"
+    }
+}

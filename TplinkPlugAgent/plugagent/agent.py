@@ -14,7 +14,7 @@ import json
 import socket
 from .extension import api
 from multiprocessing import Process
-import settings
+from Agent import settings
 import pyrebase
 from datetime import datetime
 import asyncio, concurrent.futures
@@ -70,6 +70,8 @@ class Plugagent(Agent):
             db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('POWER').set(plug.variables['power'])
             db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('CURRENT').set(plug.variables['current'])
             db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('VOLTAGE').set(plug.variables['voltage'])
+            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
+
 
         except Exception as err:
             pass
@@ -119,17 +121,17 @@ class Plugagent(Agent):
         _log.info("Get Message : {}".format(message))
         msg = message
         # print(msg)
-        deviceid = msg.get('deviceid')
+        device_id = msg.get('device_id')
         command = msg.get('command')
 
-        print(deviceid)
+        print(device_id)
         print(command)
         print("----------------------------------------------")
-        ipaddress = self.members.get(deviceid)
+        device_info = self.members.get(device_id)
 
         self.plug = api.API(model='TPlinkPlug', api='API3',
                             agent_id='TPlinkPlugAgent', types='plug',
-                            ip=ipaddress, port=9999)
+                            ip=device_info, port=9999)
 
         # self.plug.getDeviceStatus()
         self.plug.setDeviceStatus(command)
@@ -142,18 +144,20 @@ class Plugagent(Agent):
         procs = []
 
         for k, v in self.members.items():
-
             devices = (k, v)
-            proc = Process(target=self.getstatus_proc, args=(devices,))
-            procs.append(proc)
-            proc.start()
+            # proc = Process(target=self.getstatus_proc, args=(devices,))
+            # procs.append(proc)
+            # proc.start()
 
-
+            #  --- Change Multiprocess to async function
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self.getstatus_proc(devices=devices))
 
         # TODO : if you want to wait the process completed Uncomment code below
         # for proc in procs:
         #     proc.join()
-
 
 
 def main():

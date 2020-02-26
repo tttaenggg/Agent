@@ -14,9 +14,10 @@ import json
 import socket
 from .extension import api
 from multiprocessing import Process
-import settings
+from Agent import settings
 import pyrebase
 from datetime import datetime
+import asyncio, concurrent.futures
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -50,25 +51,35 @@ class Smokeagent(Agent):
     """
 
     # TODO -- Need Revise again
-    def getstatus_proc(self, devices):  # Function for MultiProcess
+    async def getstatus_proc(self, devices):  # Function for Asyncronous
 
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
-
         _log.info(msg="Start Get Status from {}".format(devices[1]))
+        loop = asyncio.get_event_loop()
+
+        def getstatus_task(devices):
+
+            try:
+                firstalert = api.API(model='Smoke', types='smoke', api='API3', agent_id='18ORC_OpenCloseAgent',
+                                     url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
+
+                firstalert.getDeviceStatus()
+
+                # TODO : Update Firebase with _status variable
+                db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('DT').set(firstalert.variables['unitTime'])
+                db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('SMOKE').set(firstalert.variables['smoke'])
+                db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('CO').set(firstalert.variables['carbonMonoxide'])
+                db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('ALARMSTATE').set(firstalert.variables['alarmState'])
+                db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
+
+            except Exception as err:
+                pass
 
         try:
-            firstalert = api.API(model='Smoke', types='smoke', api='API3', agent_id='18ORC_OpenCloseAgent',
-                                 url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
+            loop.run_in_executor(None, getstatus_task, devices)
+            # response1 = await future1
 
-            firstalert.getDeviceStatus()
-
-            # TODO : Update Firebase with _status variable
-            db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('DT').set(firstalert.variables['unitTime'])
-            db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('SMOKE').set(firstalert.variables['smoke'])
-            db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('CO').set(firstalert.variables['carbonMonoxide'])
-            db.child(gateway_id).child('devicetype').child('smoke').child(devices[0]).child('ALARMSTATE').set(firstalert.variables['alarmState'])
-
-        except Exception as err:
+        except Exception as e:
             pass
 
 
@@ -116,9 +127,16 @@ class Smokeagent(Agent):
 
         for k, v in self.members.items():
             devices = (k, v)
-            proc = Process(target=self.getstatus_proc, args=(devices,))
-            procs.append(proc)
-            proc.start()
+            # proc = Process(target=self.getstatus_proc, args=(devices,))
+            # procs.append(proc)
+            # proc.start()
+
+            #  --- Change Multiprocess to async function
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self.getstatus_proc(devices=devices))
+
 
         # TODO : if you want to wait the process completed Uncomment code below
         # for proc in procs:

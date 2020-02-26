@@ -14,7 +14,7 @@ import json
 import socket
 from .extension import api
 from multiprocessing import Process
-import settings
+from Agent import settings
 import pyrebase
 from datetime import datetime
 import asyncio, concurrent.futures
@@ -56,7 +56,8 @@ class Openclosedagent(Agent):
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
         _log.info(msg="Start Get Status from {}".format(devices[1]))
         loop = asyncio.get_event_loop()
-        def getstatus_task(self, devices):
+
+        def getstatus_task(devices):
 
             try:
                 openclosed = api.API(model='OpenClose', types='contactSensors', api='API3', agent_id='18ORC_OpenCloseAgent',
@@ -67,6 +68,7 @@ class Openclosedagent(Agent):
                 # TODO : Update Firebase with _status variable
                 db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('DT').set(openclosed.variables['unitTime'])
                 db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('STATUS').set(openclosed.variables['status'])
+                db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
 
             except Exception as err:
                 pass

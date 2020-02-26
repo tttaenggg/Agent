@@ -23,9 +23,9 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Aeotec Agent'
-DEFAULT_AGENTID = "AeotecAgent"
-DEFAULT_HEARTBEAT_PERIOD = 60
+DEFAULT_MESSAGE = 'I am a Wisco Agent'
+DEFAULT_AGENTID = "WiscoTelnetAgent"
+DEFAULT_HEARTBEAT_PERIOD = 5
 
 gateway_id = settings.gateway_id
 
@@ -45,7 +45,7 @@ except Exception as er:
 
 
 
-class Aeotecagent(Agent):
+class Wiscotelnetagent(Agent):
     """
     Document agent constructor here.
     """
@@ -60,19 +60,19 @@ class Aeotecagent(Agent):
         def getstatus_task(devices):
 
             try:
-                multisensor = api.API(model='Sensor', types='illuminances', api='API3', agent_id='18ORC_OpenCloseAgent',
-                                      url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
+                wisco = api.API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor',
+                                ip=(devices[1])['ip'], port=(devices[1])['port'])
 
-                multisensor.getDeviceStatus()
+                wisco.getDeviceStatus()
 
                 # TODO : Update Firebase with _status variable
-                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('DT').set(multisensor.variables['unitTime'])
-                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('HUMIDITY').set(multisensor.variables['humidity'])
-                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('ILLUMINANCE').set(multisensor.variables['illuminance'])
-                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('MOTION').set(multisensor.variables['motion'])
-                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TAMPER').set(multisensor.variables['tamper'])
-                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TEMPERATURE').set(multisensor.variables['temperature'])
-                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('DT').set(wisco.variables['unitTime'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('HUMIDITY').set(wisco.variables['humidity'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('ILLUMINANCE').set(wisco.variables['illuminance'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('MOTION').set(wisco.variables['motion'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TAMPER').set(wisco.variables['tamper'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TEMPERATURE').set(wisco.variables['temperature'])
+                db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
 
             except Exception as err:
                 pass
@@ -122,7 +122,7 @@ class Aeotecagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(20))
+    @Core.schedule(periodic(60))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
@@ -139,7 +139,6 @@ class Aeotecagent(Agent):
             loop = asyncio.get_event_loop()
             loop.run_until_complete(self.getstatus_proc(devices=devices))
 
-
         # TODO : if you want to wait the process completed Uncomment code below
         # for proc in procs:
         #     proc.join()
@@ -148,7 +147,7 @@ class Aeotecagent(Agent):
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Aeotecagent,
+    utils.vip_main(Wiscotelnetagent,
                    version=__version__)
 
 

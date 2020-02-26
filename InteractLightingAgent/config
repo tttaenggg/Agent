@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "interactlightingagent", #Integers
+  "message": "Hello From Interact Lighting", #strings
+  "log-level": "INFO",
+  "pathconf" : "Agent/InteractLightingAgent/iplist.json"
+}
