@@ -17,6 +17,7 @@ from multiprocessing import Process
 import settings
 import pyrebase
 from datetime import datetime
+import asyncio, concurrent.futures
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -50,24 +51,33 @@ class Openclosedagent(Agent):
     """
 
     # TODO -- Need Revise again
-    def getstatus_proc(self, devices):  # Function for MultiProcess
+    async def getstatus_proc(self, devices):  # Function for Asyncronous
 
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
-
         _log.info(msg="Start Get Status from {}".format(devices[1]))
+        loop = asyncio.get_event_loop()
+        def getstatus_task(self, devices):
+
+            try:
+                openclosed = api.API(model='OpenClose', types='contactSensors', api='API3', agent_id='18ORC_OpenCloseAgent',
+                                     url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
+
+                openclosed.getDeviceStatus()
+
+                # TODO : Update Firebase with _status variable
+                db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('DT').set(openclosed.variables['unitTime'])
+                db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('STATUS').set(openclosed.variables['status'])
+
+            except Exception as err:
+                pass
 
         try:
-            openclosed = api.API(model='OpenClose', types='contactSensors', api='API3', agent_id='18ORC_OpenCloseAgent',
-                                 url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
+            loop.run_in_executor(None, getstatus_task, devices)
+            # response1 = await future1
 
-            openclosed.getDeviceStatus()
-
-            # TODO : Update Firebase with _status variable
-            db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('DT').set(openclosed.variables['unitTime'])
-            db.child(gateway_id).child('devicetype').child('openclosed').child(devices[0]).child('STATUS').set(openclosed.variables['status'])
-
-        except Exception as err:
+        except Exception as e:
             pass
+
 
     def __init__(self, config_path,
                  **kwargs):
@@ -113,9 +123,16 @@ class Openclosedagent(Agent):
 
         for k, v in self.members.items():
             devices = (k, v)
-            proc = Process(target=self.getstatus_proc, args=(devices,))
-            procs.append(proc)
-            proc.start()
+            # proc = Process(target=self.getstatus_proc, args=(devices,))
+            # procs.append(proc)
+            # proc.start()
+
+            #  --- Change Multiprocess to async function
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self.getstatus_proc(devices=devices))
+
 
         # TODO : if you want to wait the process completed Uncomment code below
         # for proc in procs:
