@@ -47,18 +47,26 @@ class API:
         p = SmartPlug(ip)
         emeter_info = p.get_emeter_realtime()
         self.set_variable('status', str(p.state))
-        self.set_variable('current', str(emeter_info['current']))
-        self.set_variable('voltage', str(emeter_info['voltage']))
-        self.set_variable('power', str(emeter_info['power']))
+
+        try:
+            self.set_variable('current', str(emeter_info['current']))
+            self.set_variable('voltage', str(emeter_info['voltage']))
+            self.set_variable('power', str(emeter_info['power']))
+        except:
+            print ("no energy measument modul")
         self.printDeviceStatus()
 
     def printDeviceStatus(self):
         # now we can access the contents of the JSON like any other Python object
         print(" the current status is as follows:")
         print(" status = {}".format(self.get_variable('status')))
-        print(" current = {}".format(self.get_variable('current')))
-        print(" voltage = {}".format(self.get_variable('voltage')))
-        print(" power = {}".format(self.get_variable('power')))
+
+        try:
+            print(" current = {}".format(self.get_variable('current')))
+            print(" voltage = {}".format(self.get_variable('voltage')))
+            print(" power = {}".format(self.get_variable('power')))
+        except:
+            print("no energy measument modul")
         print("---------------------------------------------")
 
     # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
