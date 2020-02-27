@@ -14,9 +14,10 @@ import json
 import socket
 from .extension import api
 from multiprocessing import Process
-import settings
+from Agent import settings
 import pyrebase
 from datetime import datetime
+import asyncio, concurrent.futures
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -50,27 +51,37 @@ class Aeotecagent(Agent):
     """
 
     # TODO -- Need Revise again
-    def getstatus_proc(self, devices):  # Function for MultiProcess
+    async def getstatus_proc(self, devices):  # Function for Asyncronous
 
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
-
         _log.info(msg="Start Get Status from {}".format(devices[1]))
+        loop = asyncio.get_event_loop()
+
+        def getstatus_task(devices):
+
+            try:
+                multisensor = api.API(model='Sensor', types='illuminances', api='API3', agent_id='18ORC_OpenCloseAgent',
+                                      url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
+
+                multisensor.getDeviceStatus()
+
+                # TODO : Update Firebase with _status variable
+                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('DT').set(multisensor.variables['unitTime'])
+                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('HUMIDITY').set(multisensor.variables['humidity'])
+                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('ILLUMINANCE').set(multisensor.variables['illuminance'])
+                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('MOTION').set(multisensor.variables['motion'])
+                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TAMPER').set(multisensor.variables['tamper'])
+                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TEMPERATURE').set(multisensor.variables['temperature'])
+                db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
+
+            except Exception as err:
+                pass
 
         try:
-            multisensor = api.API(model='Sensor', types='illuminances', api='API3', agent_id='18ORC_OpenCloseAgent',
-                                  url=(devices[1])['url'], bearer=(devices[1])['bearer'], device=(devices[1])['device'])
+            loop.run_in_executor(None, getstatus_task, devices)
+            # response1 = await future1
 
-            multisensor.getDeviceStatus()
-
-            # TODO : Update Firebase with _status variable
-            db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('DT').set(multisensor.variables['unitTime'])
-            db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('HUMIDITY').set(multisensor.variables['humidity'])
-            db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('ILLUMINANCE').set(multisensor.variables['illuminance'])
-            db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('MOTION').set(multisensor.variables['motion'])
-            db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TAMPER').set(multisensor.variables['tamper'])
-            db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TEMPERATURE').set(multisensor.variables['temperature'])
-
-        except Exception as err:
+        except Exception as e:
             pass
 
 
@@ -118,9 +129,16 @@ class Aeotecagent(Agent):
 
         for k, v in self.members.items():
             devices = (k, v)
-            proc = Process(target=self.getstatus_proc, args=(devices,))
-            procs.append(proc)
-            proc.start()
+            # proc = Process(target=self.getstatus_proc, args=(devices,))
+            # procs.append(proc)
+            # proc.start()
+
+            #  --- Change Multiprocess to async function
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self.getstatus_proc(devices=devices))
+
 
         # TODO : if you want to wait the process completed Uncomment code below
         # for proc in procs:
