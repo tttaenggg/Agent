@@ -120,12 +120,14 @@ class Plugagent(Agent):
 
         _log.info("Get Message : {}".format(message))
         msg = message
+
         # print(msg)
         device_id = msg.get('device_id')
         command = msg.get('command')
 
         print(device_id)
         print(command)
+
         print("----------------------------------------------")
         device_info = self.members.get(device_id)
 
@@ -134,7 +136,7 @@ class Plugagent(Agent):
                             ip=device_info, port=9999)
 
         # self.plug.getDeviceStatus()
-        self.plug.setDeviceStatus(command)
+        self.plug.setDeviceStatus(msg)
         # self.plug.getDeviceStatus()
         del self.plug
 

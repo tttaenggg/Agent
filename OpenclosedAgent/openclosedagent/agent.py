@@ -56,7 +56,6 @@ class Openclosedagent(Agent):
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
         _log.info(msg="Start Get Status from {}".format(devices[1]))
         loop = asyncio.get_event_loop()
-
         def getstatus_task(devices):
 
             try:
@@ -76,6 +75,8 @@ class Openclosedagent(Agent):
         try:
             loop.run_in_executor(None, getstatus_task, devices)
             # response1 = await future1
+            loop.close()
+            res = await loop
 
         except Exception as e:
             pass
@@ -92,7 +93,10 @@ class Openclosedagent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        self.members = json.load(open(self.iplist_path))
+        with open(self.iplist_path) as f:
+            self.members = json.load(f)
+
+        f.close()
 
         _log.debug("IP List : {}".format(self.members))
 
@@ -122,7 +126,6 @@ class Openclosedagent(Agent):
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
-
         for k, v in self.members.items():
             devices = (k, v)
             # proc = Process(target=self.getstatus_proc, args=(devices,))
@@ -136,6 +139,7 @@ class Openclosedagent(Agent):
             loop.run_until_complete(self.getstatus_proc(devices=devices))
 
 
+
         # TODO : if you want to wait the process completed Uncomment code below
         # for proc in procs:
         #     proc.join()
@@ -144,6 +148,9 @@ class Openclosedagent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Openclosedagent,
                    version=__version__)
 
@@ -151,6 +158,7 @@ def main():
 if __name__ == '__main__':
     # Entry point for script
     try:
+
         sys.exit(main())
     except KeyboardInterrupt:
         pass
