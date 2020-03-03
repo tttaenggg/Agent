@@ -75,14 +75,14 @@ class Curtainagent(Agent):
         msg = message
         # print(msg)
         device_id = msg.get('device_id')
-        command = msg.get('command')
+        command = json.loads(msg.get('command'))
 
         print(device_id)
         print(command)
         print("----------------------------------------------")
         device_info = self.members.get(device_id)
 
-        self.curtain = api.API(model='Somfy', api='API3', agent_id='08SOMSC101001', types='curtain',
+        self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
                                ip=device_info['ip'], port=device_info['port'],
                                command=device_info['command'])
 
