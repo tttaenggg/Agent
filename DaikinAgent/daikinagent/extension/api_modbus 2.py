@@ -5,7 +5,6 @@ import requests
 import json
 import time
 from pymodbus.client.sync import ModbusTcpClient
-# from pymodbus.constants.Defaults import ModbusTcpClient
 from pymodbus.constants import Defaults
 class API:
     # 1. constructor : gets call every time when create a new class
@@ -58,11 +57,7 @@ class API:
         status = (str(hex(result.registers[0])))
         statusraw = status[-1:]
         stemp = result.registers[1]
-
-        # fan =1 ,2,3,4,10=auto, 11=silent
         client.close()
-        # time.sleep(1)
-        print("end round +++++++++++++++++++1111111111111111111111111111111111111111111111111111111111")
 
         if statusraw == "1":
             status = "ON"
