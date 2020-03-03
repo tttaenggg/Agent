@@ -9,7 +9,16 @@
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
         "device" : "6038275e-fe2d-4dc4-8525-96d351b99ae5"
     },
-
+    "DS103002" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "c531128f-b0d2-45cc-83c5-07f90db06b55"
+    },
+    "DS104001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "7ab07a64-1e75-4ae0-adfd-28e0df465de9"
+    },
     "DS109001" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
@@ -30,7 +39,11 @@
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
         "device" : "9127bb96-d4d4-4743-9823-c546b7e1fac2"
     },
-
+    "DS202002" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "2bbd7280-9999-49f2-abe9-88ec9d50383f"
+    },
     "DS203001" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
@@ -41,7 +54,11 @@
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
         "device" : "02ab192e-ffb2-44fa-8c4d-a0c8dea217d0"
     },
-
+    "DS204001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "9a4b6bd3-b075-45e9-a57c-42e4b90cddb0"
+    },
     "DS205001" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
@@ -82,6 +99,11 @@
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
         "device" : "beb2e374-45a5-4692-b4de-ff5cef6db02f"
+    },
+    "WS104001" : {
+        "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
+        "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
+        "device" : "0df88821-74b5-4873-accc-6bb451e92319"
     },
     "WS104002" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",

@@ -25,7 +25,7 @@ __version__ = "0.1"
 
 DEFAULT_MESSAGE = 'I am a Aeotec Agent'
 DEFAULT_AGENTID = "AeotecAgent"
-DEFAULT_HEARTBEAT_PERIOD = 60
+DEFAULT_HEARTBEAT_PERIOD = 5
 
 gateway_id = settings.gateway_id
 
@@ -80,6 +80,8 @@ class Aeotecagent(Agent):
         try:
             loop.run_in_executor(None, getstatus_task, devices)
             # response1 = await future1
+            loop.close()
+            res = await loop
 
         except Exception as e:
             pass
@@ -96,7 +98,10 @@ class Aeotecagent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        self.members = json.load(open(self.iplist_path))
+        with open(self.iplist_path) as f:
+            self.members = json.load(f)
+
+        f.close()
 
         _log.debug("IP List : {}".format(self.members))
 
@@ -147,7 +152,10 @@ class Aeotecagent(Agent):
 
 
 def main():
-    """Main method called to start the agent."""
+    """"Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Aeotecagent,
                    version=__version__)
 

@@ -78,6 +78,8 @@ class Smokeagent(Agent):
         try:
             loop.run_in_executor(None, getstatus_task, devices)
             # response1 = await future1
+            loop.close()
+            res = await loop
 
         except Exception as e:
             pass
@@ -94,7 +96,10 @@ class Smokeagent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        self.members = json.load(open(self.iplist_path))
+        with open(self.iplist_path) as f:
+            self.members = json.load(f)
+
+        f.close()
 
         _log.debug("IP List : {}".format(self.members))
 
@@ -146,6 +151,9 @@ class Smokeagent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Smokeagent,
                    version=__version__)
 
