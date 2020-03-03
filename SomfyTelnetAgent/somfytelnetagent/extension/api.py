@@ -54,8 +54,8 @@ class API:
             # print("DATA status = {}".format(_data))
 
             # open connection
-            # tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            # print(tn)
+            tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
+            print(tn)
 
             # send data
             key_buttom = ['up', 'down', "stop"]
@@ -64,11 +64,11 @@ class API:
                     send_mess = self.get_variable("command") + _data
                     print("send_mess: {}".format(send_mess))
                     print("Sending message...")
-                    # tn.write((send_mess + "\r").encode('ascii'))
-                    # tn.close()
+                    tn.write((send_mess + "\r").encode('ascii'))
+                    tn.close()
 
             except:
-                # tn.close()
+                tn.close()
                 print("ERROR: classAPI_Telnet_Somfy_Curtain connection failure! @ setDeviceStatus")
                 setDeviceStatusResult = False
         else:
@@ -83,7 +83,7 @@ class API:
 
     def convertPostMsg(self, postmsg):
         msgToDevice = ""
-
+        # postmsg = json.loads(postmsg)
         if ('status' in postmsg.keys()):
             msgToDevice = postmsg['status'].lower() # open, close, stop
             self.set_variable('status', msgToDevice)
@@ -97,9 +97,9 @@ class API:
 # This main method will not be executed when this class is used as a module
 def main():
     # -------------Kittchen----------------
-    curtain = API(model='Somfy', api='API3', agent_id='08SOMSC101001', types='curtain', ip='192.168.10.11', port=93, command='#')
+    curtain = API(model='Somfy', api='API3', agent_id='08SOMSC101001', types='curtain', ip='192.168.10.11', port=93, command='curtain#conference#left#')
 
-    curtain.setDeviceStatus({"status": "up"})
+    curtain.setDeviceStatus({"status": "stop"})
     # time.sleep(7)
     # curtain.setDeviceStatus({"status": "stop"})
     # time.sleep(3)
