@@ -1,0 +1,7 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "wiscotelnetagent", #Integers
+  "message": "Hello From Wisco", #strings
+  "log-level": "INFO",
+  "pathconf" : "Agent/WiscoTelnetAgent/iplist.json"
+}

@@ -5,7 +5,7 @@ Agent documentation goes here.
 __docformat__ = 'reStructuredText'
 
 import logging
-import sys
+import sys, os
 from volttron.platform.agent import utils
 from volttron.platform.vip.agent import Agent, Core, RPC, PubSub
 from volttron.platform.scheduling import periodic
@@ -23,8 +23,8 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Tplink Plug Agent'
-DEFAULT_AGENTID = "TplinkAgent"
+DEFAULT_MESSAGE = 'I am a Wisco Agent'
+DEFAULT_AGENTID = "WiscoTelnetAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 gateway_id = settings.gateway_id
@@ -45,35 +45,43 @@ except Exception as er:
 
 
 
-class Plugagent(Agent):
+class Wiscotelnetagent(Agent):
     """
     Document agent constructor here.
     """
 
     # TODO -- Need Revise again
-    def getstatus_proc(self, devices): # Function for MultiProcess
+    async def getstatus_proc(self, devices):  # Function for Asyncronous
 
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
-
         _log.info(msg="Start Get Status from {}".format(devices[1]))
+        loop = asyncio.get_event_loop()
+
+        def getstatus_task(devices):
+
+            try:
+                wisco = api.API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor',
+                                ip=(devices[1])['ip'], port=(devices[1])['port'])
+
+                wisco.getDeviceStatus()
+
+                # TODO : Update Firebase with _status variable
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('DT').set(wisco.variables['unitTime'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('HUMIDITY').set(wisco.variables['humidity'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('ILLUMINANCE').set(wisco.variables['illuminance'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('MOTION').set(wisco.variables['motion'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TAMPER').set(wisco.variables['tamper'])
+                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TEMPERATURE').set(wisco.variables['temperature'])
+                db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
+
+            except Exception as err:
+                pass
 
         try:
-            plug = api.API(model='TPlinkPlug', api='API3',
-                               agent_id='TPlinkPlugAgent', types='plug',
-                               ip=devices[1], port=9999)
+            loop.run_in_executor(None, getstatus_task, devices)
+            # response1 = await future1
 
-            plug.getDeviceStatus()
-
-            # TODO : Update Firebase with _status variable
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('STATUS').set(plug.variables['status'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('POWER').set(plug.variables['power'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('CURRENT').set(plug.variables['current'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('VOLTAGE').set(plug.variables['voltage'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
-
-
-        except Exception as err:
+        except Exception as e:
             pass
 
 
@@ -114,32 +122,6 @@ class Plugagent(Agent):
 
         pass
 
-    # -- Direct Control From Web Application
-    @PubSub.subscribe('pubsub', "web/control/plug")
-    def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
-
-        _log.info("Get Message : {}".format(message))
-        msg = message
-
-        # print(msg)
-        device_id = msg.get('device_id')
-        command = msg.get('command')
-
-        print(device_id)
-        print(command)
-
-        print("----------------------------------------------")
-        device_info = self.members.get(device_id)
-
-        self.plug = api.API(model='TPlinkPlug', api='API3',
-                            agent_id='TPlinkPlugAgent', types='plug',
-                            ip=device_info, port=9999)
-
-        # self.plug.getDeviceStatus()
-        self.plug.setDeviceStatus(msg)
-        # self.plug.getDeviceStatus()
-        del self.plug
-
     @Core.schedule(periodic(60))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
@@ -162,9 +144,10 @@ class Plugagent(Agent):
         #     proc.join()
 
 
+
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Plugagent,
+    utils.vip_main(Wiscotelnetagent,
                    version=__version__)
 
 
