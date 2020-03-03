@@ -56,10 +56,11 @@ class API:
             send_mess = '#01RAI'                                                                # EDIT !!!!!!!!
             tn.write((send_mess + "\r").encode('ascii'))
 
-            tn.set_debuglevel(100)
-
             # read data
-            raw_data = tn.read_all()
+            raw_data = (tn.read_until(b"\r").decode('ascii'))[3:]
+            # raw_data = tn.read_all()
+            # print(tn.read_eager())
+            print("Type Data: {}".format(type(raw_data)))
             print("Data: {}".format(raw_data))
 
             # closed connection
@@ -81,10 +82,7 @@ class API:
         # conve_json = json.loads(data)
         print(data)
 
-        # self.set_variable('device_label', str(conve_json["label"]))
-        # self.set_variable('device_type', str(conve_json["type"]).upper())
-        # self.set_variable('unitTime', str(conve_json["unitTime"]))
-        # self.set_variable('status', str(conve_json["contact"]).upper())
+        self.set_variable('temperature', data)
 
     def printDeviceStatus(self):
         # now we can access the contents of the JSON like any other Python object
@@ -100,7 +98,6 @@ def main():
     wisco = API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor', ip='192.168.10.11', port=93)
 
     wisco.getDeviceStatus()
-    # curtain.setDeviceStatus({"status": "p1"})
     time.sleep(3)
 
 

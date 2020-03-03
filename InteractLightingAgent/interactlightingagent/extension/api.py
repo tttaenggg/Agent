@@ -42,31 +42,6 @@ class API:
     '''
 
     # ----------------------------------------------------------------------
-    # getDeviceStatus(), printDeviceStatus()
-    def getDeviceStatus(self):
-        try:
-            print("Get Status Interact Lighting")
-            # open connection
-            # tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            # print(tn)
-
-            # tn.set_debuglevel(100)
-
-            # read data
-            # data = tn.read_all()
-            # print("Data: {}".format(data))
-
-            # closed connection
-            # tn.close()
-
-        except Exception as err:
-            print("Error: cannot connect host/port")
-
-    def printDeviceStatus(self):
-        # now we can access the contents of the JSON like any other Python object
-        print(" the current status is as follows:")
-        print(" label = {}".format(self.get_variable('label')))
-
     # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
     def setDeviceStatus(self, postmsg):
         setDeviceStatusResult = True
@@ -139,11 +114,11 @@ class API:
 def main():
 
     interact = API(model='Interact', api='API3', agent_id='25INTF73D39F6', types='lighting',
-                   uuid='f73d39f6-432c-4593-91ca-db836c45d1e0')
+                   uuid='32302d84-6872-4341-99bf-cd1f55255572')
 
-    # interact.setDeviceStatus({"status": "on"})
+    interact.setDeviceStatus({"status": "on"})
     # interact.setDeviceStatus({"status": "off"})
-    interact.setDeviceStatus({"status": "automatic"})
+    # interact.setDeviceStatus({"status": "automatic"})
     # interact.setDeviceStatus({"status": "dim", "level": 10})
     # time.sleep(3)
 
