@@ -16,6 +16,8 @@ class API:
         self.set_variable('offline_count', 0)
         self.set_variable('connection_renew_interval', 6000)
 
+
+
     def renewConnection(self):
         pass
 
@@ -54,7 +56,7 @@ class API:
             # print("DATA status = {}".format(_data))
 
             # open connection
-            tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
+            tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"), )
             print(tn)
 
             # send data
@@ -65,6 +67,8 @@ class API:
                     print("send_mess: {}".format(send_mess))
                     print("Sending message...")
                     tn.write((send_mess + "\r").encode('ascii'))
+                    # tn.get_socket().shutdown(socket.SHUT_WR)
+                    # data = tn.read_all()
                     tn.close()
 
             except:
@@ -90,6 +94,37 @@ class API:
             print(msgToDevice)
 
         return msgToDevice
+
+    def setAllStatus(self, postmsg, address):
+        setDeviceStatusResult = True
+
+        if self.isPostMsgValid(postmsg) == True:  # check if the data is valid
+
+            _data = str(self.convertPostMsg(postmsg))
+
+            # open connection
+
+            tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
+            print(tn)
+
+            # send data
+            key_buttom = ['up', 'down', "stop"]
+            try:
+                if _data in key_buttom:
+                    for i in address:
+                        send_mess = i + _data
+                        print("send_mess: {}".format(send_mess))
+                        print("Sending message...")
+                        tn.write((send_mess + "\r").encode('ascii'))
+
+
+                tn.close()
+
+            except Exception as err:
+                tn.close()
+                print("ERROR: classAPI_Telnet_Somfy_Curtain connection failure! @ setDeviceStatus")
+                setDeviceStatusResult = False
+
 
     # ----------------------------------------------------------------------
 

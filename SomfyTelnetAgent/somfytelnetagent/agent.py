@@ -81,16 +81,28 @@ class Curtainagent(Agent):
         print(command)
         print("----------------------------------------------")
         device_info = self.members.get(device_id)
+        if '999ALL' in device_id : # if True it mean control group devices and device_info is list
 
-        self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
-                               ip=device_info['ip'], port=device_info['port'],
-                               command=device_info['command'])
+            self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
+                                   ip=device_info['ip'], port=device_info['port'],
+                                   command='')
 
-        # self.plug.getDeviceStatus()
-        self.curtain.setDeviceStatus(command)
-        # self.plug.getDeviceStatus()
-        del self.curtain
+            # self.plug.getDeviceStatus()
+            self.curtain.setAllStatus(command, device_info['command'])
+            # self.plug.getDeviceStatus()
+            del self.curtain
 
+
+        else:
+
+            self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
+                                   ip=device_info['ip'], port=device_info['port'],
+                                   command=device_info['command'])
+
+            # self.plug.getDeviceStatus()
+            self.curtain.setDeviceStatus(command)
+            # self.plug.getDeviceStatus()
+            del self.curtain
 
 
 def main():
