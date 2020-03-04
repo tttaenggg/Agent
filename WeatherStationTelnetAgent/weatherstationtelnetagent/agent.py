@@ -5,7 +5,7 @@ Agent documentation goes here.
 __docformat__ = 'reStructuredText'
 
 import logging
-import sys, os
+import sys
 from volttron.platform.agent import utils
 from volttron.platform.vip.agent import Agent, Core, RPC, PubSub
 from volttron.platform.scheduling import periodic
@@ -23,8 +23,8 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Wisco Agent'
-DEFAULT_AGENTID = "WiscoTelnetAgent"
+DEFAULT_MESSAGE = 'I am a Weather Station Agent'
+DEFAULT_AGENTID = "WeatherStationTelnetAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
 gateway_id = settings.gateway_id
@@ -45,7 +45,7 @@ except Exception as er:
 
 
 
-class Wiscotelnetagent(Agent):
+class Weatherstationtelnetagent(Agent):
     """
     Document agent constructor here.
     """
@@ -60,14 +60,17 @@ class Wiscotelnetagent(Agent):
         def getstatus_task(devices):
 
             try:
-                wisco = api.API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor',
-                                ip=(devices[1])['ip'], port=(devices[1])['port'])
+                weatherstation = api.API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor',
+                                         ip=(devices[1])['ip'], port=(devices[1])['port'])
 
-                wisco.getDeviceStatus()
+                weatherstation.getDeviceStatus()
 
                 # TODO : Update Firebase with _status variable
                 db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
-                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('MODULETEMP').set(wisco.variables['moduletemp'])
+                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('AMBIENTTEMP').set(weatherstation.variables['ambienttemp'])
+                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('IRRADIANCE').set(weatherstation.variables['radiation'])
+                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('WINDSPEED').set(weatherstation.variables['windspeed'])
+                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('WINDDIRECTION').set(weatherstation.variables['winddir'])
 
             except Exception as err:
                 pass
@@ -93,7 +96,9 @@ class Wiscotelnetagent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
+        # self.members = json.load(open(self.iplist_path))
         self.members = json.load(open(os.environ['VOLTTRON_ROOT']+self.iplist_path))
+        # print(os.environ['VOLTTRON_ROOT'])
 
         _log.debug("IP List : {}".format(self.members))
 
@@ -144,7 +149,7 @@ class Wiscotelnetagent(Agent):
 
 def main():
     """Main method called to start the agent."""
-    utils.vip_main(Wiscotelnetagent,
+    utils.vip_main(Weatherstationtelnetagent,
                    version=__version__)
 
 

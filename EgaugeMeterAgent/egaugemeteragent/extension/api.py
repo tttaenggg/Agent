@@ -4,6 +4,7 @@ import json
 import requests
 import socket
 from struct import pack
+from bs4 import BeautifulSoup
 
 import urllib, datetime
 from xml.etree import ElementTree as ET
@@ -47,42 +48,90 @@ class API:
     def getDeviceStatus(self):
 
         getDeviceStatusResult = True
+        import requests
+        url = 'http://'+self.get_variable("ip") + "/cgi-bin/egauge?noteam&tot"
+        print(url)
+        response = urllib.request.urlopen(url)
+        data = response.read()  # a `bytes` object
+        text = data.decode('utf-8')  # a `str`;
+        soup = BeautifulSoup(text, 'xml')
 
         try:
-            print("Get Status eGauge Power Meter")
+            for h in soup.find_all(title="MDB PANEL"):
+                mdb_text = h.find('energy')
 
-            # Get XML from eGauge device
-            url = "http://" + self.get_variable("bearer") + ".egaug.es/cgi-bin/egauge?noteam"
+            mdb = (mdb_text.text)
+        except:
+            print ("error no mdb energy data")
 
-            # Parse the results
-            raw_data = ET.parse(urllib.urlopen(url)).getroot()
-            print(raw_data)
+        try:
+            for h in soup.find_all(title="1 Floor  Plug"):
+                floor1plug_text = h.find('energy')
+            floor1plug = (floor1plug_text.text)
+        except:
+            print("error no 1floorplug energy data")
 
-            self.getDeviceStatusJson(raw_data)
-            self.printDeviceStatus()
+        try:
+            for h in soup.find_all(title="1 Floor  Light"):
+                floor1light_text = h.find('energy')
+            floor1light = (floor1light_text.text)
+        except:
+            print("error no 1floorlight energy data")
 
-            if getDeviceStatusResult==True:
-                self.set_variable('offline_count', 0)
-            else:
-                self.set_variable('offline_count', self.get_variable('offline_count')+1)
-        except Exception as er:
-            print (er)
-            print('ERROR: classAPI_Egauge_PowerMeter failed to getDeviceStatus')
+            # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        try:
+            for h in soup.find_all(title = "1 Floor  Air"):
+                floor1air_text = h.find('energy')
+            floor1air = (floor1air_text.text)
+        except:
+            print("error no 1floorlight energy data")
 
-    def getDeviceStatusJson(self, data):
 
-        # conve_json = json.loads(data)
-        print(data)
 
-        # self.set_variable('device_label', str(conve_json["label"]))
-        # self.set_variable('device_type', str(conve_json["type"]).upper())
-        # self.set_variable('unitTime', str(conve_json["unitTime"]))
-        # self.set_variable('status', str(conve_json["contact"]).upper())
+
+        try:
+            for h in soup.find_all(title="2 Floor  Plug"):
+                floor2plug_text = h.find('energy')
+            floor2plug = (floor2plug_text.text)
+        except:
+            print("error no 2floorplug energy data")
+
+        try:
+            for h in soup.find_all(title="2 Floor  Light"):
+                floor2light_text = h.find('energy')
+            floor2light = (floor2light_text.text)
+        except:
+            print("error no 2floorlight energy data")
+
+            # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        try:
+            for h in soup.find_all(title="2 Floor  Air"):
+                floor2air_text = h.find('energy')
+            floor2air = (floor2air_text.text)
+        except:
+            print("error no 2floorlight energy data")
+
+
+        self.set_variable('mdb', str(mdb))
+        self.set_variable('floor1plug', str(floor1plug))
+        self.set_variable('floor1light', str(floor1light))
+        self.set_variable('floor1air', str(floor1air))
+        self.set_variable('floor2plug', str(floor2plug))
+        self.set_variable('floor2light', str(floor2light))
+        self.set_variable('floor2air', str(floor2air))
+        self.printDeviceStatus()
 
     def printDeviceStatus(self):
         # now we can access the contents of the JSON like any other Python object
         print(" the current status is as follows:")
-        # print(" label = {}".format(self.get_variable('label')))
+        print(" mdb = {}".format(self.get_variable('mdb')))
+        print(" floor1plug = {}".format(self.get_variable('floor1plug')))
+        print(" floor1light = {}".format(self.get_variable('floor1light')))
+        print(" floor1air = {}".format(self.get_variable('floor1air')))
+        print(" floor2plug = {}".format(self.get_variable('floor2plug')))
+        print(" floor2light = {}".format(self.get_variable('floor2light')))
+        print(" floor2air = {}".format(self.get_variable('floor2air')))
+
 
     # ----------------------------------------------------------------------
 
@@ -91,10 +140,10 @@ class API:
 def main():
     # -------------Kittchen----------------
     meter = API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter', device='egauge50040',
-                ip='192.168.1.8', port=82)
+                ip='192.168.10.21', port=82)
 
     meter.getDeviceStatus()
-    time.sleep(3)
+    # time.sleep(3)
 
 
 if __name__ == "__main__": main()
