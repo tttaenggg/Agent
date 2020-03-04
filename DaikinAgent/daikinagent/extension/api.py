@@ -191,19 +191,28 @@ class API:
 
         # now we can access the contents of the JSON like any other Python object
         print(" the current status is as follows:")
-        print(" status = {}".format(self.get_variable('status')))
-        print(" current_temperature = {}".format(self.get_variable('current_temperature')))
-        print(" set_temperature = {}".format(self.get_variable('set_temperature')))
-        print(" set_humidity = {}".format(self.get_variable('set_humidity')))
-        print(" mode = {}".format(self.get_variable('mode')))
-        print(" fan = {}".format(self.get_variable('fan')))
-        print(" swing = {}".format(self.get_variable('swing')))
-        print("---------------------------------------------")
+        # print(" status = {}".format(self.get_variable('status')))
+        # print(" current_temperature = {}".format(self.get_variable('current_temperature')))
+        # print(" set_temperature = {}".format(self.get_variable('set_temperature')))
+        # print(" set_humidity = {}".format(self.get_variable('set_humidity')))
+        # print(" mode = {}".format(self.get_variable('mode')))
+        # print(" fan = {}".format(self.get_variable('fan')))
+        # print(" swing = {}".format(self.get_variable('swing')))
+        # print("---------------------------------------------")
 
     # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
     def setDeviceStatus(self, postmsg):
+        print (type((postmsg)))
+        # postmsg = json.loads(postmsg)
+        # print (postmsg)
+        # print(type((postmsg)))
+
+
+
+
+
         url = str(self.get_variable("url"))
-        postmsg = str(postmsg)
+        # postmsg = str(postmsg)
 
         if self.isPostMsgValid(postmsg) == True:  # check if the data is valid
             mode = format(self.get_variable('mode'))
@@ -218,8 +227,8 @@ class API:
             if mode == 'FAN':
                 mode = '6'
 
-            if  type(postmsg)== str:
-                postmsg = eval(postmsg)
+            # if  type(postmsg)== str:
+            #     postmsg = eval(postmsg)
 
             for k, v in postmsg.items():
                 if k == 'stemp':
