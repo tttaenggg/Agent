@@ -3,5 +3,5 @@
   "agentid": "interactlightingagent", #Integers
   "message": "Hello From Interact Lighting", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/InteractLightingAgent/iplist.json"
+  "pathconf" : "/Agent/InteractLightingAgent/iplist.json"
 }

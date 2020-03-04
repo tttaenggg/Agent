@@ -4,7 +4,7 @@ MAIN_MODULE = 'agent'
 
 # Find the agent package that contains the main module
 packages = find_packages('.')
-agent_package = 'udpagent'
+agent_package = 'wiscotelnetagent'
 
 # Find the version number from the main module
 agent_module = agent_package + '.' + MAIN_MODULE

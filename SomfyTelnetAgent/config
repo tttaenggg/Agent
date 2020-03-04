@@ -3,5 +3,5 @@
   "agentid": "somfyagent", #Integers
   "message": "Hello From Somfy", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/SomfyTelnetAgent/iplist.json"
+  "pathconf" : "/Agent/SomfyTelnetAgent/iplist.json"
 }

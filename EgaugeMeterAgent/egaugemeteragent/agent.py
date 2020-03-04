@@ -17,7 +17,7 @@ from multiprocessing import Process
 from Agent import settings
 import pyrebase
 from datetime import datetime
-
+import os
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
@@ -85,7 +85,7 @@ class Egaugemeteragent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        self.members = json.load(open(self.iplist_path))
+        self.members = json.load(open(os.environ['VOLTTRON_ROOT']+self.iplist_path))
 
         _log.debug("IP List : {}".format(self.members))
 

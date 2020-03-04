@@ -14,7 +14,7 @@ import socket
 import time
 from multiprocessing import Process
 import asyncio
-
+import os
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
@@ -37,7 +37,7 @@ class Sceneagent(Agent):
         self._heartbeat_period = self.config.get('heartbeat_period',
                                                  DEFAULT_HEARTBEAT_PERIOD)
         self._scenelist_path = self.config.get('scenelistpath')
-        self.sceneconf = json.load(open(self._scenelist_path))
+        self.sceneconf = json.load(open(os.environ['VOLTTRON_ROOT']+self._scenelist_path))
 
         _log.info(">>> : Found {} Scene Control List".format(len(self.sceneconf.get('scenelist'))))
 
