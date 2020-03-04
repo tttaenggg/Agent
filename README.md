@@ -12,7 +12,7 @@
  
  ![alt text](https://github.com/Soulweed/Agent/blob/master/tree.png)
  
- **5 setup env
+ **5. add volttron in bachrc
  
   ![alt text](https://i.ibb.co/j3YqQXj/2020-03-04-19-30-27.jpg)
  
