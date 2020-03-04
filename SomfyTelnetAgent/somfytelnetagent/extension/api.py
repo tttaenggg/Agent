@@ -69,6 +69,7 @@ class API:
                     tn.write((send_mess + "\r").encode('ascii'))
                     # tn.get_socket().shutdown(socket.SHUT_WR)
                     # data = tn.read_all()
+                    # print(data)
                     tn.close()
 
             except:
@@ -104,21 +105,22 @@ class API:
 
             # open connection
 
-            tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            print(tn)
+
 
             # send data
             key_buttom = ['up', 'down', "stop"]
             try:
                 if _data in key_buttom:
+                    tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
+                    print(tn)
                     for i in address:
+
                         send_mess = i + _data
                         print("send_mess: {}".format(send_mess))
                         print("Sending message...")
-                        tn.write((send_mess + "\r").encode('ascii'))
+                        tn.write((send_mess + "\r\n").encode('ascii'))
 
-
-                tn.close()
+                    tn.close()
 
             except Exception as err:
                 tn.close()

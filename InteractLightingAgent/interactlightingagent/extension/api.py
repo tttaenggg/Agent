@@ -43,7 +43,7 @@ class API:
 
     # ----------------------------------------------------------------------
     # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
-    def setDeviceStatus(self, postmsg):
+    def setDeviceStatus(self, postmsg, access_token):
         setDeviceStatusResult = True
 
         if self.isPostMsgValid(postmsg) == True:  # check if the data is valid
@@ -54,7 +54,8 @@ class API:
             print("DATA status = {}".format(_data))
 
             # get access token
-            access_token = self.get_token()
+            if access_token is None:
+                access_token = self.get_token()
 
             # send data
             try:

@@ -12,7 +12,7 @@ from pprint import pformat
 import json
 import socket
 from .extension import api
-
+import time
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -82,15 +82,17 @@ class Curtainagent(Agent):
         print("----------------------------------------------")
         device_info = self.members.get(device_id)
         if '999ALL' in device_id : # if True it mean control group devices and device_info is list
+            for tx in device_info['command']:
+                self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
+                                       ip=device_info['ip'], port=device_info['port'],
+                                       command=tx)
 
-            self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
-                                   ip=device_info['ip'], port=device_info['port'],
-                                   command='')
-
-            # self.plug.getDeviceStatus()
-            self.curtain.setAllStatus(command, device_info['command'])
-            # self.plug.getDeviceStatus()
-            del self.curtain
+                # self.plug.getDeviceStatus()
+                # self.curtain.setAllStatus(command, device_info['command'])
+                # self.plug.getDeviceStatus()
+                self.curtain.setDeviceStatus(command)
+                time.sleep(3)
+                del self.curtain
 
 
         else:
