@@ -56,6 +56,7 @@ class Openclosedagent(Agent):
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
         _log.info(msg="Start Get Status from {}".format(devices[1]))
         loop = asyncio.get_event_loop()
+
         def getstatus_task(devices):
 
             try:
@@ -126,6 +127,7 @@ class Openclosedagent(Agent):
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
+
         for k, v in self.members.items():
             devices = (k, v)
             # proc = Process(target=self.getstatus_proc, args=(devices,))

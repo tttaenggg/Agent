@@ -1,4 +1,18 @@
 {
+    "SC999ALL": {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": ["curtain#conference#right#", "curtain#conference#left#"]
+
+    },
+
+    "SC888ALL": {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": ["curtain#office1#right#", "curtain#office1#left#"]
+
+    },
+
     "SC101001" : {
         "ip" : "192.168.10.11",
         "port": 93,

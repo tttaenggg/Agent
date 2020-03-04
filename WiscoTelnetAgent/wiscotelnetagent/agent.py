@@ -66,13 +66,8 @@ class Wiscotelnetagent(Agent):
                 wisco.getDeviceStatus()
 
                 # TODO : Update Firebase with _status variable
-                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('DT').set(wisco.variables['unitTime'])
-                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('HUMIDITY').set(wisco.variables['humidity'])
-                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('ILLUMINANCE').set(wisco.variables['illuminance'])
-                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('MOTION').set(wisco.variables['motion'])
-                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TAMPER').set(wisco.variables['tamper'])
-                # db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TEMPERATURE').set(wisco.variables['temperature'])
-                db.child(gateway_id).child('devicetype').child('weather').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
+                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
+                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('MODULETEMP').set(wisco.variables['temperature'])
 
             except Exception as err:
                 pass
@@ -80,6 +75,8 @@ class Wiscotelnetagent(Agent):
         try:
             loop.run_in_executor(None, getstatus_task, devices)
             # response1 = await future1
+            loop.close()
+            res = await loop
 
         except Exception as e:
             pass
@@ -122,7 +119,7 @@ class Wiscotelnetagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(60))
+    @Core.schedule(periodic(10))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []

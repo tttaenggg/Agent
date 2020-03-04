@@ -12,6 +12,7 @@ from pprint import pformat
 import json
 import socket
 from .extension import api
+from volttron.platform.scheduling import periodic
 
 
 _log = logging.getLogger(__name__)
@@ -41,6 +42,7 @@ class Interactlightingagent(Agent):
 
         self.iplist_path = self.config.get('pathconf')
         self.members = json.load(open(self.iplist_path))
+        self.access_token = None
 
         _log.debug("IP List : {}".format(self.members))
 
@@ -75,7 +77,7 @@ class Interactlightingagent(Agent):
         msg = message
         # print(msg)
         device_id = msg.get('device_id')
-        command = msg.get('command')
+        command = json.loads(msg.get('command'))
 
         print(device_id)
         print(command)
@@ -87,9 +89,15 @@ class Interactlightingagent(Agent):
                                 uuid=device_info['uuid'])
 
         # self.plug.getDeviceStatus()
-        self.interact.setDeviceStatus(command)
+        self.interact.setDeviceStatus(command, self.access_token)
         # self.plug.getDeviceStatus()
         del self.interact
+
+    @Core.schedule(periodic(3000))
+    def on_interval(self):
+        self.access_token = api.API().get_token()
+        _log.info(msg="Access Token : {}".format(self.access_token))
+        # if self.access_token is not None:
 
 
 

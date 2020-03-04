@@ -1,12 +1,142 @@
 {
-    "LT20RC01" : {
-        "uuid" : "d7536693-b6cc-45d3-a132-efe153c4c105",
+    "L1F": {
+        "uuid": "edbedcf3-5868-487d-b894-26af24082497",
+        "FL": "1",
+        "name": "L1_Front_Terrace"
+    },
+    "L1T": {
+        "uuid": "691faa05-dc5f-47b3-b333-288e2b53f4d5",
+        "FL": "1",
+        "name": "L1_Terrace"
+    },
+    "L1WC4": {
+        "uuid": "4aafcaef-45a6-403e-8607-c0365019f01e",
+        "FL": "1",
+        "name": "L1_WC_4"
+    },
+    "L1H3": {
+        "uuid": "c06d696e-af7a-4781-ba14-95a04656a843",
+        "FL": "1",
+        "name": "L1_Hall_3"
+    },
+    "L1WC1": {
+        "uuid": "e4b4cb7b-bc70-4232-839d-fc3ecf77753e",
+        "FL": "1",
+        "name": "L1_WC_1"
+    },
+    "L1WC2": {
+        "uuid": "3a6988bc-a1cc-4f8d-ade9-938803164659",
+        "FL": "1",
+        "name": "L1_WC_2"
+    },
+    "L1WC3": {
+        "uuid": "244649ef-4316-4be1-ae00-199ea21d0d11",
+        "FL": "1",
+        "name": "L1_WC_3"
+    },
+    "L1H2": {
+        "uuid": "5f461bc1-9357-40b1-856a-b30b031406d4",
+        "FL": "1",
+        "name": "L1_Hall_2"
+    },
+    "L1H1": {
+        "uuid": "51e30705-6f0c-4596-8a9b-0002ea922491",
+        "FL": "1",
+        "name": "L1_Hall_1"
+    },
+    "BD01": {
+        "uuid": "6fa8fd02-9b8d-43ea-be13-261942149934",
+        "FL": "1",
+        "name": "Bedroom"
+    },
+    "MT04": {
+        "uuid": "32302d84-6872-4341-99bf-cd1f55255572",
+        "FL": "1",
+        "name": "Meeting R4"
+    },
+    "MT03": {
+        "uuid": "e23f67f1-3c10-4706-8d25-424daa61188f",
+        "FL": "1",
+        "name": "Meeting R3"
+    },
+    "MT02": {
+        "uuid": "e58beac8-b844-41bf-9b98-b87700be6ff8",
+        "FL": "1",
+        "name": "Meeting R2"
+    },
+    "PT01": {
+        "uuid": "60d6c6d2-a0ad-4f84-b007-0abd59a9dc14",
+        "FL": "1",
+        "name": "Pantry"
+    },
+    "MT01": {
+        "uuid": "3950178e-8c17-41c3-b49a-c79f9f774bcd",
+        "FL": "1",
+        "name": "Meeting R1"
+    },
+    "EO01": {
+        "uuid": "58154f2c-59d6-4407-afc5-93e89887d270",
+        "FL": "1",
+        "name": "EO"
+    },
+    "L2H": {
+        "uuid": "884471be-eaf3-4e9c-abeb-05e0b19eb9af",
+        "FL": "2",
+        "name": "Hall Stair"
+    },
+    "L2WC2": {
+        "uuid": "d7536693-b6cc-45d3-a132-efe153c4c105",
         "FL": "2",
         "name": "L2 Women WC"
     },
-    "LT20RC02" : {
-        "uuid" : "884471be-eaf3-4e9c-abeb-05e0b19eb9af",
+    "L2WC3": {
+        "uuid": "b6703e4f-ecc7-46dc-abbb-598347ba9779",
         "FL": "2",
-        "name": "Hall Stair"
+        "name": "L2 Mate"
+    },
+    "L2WC1": {
+        "uuid": "2c3e6ef9-b3ab-46d1-8dda-bfca1116e08a",
+        "FL": "2",
+        "name": "L2 Men WC"
+    },
+    "L2H3": {
+        "uuid": "f73d39f6-432c-4593-91ca-db836c45d1e0",
+        "FL": "2",
+        "name": "L2-C3"
+    },
+    "L2H2": {
+        "uuid": "74b06171-a5c8-4d24-97ed-dc8f8428fc20",
+        "FL": "2",
+        "name": "L2-C2"
+    },
+    "L2H1": {
+        "uuid": "5d953c31-fddb-45ab-8f3d-d2928ac5e2a2",
+        "FL": "2",
+        "name": "L2-C1"
+    },
+    "ST1": {
+        "uuid": "755a39a9-4246-49c6-a791-2ba32b7f75a9",
+        "FL": "2",
+        "name": "Storage room"
+    },
+    "EC1": {
+        "uuid": "d7906143-7f8a-463b-b6d8-c9bcc1309db2",
+        "FL": "2",
+        "name": "Electrical room"
+    },
+    "OF2": {
+        "uuid": "2fe4bee9-b69a-4c75-bb20-940f084e8671",
+        "FL": "2",
+        "name": "Office2"
+    },
+    "OF1": {
+        "uuid": "fede883c-0e2a-479c-ac61-182685af4a62",
+        "FL": "2",
+        "name": "Office1"
+    },
+    "MGC": {
+        "uuid": "5d53a7d0-9f45-4f74-bae9-23750a039f0c",
+        "FL": "2",
+        "name": "MGC"
     }
 }
