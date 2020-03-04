@@ -127,6 +127,10 @@ class Daikinagent(Agent):
 
         _log.info("Get Message : {}".format(message))
         msg = message
+        print(msg)
+        print(msg)
+        print(msg)
+
         # print(msg)
         device_id = msg.get('device_id')
         command = msg.get('command')
@@ -142,7 +146,7 @@ class Daikinagent(Agent):
                               startregis=2006, startregisr=2012)
 
         # self.daikin.getDeviceStatus()
-        self.daikin.setDeviceStatus(command)
+        self.daikin.setDeviceStatus(msg)
         # self.daikin.getDeviceStatus()
         del self.daikin
 
