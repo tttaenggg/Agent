@@ -98,7 +98,7 @@ class Aeotecagent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        with open(self.iplist_path) as f:
+        with open(os.environ['VOLTTRON_ROOT']+self.iplist_path) as f:
             self.members = json.load(f)
 
         f.close()
