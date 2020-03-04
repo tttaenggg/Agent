@@ -48,19 +48,32 @@ class API:
         getDeviceStatusResult = True
 
         try:
-            print("Get Status Telnet - Wisco")
+            print("Get Status Telnet - Weather Station")
             # open connection
             tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
             print(tn)
 
-            send_mess = '#01RAI'                                                                # EDIT !!!!!!!!
-            tn.write((send_mess + "\r").encode('ascii'))
+            raw_data = {}
 
-            # read data
-            raw_data = (tn.read_until(b"\r").decode('ascii'))[3:-1]
-            # raw_data = tn.read_all()
-            # print(tn.read_eager())
-            print("Data: {}".format(raw_data))
+            # ambient temp
+            send_mess = b'\x01\x03\x00\x00\x00\x01\x84\x0A'
+            tn.write(send_mess)
+            raw_data['ambienttemp'] = int((tn.read_some().hex())[6:-4], 16) / 10
+
+            # radiation
+            send_mess = b'\x01\x03\x00\x0E\x00\x01\xE5\xC9'
+            tn.write(send_mess)
+            raw_data['radiation'] = int((tn.read_some().hex())[6:-4], 16)
+
+            # wind speed
+            send_mess = b'\x01\x03\x00\x16\x00\x01\x65\xCE'
+            tn.write(send_mess)
+            raw_data['windspeed'] = int((tn.read_some().hex())[6:-4], 16) / 10
+
+            # wind direction
+            send_mess = b'\x01\x03\x00\x15\x00\x01\x95\xCE'
+            tn.write(send_mess)
+            raw_data['winddir'] = int((tn.read_some().hex())[6:-4], 16)
 
             # closed connection
             tn.close()
@@ -81,12 +94,18 @@ class API:
         # conve_json = json.loads(data)
         print(data)
 
-        self.set_variable('moduletemp', data)
+        self.set_variable('ambienttemp', data['ambienttemp'])
+        self.set_variable('radiation', data['radiation'])
+        self.set_variable('windspeed', data['windspeed'])
+        self.set_variable('winddir', data['winddir'])
 
     def printDeviceStatus(self):
         # now we can access the contents of the JSON like any other Python object
         print(" the current status is as follows:")
-        print(" module temp = {}".format(self.get_variable('moduletemp')))
+        print(" ambient temp = {}".format(self.get_variable('ambienttemp')))
+        print(" radiation = {}".format(self.get_variable('radiation')))
+        print(" wind speed = {}".format(self.get_variable('windspeed')))
+        print(" wind direction = {}".format(self.get_variable('winddir')))
 
     # ----------------------------------------------------------------------
 
@@ -94,10 +113,10 @@ class API:
 # This main method will not be executed when this class is used as a module
 def main():
     # -------------Kittchen----------------
-    wisco = API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor', ip='192.168.10.11', port=93)
+    weatherstation = API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor', ip='192.168.10.11', port=93)
 
-    wisco.getDeviceStatus()
-    # time.sleep(3)
+    weatherstation.getDeviceStatus()
+    # weatherstation.sleep(3)
 
 
 if __name__ == "__main__": main()
