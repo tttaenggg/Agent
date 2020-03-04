@@ -18,7 +18,7 @@ from Agent import settings
 import pyrebase
 from datetime import datetime
 import asyncio, concurrent.futures
-
+import os
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
@@ -96,7 +96,7 @@ class Smokeagent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        with open(self.iplist_path) as f:
+        with open(os.environ['VOLTTRON_ROOT']+self.iplist_path) as f:
             self.members = json.load(f)
 
         f.close()

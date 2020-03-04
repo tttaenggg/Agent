@@ -3,5 +3,5 @@
   "agentid": "Aeotecagent", #Integers
   "message": "Hello From Aeotec", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/AeotecAgent/iplist.json"
+  "pathconf" : "/Agent/AeotecAgent/iplist.json"
 }

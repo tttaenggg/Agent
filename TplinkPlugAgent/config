@@ -3,5 +3,5 @@
   "agentid": "plugagent", #Integers
   "message": "Hello From TpLink Smart Plug", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/TplinkPlugAgent/iplist.json"
+  "pathconf" : "/Agent/TplinkPlugAgent/iplist.json"
 }

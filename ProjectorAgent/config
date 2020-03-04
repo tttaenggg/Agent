@@ -3,5 +3,5 @@
   "agentid": "projectoragent", #Integers
   "message": "Hello From Projector", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/ProjectorAgent/iplist.json"
+  "pathconf" : "/Agent/ProjectorAgent/iplist.json"
 }
