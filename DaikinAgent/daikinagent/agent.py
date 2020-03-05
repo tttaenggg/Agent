@@ -128,17 +128,17 @@ class Daikinagent(Agent):
 
         _log.info("Get Message : {}".format(message))
         msg = message
-        print(msg)
-        print(msg)
-        print(msg)
+        #print(msg)
+        #print(msg)
+        #print(msg)
 
-        # print(msg)
+        # #print(msg)
         device_id = msg.get('device_id')
         command = msg.get('command')
 
-        print(device_id)
-        print(command)
-        print("----------------------------------------------")
+        #print(device_id)
+        #print(command)
+        #print("----------------------------------------------")
         device_info = self.members.get(device_id)
 
         self.daikin = api.API(model='daikin', type='AC', api='API', agent_id='ACAgent',

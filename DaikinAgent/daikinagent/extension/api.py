@@ -85,19 +85,19 @@ class API:
     '''
 
     # ----------------------------------------------------------------------
-    # getDeviceStatus(), getDeviceStatusJson(data), printDeviceStatus()
+    # getDeviceStatus(), getDeviceStatusJson(data), #printDeviceStatus()
     def getDeviceStatus(self):
         url = str(self.get_variable("url"))
 
         try:
             r = requests.get((url+"/aircon/get_control_info"),
-                              timeout=20);
+                              timeout=20)
 
-            print("{0} Agent is querying its current status (status:{1}) please wait ...".format(self.get_variable('agent_id'), r.status_code))
-            format(self.variables.get('agent_id', None), str(r.status_code))
+            #print("{0} Agent is querying its current status (status:{1}) please wait ...".format(self.get_variable('agent_id'), r.status_code))
+            #format(self.variables.get('agent_id', None), str(r.status_code))
 
             q = requests.get((url+"/aircon/get_sensor_info"),
-                              timeout=20);
+                              timeout=20)
 
             if r.status_code == 200:
 
@@ -105,12 +105,13 @@ class API:
                 if self.debug is True:
                     self.printDeviceStatus()
             else:
-                print (" Received an error from server, cannot retrieve results")
+                #print (" Received an error from server, cannot retrieve results")
                 getDeviceStatusResult = False
 
         except Exception as er:
             print(er)
-            print('ERROR: classAPI_PhilipsHue failed to getDeviceStatus')
+            pass
+            #print('ERROR: classAPI_PhilipsHue failed to getDeviceStatus')
 
     def getDeviceStatusJson(self, r, q):
         param = json.loads(r.text)['param']
@@ -202,15 +203,10 @@ class API:
 
     # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
     def setDeviceStatus(self, postmsg):
-        print (type((postmsg)))
+        #print (type((postmsg)))
         # postmsg = json.loads(postmsg)
         # print (postmsg)
         # print(type((postmsg)))
-
-
-
-
-
         url = str(self.get_variable("url"))
         # postmsg = str(postmsg)
 
@@ -282,12 +278,12 @@ class API:
                     elif (postmsg['swing']) == 'VH':
                         data = 'f_dir=' + '3'
 
-        print("sending requests put")
-        print(data)
+        #print("sending requests put")
+        #print(data)
         r = requests.post((url+"/aircon/set_control_info?"+data),
             headers={"Authorization": "Bearer daikin"}, data= '', timeout=20);
-        print(" after send a POST request: {}".format(r.status_code))
-        print(r)
+        #print(" after send a POST request: {}".format(r.status_code))
+        #print(r)
 
     def isPostMsgValid(self, postmsg):  # check validity of postmsg
         dataValidity = True
