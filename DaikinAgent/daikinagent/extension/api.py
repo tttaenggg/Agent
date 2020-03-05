@@ -129,7 +129,7 @@ class API:
         if mode == '1':
             strmode = 'COLD'
         if mode == '2':
-            strmode = 'DEHUMDIFICATOR'
+            strmode = 'DRY'
         if mode == '4':
             strmode = 'HOT'
         if mode == '0':
@@ -192,14 +192,14 @@ class API:
 
         # now we can access the contents of the JSON like any other Python object
         print(" the current status is as follows:")
-        # print(" status = {}".format(self.get_variable('status')))
-        # print(" current_temperature = {}".format(self.get_variable('current_temperature')))
-        # print(" set_temperature = {}".format(self.get_variable('set_temperature')))
-        # print(" set_humidity = {}".format(self.get_variable('set_humidity')))
-        # print(" mode = {}".format(self.get_variable('mode')))
-        # print(" fan = {}".format(self.get_variable('fan')))
-        # print(" swing = {}".format(self.get_variable('swing')))
-        # print("---------------------------------------------")
+        print(" status = {}".format(self.get_variable('status')))
+        print(" current_temperature = {}".format(self.get_variable('current_temperature')))
+        print(" set_temperature = {}".format(self.get_variable('set_temperature')))
+        print(" set_humidity = {}".format(self.get_variable('set_humidity')))
+        print(" mode = {}".format(self.get_variable('mode')))
+        print(" fan = {}".format(self.get_variable('fan')))
+        print(" swing = {}".format(self.get_variable('swing')))
+        print("---------------------------------------------")
 
     # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
     def setDeviceStatus(self, postmsg):
@@ -216,6 +216,8 @@ class API:
                 mode = '3'
             if mode == 'DEHUMDIFICATOR':
                 mode = '2'
+            if mode == 'DRY':
+                mode = '2'
             if mode == 'HOT':
                 mode = '4'
             if mode == 'AUTO':
@@ -226,21 +228,32 @@ class API:
             # if  type(postmsg)== str:
             #     postmsg = eval(postmsg)
 
-            for k, v in postmsg.items():
-                if k == 'stemp':
-                    stemp = str((postmsg['stemp']))
-                    data = 'stemp='+stemp
+            data0 = ''
+            i = 0
 
-                elif k == 'status':
+            for k, v in postmsg.items():
+
+                if k == 'status':
                     if (postmsg['status']) == "ON":
                         status = "1"
                         data = 'pow=1'
                     elif (postmsg['status']) == "OFF":
                         status = "0"
                         data = 'pow=0'
-                elif k == 'mode':
+
+                    if i < 1:
+                        data0 = data0+data
+                    else:
+                        data0 = data0 + '&' + data
+                    i = i+1
+
+
+
+                if k == 'mode':
                     if (postmsg['mode']) == 'COLD':
                         data = 'mode=' + '1'
+                    if (postmsg['mode']) == 'DRY':
+                        data = 'mode=' + '2'
                     if (postmsg['mode']) == 'DEHUMDIFICATOR':
                         data = 'mode=' + '2'
                     if (postmsg['mode']) == 'FAN':
@@ -252,23 +265,45 @@ class API:
                     if (postmsg['mode']) == 'FAN':
                         data = 'mode=' + '0'
 
-                elif k == 'fan':
-                    if (postmsg['fan']) == '1':
+                    if i < 1:
+                        data0 = data0+data
+                    else:
+                        data0 = data0 + '&' + data
+                    i = i+1
+
+
+                if k == 'stemp':
+                    stemp = str((postmsg['stemp']))
+                    data = 'stemp='+stemp
+                    if i < 1:
+                        data0 = data0+data
+                    else:
+                        data0 = data0 + '&' + data
+                    i = i+1
+
+                if k == 'FAN':
+                    if (postmsg['FAN']) == '1':
                         data = 'f_rate=' + ('3')
-                    elif (postmsg['fan']) == '2':
+                    elif (postmsg['FAN']) == '2':
                         data = 'f_rate=' + ('4')
-                    elif (postmsg['fan']) == '3':
+                    elif (postmsg['FAN']) == '3':
                         data = 'f_rate=' + ('5')
-                    elif (postmsg['fan']) == '4':
+                    elif (postmsg['FAN']) == '4':
                         data = 'f_rate=' + ('6')
-                    elif (postmsg['fan']) == '5':
+                    elif (postmsg['FAN']) == '5':
                         data = 'f_rate=' + ('7')
-                    elif (postmsg['fan']) == 'AUTO':
+                    elif (postmsg['FAN']) == 'AUTO':
                         data = 'f_rate=' + 'A'
-                    elif (postmsg['fan']) == 'SILENT':
+                    elif (postmsg['FAN']) == 'SILENT':
                         data = 'f_rate=' + 'B'
 
-                elif k == 'swing':
+                    if i < 1:
+                        data0 = data0+data
+                    else:
+                        data0 = data0 + '&' + data
+                    i = i+1
+
+                if k == 'swing':
                     if (postmsg['swing']) == 'off':
                         data = 'f_dir=' + '0'
                     elif (postmsg['swing']) == 'vertical':
@@ -277,10 +312,17 @@ class API:
                         data = 'f_dir=' + '2'
                     elif (postmsg['swing']) == 'VH':
                         data = 'f_dir=' + '3'
+                    if i < 1:
+                        data0 = data0+data
+                    else:
+                        data0 = data0 + '&' + data
+                    i = i+1
 
-        #print("sending requests put")
-        #print(data)
-        r = requests.post((url+"/aircon/set_control_info?"+data),
+
+        print("sending requests put")
+        print(data0)
+        r = requests.post((url+"/aircon/set_control_info?"+data0),
+
             headers={"Authorization": "Bearer daikin"}, data= '', timeout=20);
         #print(" after send a POST request: {}".format(r.status_code))
         #print(r)
@@ -299,8 +341,8 @@ def main():
              baudrate=9600, startregis=2006, startregisr=2012)
     # AC.setDeviceStatus({'swing':'ON','device': '1DAIK1200138'})
     # AC.setDeviceStatus({"status": "ON","username": "hive5"})
-    # AC.setDeviceStatus({'status': 'ON', 'stemp':'24','device': '1DAIK1200138'})
-    # AC.setDeviceStatus({'status': 'ON', 'mode': 'COLD', 'device': '1DAIK1200138'})
+    # AC.setDeviceStatus({'status': 'ON', 'mode': 'COLD', 'FAN': '5', 'stemp': '23'})
+    # AC.setDeviceStatus({'status': 'ON', 'mode': 'DRY', 'device': '1DAIK1200138'})
     # AC.setDeviceStatus({'status': 'ON', 'device': '1DAIK1200138'})
     # time.sleep(6)
     # AC.setDeviceStatus({"status": "OFF"})
