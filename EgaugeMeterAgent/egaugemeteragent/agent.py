@@ -70,6 +70,7 @@ class Egaugemeteragent(Agent):
         db.child(gateway_id).child('devicetype').child('powermeter').child('floor2plug').set(meter.variables['floor2plug'])
         db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter.variables['floor2light'])
         db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter.variables['floor2air'])
+        db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter.variables['edb'])
 
         # except Exception as err:
         #     pass
