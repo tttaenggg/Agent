@@ -124,7 +124,7 @@ class Weatherstationtelnetagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(30))
+    @Core.schedule(periodic(60))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []

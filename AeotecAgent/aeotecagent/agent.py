@@ -127,7 +127,7 @@ class Aeotecagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(20))
+    @Core.schedule(periodic(120))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []

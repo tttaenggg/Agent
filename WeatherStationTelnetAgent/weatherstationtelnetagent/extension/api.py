@@ -51,7 +51,7 @@ class API:
             print("Get Status Telnet - Weather Station")
             # open connection
             tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            print(tn)
+            # print(tn)
 
             raw_data = {}
 
@@ -87,7 +87,7 @@ class API:
                 self.set_variable('offline_count', self.get_variable('offline_count')+1)
         except Exception as er:
             print (er)
-            print('ERROR: classAPI_Telnet_Wisco failed to getDeviceStatus')
+            print('ERROR: classAPI_Telnet_WeatherStation failed to getDeviceStatus')
 
     def getDeviceStatusJson(self, data):
 

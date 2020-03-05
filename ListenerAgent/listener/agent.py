@@ -117,6 +117,11 @@ class ListenerAgent(Agent):
         # checker.start()
 
 
+    @Core.receiver('onstop')
+    def onstop(self, sender, **kwargs):
+        self.listener.join()
+
+
     def worker(self):
         _log.info("Worker Thread")
         for i in range(1,100):
@@ -180,6 +185,9 @@ class ListenerAgent(Agent):
 
 def main(argv=sys.argv):
     '''Main method called by the eggsecutable.'''
+    from gevent import monkey
+
+    monkey.patch_all()
     try:
         utils.vip_main(ListenerAgent, version=__version__)
 
