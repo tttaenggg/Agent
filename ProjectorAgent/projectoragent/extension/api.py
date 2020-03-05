@@ -79,8 +79,8 @@ class API:
             # print("DATA status = {}".format(_data))
 
             # open connection
-            # tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            # print(tn)
+            tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
+            print(tn)
 
             # send data
             key_buttom = ['power', 'home', "menu", "up", "down", "left", "right", "ok", "back", "vup", "vdown", "mute", "source", "info", "displaymode"]
@@ -89,11 +89,11 @@ class API:
                     send_mess = self.get_variable("command") + _data
                     print("send_mess: {}".format(send_mess))
                     print("Sending message...")
-                    # tn.write((send_mess + "\r").encode('ascii'))
-                    # tn.close()
+                    tn.write((send_mess + "\r").encode('ascii'))
+                    tn.close()
 
             except:
-                # tn.close()
+                tn.close()
                 print("ERROR: classAPI_Telnet_Projector connection failure! @ setDeviceStatus")
                 setDeviceStatusResult = False
         else:
