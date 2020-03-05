@@ -62,13 +62,32 @@ class Invertertelnetagent(Agent):
 
             inverter.getDeviceStatus()
 
+
             # TODO : Update Firebase with _status variable
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('DT').set(multisensor.variables['unitTime'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('HUMIDITY').set(multisensor.variables['humidity'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('ILLUMINANCE').set(multisensor.variables['illuminance'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('MOTION').set(multisensor.variables['motion'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TAMPER').set(multisensor.variables['tamper'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TEMPERATURE').set(multisensor.variables['temperature'])
+            try:
+                db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('MODE_SELECTION').set(inverter.variables['mode_select'])
+                db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('BATTERY_POWER').set(inverter.variables['batt_P'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('BATTERY_PERCENTAGE').set(inverter.variables['batt_percen'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('LOAD_ACTIVE_POWER').set(inverter.variables['load_act_P'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('PV_DAILY_POWER_GEN').set(inverter.variables['PV_daily_P_gen'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('PV_TOTAL_POWER_GEN').set(inverter.variables['PV_total_P_gen'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('DAILY_LOAD_CONSUMPTION').set(inverter.variables['daily_load_con'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('DAILY_POWER_INTAKE_FROM_GRID').set(inverter.variables['daily_P_intake_grid'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('TOTAL_POWER_INTAKE_FROM_GRID').set(inverter.variables['total_P_intake_grid'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('DAILY_POWER_FED_TO_GRID').set(inverter.variables['daily_P_fed_grid'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('TOTAL_POWER_FED_TO_GRID').set(inverter.variables['total_P_fed_grid'])
+                db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('PV_TOTAL_POWER').set(inverter.variables['PV_total_P'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('OUTPUT_POWER').set(inverter.variables['output_P'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('SOH').set(inverter.variables['SOH'])
+                # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('BMS_BATTERY_STATUS').set(inverter.variables['BMS_batt_status'])
+                #
+
+
+            except Exception as err:
+                print("ERROR firebase: {}".format(err))
+                pass
+
 
         except Exception as err:
             pass
@@ -130,6 +149,9 @@ class Invertertelnetagent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Invertertelnetagent,
                    version=__version__)
 
