@@ -38,11 +38,10 @@ try:
         "storageBucket": settings.FIREBASE['storageLight']
     }
     firebase = pyrebase.initialize_app(config)
-    db =firebase.database()
+    db = firebase.database()
 
 except Exception as er:
     _log.debug(er)
-
 
 
 class Weatherstationtelnetagent(Agent):
@@ -59,6 +58,7 @@ class Weatherstationtelnetagent(Agent):
 
         def getstatus_task(devices):
 
+
             try:
                 weatherstation = api.API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor',
                                          ip=(devices[1])['ip'], port=(devices[1])['port'])
@@ -73,9 +73,11 @@ class Weatherstationtelnetagent(Agent):
                 db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('WINDDIRECTION').set(weatherstation.variables['winddir'])
 
             except Exception as err:
+                _log.error(err)
                 pass
 
         try:
+
             loop.run_in_executor(None, getstatus_task, devices)
             # response1 = await future1
             loop.close()
@@ -149,6 +151,10 @@ class Weatherstationtelnetagent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
+
     utils.vip_main(Weatherstationtelnetagent,
                    version=__version__)
 
