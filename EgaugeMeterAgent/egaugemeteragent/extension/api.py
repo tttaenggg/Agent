@@ -49,7 +49,7 @@ class API:
 
         getDeviceStatusResult = True
         import requests
-        url = 'http://'+self.get_variable("ip") + "/cgi-bin/egauge?noteam&tot"
+        url = 'http://'+self.get_variable("ip") + "/cgi-bin/egauge?inst&tot"
         print(url)
         response = urllib.request.urlopen(url)
         data = response.read()  # a `bytes` object
@@ -57,59 +57,64 @@ class API:
         soup = BeautifulSoup(text, 'xml')
 
         try:
-            for h in soup.find_all(title="MDB PANEL"):
-                mdb_text = h.find('energy')
+            for h in soup.find_all(n="MDB PANEL"):
+                mdb_text = h.find('i')
 
             mdb = (mdb_text.text)
         except:
-            print ("error no mdb energy data")
+            print ("error no mdb i data")
 
         try:
-            for h in soup.find_all(title="1 Floor  Plug"):
-                floor1plug_text = h.find('energy')
+            for h in soup.find_all(n="1 Floor Plug"):
+                floor1plug_text = h.find('i')
             floor1plug = (floor1plug_text.text)
         except:
-            print("error no 1floorplug energy data")
+            print("error no 1floorplug i data")
 
         try:
-            for h in soup.find_all(title="1 Floor  Light"):
-                floor1light_text = h.find('energy')
+            for h in soup.find_all(n="1 Floor Light"):
+                floor1light_text = h.find('i')
             floor1light = (floor1light_text.text)
         except:
-            print("error no 1floorlight energy data")
+            print("error no 1floorlight i data")
 
             # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         try:
-            for h in soup.find_all(title = "1 Floor  Air"):
-                floor1air_text = h.find('energy')
+            for h in soup.find_all(n="1 Floor Air"):
+                floor1air_text = h.find('i')
             floor1air = (floor1air_text.text)
         except:
-            print("error no 1floorlight energy data")
-
-
-
+            print("error no 1floorlight i data")
 
         try:
-            for h in soup.find_all(title="2 Floor  Plug"):
-                floor2plug_text = h.find('energy')
+            for h in soup.find_all(n="2 Floor Plug"):
+                floor2plug_text = h.find('i')
             floor2plug = (floor2plug_text.text)
         except:
-            print("error no 2floorplug energy data")
+            print("error no 2floorplug i data")
 
         try:
-            for h in soup.find_all(title="2 Floor  Light"):
-                floor2light_text = h.find('energy')
+            for h in soup.find_all(n="2 Floor Light"):
+                floor2light_text = h.find('i')
             floor2light = (floor2light_text.text)
         except:
-            print("error no 2floorlight energy data")
+            print("error no 2floorlight i data")
 
             # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         try:
-            for h in soup.find_all(title="2 Floor  Air"):
-                floor2air_text = h.find('energy')
+            for h in soup.find_all(n="2 Floor Air"):
+                floor2air_text = h.find('i')
             floor2air = (floor2air_text.text)
         except:
-            print("error no 2floorlight energy data")
+            print("error no 2floorlight i data")
+
+
+        try:
+            for h in soup.find_all(n="EBD"):
+                edb_text = h.find('i')
+            edb = (edb_text.text)
+        except:
+            print("error no 2floorlight i data")
 
 
         self.set_variable('mdb', str(mdb))
@@ -119,6 +124,7 @@ class API:
         self.set_variable('floor2plug', str(floor2plug))
         self.set_variable('floor2light', str(floor2light))
         self.set_variable('floor2air', str(floor2air))
+        self.set_variable('edb', str(edb))
         self.printDeviceStatus()
 
     def printDeviceStatus(self):
@@ -131,6 +137,7 @@ class API:
         print(" floor2plug = {}".format(self.get_variable('floor2plug')))
         print(" floor2light = {}".format(self.get_variable('floor2light')))
         print(" floor2air = {}".format(self.get_variable('floor2air')))
+        print(" edb = {}".format(self.get_variable('edb')))
 
 
     # ----------------------------------------------------------------------
@@ -139,7 +146,7 @@ class API:
 # This main method will not be executed when this class is used as a module
 def main():
     # -------------Kittchen----------------
-    meter = API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter', device='egauge50040',
+    meter = API(model='eGauge', api='API3', agent_id='05EGA010101', types='imeter', device='egauge50040',
                 ip='192.168.10.21', port=82)
 
     meter.getDeviceStatus()
