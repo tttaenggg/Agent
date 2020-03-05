@@ -123,7 +123,7 @@ class Openclosedagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(60))
+    @Core.schedule(periodic(30))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []

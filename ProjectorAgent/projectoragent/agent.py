@@ -75,7 +75,7 @@ class Projectoragent(Agent):
         msg = message
         # print(msg)
         device_id = msg.get('device_id')
-        command = msg.get('command')
+        command = json.loads(msg.get('command'))
 
         print(device_id)
         print(command)

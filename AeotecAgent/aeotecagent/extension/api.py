@@ -43,23 +43,23 @@ class API:
     '''    
 
     # ----------------------------------------------------------------------
-    # getDeviceStatus(), getDeviceStatusJson(data), printDeviceStatus()
+    # getDeviceStatus(), getDeviceStatusJson(data), #printDeviceStatus()
     def getDeviceStatus(self):
         try:
             headers = {"Authorization": self.get_variable("bearer")}
             url = str(self.get_variable("url") + self.get_variable("device"))
             r = requests.get(url,
                              headers=headers, timeout=20);
-            print(" {0}Agent is querying its current status (status:{1}) please wait ...")
+            #print(" {0}Agent is querying its current status (status:{1}) please wait ...")
             format(self.variables.get('agent_id', None), str(r.status_code))
-            print(r.status_code)
+            #print(r.status_code)
             if r.status_code == 200:
                 getDeviceStatusResult = False
                 self.getDeviceStatusJson(r.text)
                 if self.debug is True:
                     self.printDeviceStatus()
             else:
-                print (" Received an error from server, cannot retrieve results")
+                #print (" Received an error from server, cannot retrieve results")
                 getDeviceStatusResult = False
 
             if getDeviceStatusResult==True:
@@ -67,13 +67,14 @@ class API:
             else:
                 self.set_variable('offline_count', self.get_variable('offline_count')+1)
         except Exception as er:
-            print (er)
-            print('ERROR: classAPI_FirstAlert failed to getDeviceStatus')
+            pass
+            #print (er)
+            #print('ERROR: classAPI_FirstAlert failed to getDeviceStatus')
 
     def getDeviceStatusJson(self, data):
 
         conve_json = json.loads(data)
-        print(conve_json)
+        #print(conve_json)
 
         self.set_variable('device_type', str(conve_json["type"]).upper())
         self.set_variable('unitTime', str(conve_json["unitTime"]))
@@ -86,17 +87,18 @@ class API:
         self.set_variable('illuminance', str(conve_json["illuminance"]).upper())
 
     def printDeviceStatus(self):
-        print(" the current status is as follows:")
-        print(" unitTime = {}".format(self.get_variable('unitTime')))
-        print(" device_type = {}".format(self.get_variable('device_type')))
-        print(" device_label = {}".format(self.get_variable('device_label')))
-        print(" motion = {}".format(self.get_variable('motion')))
-        print(" temperature = {}".format(self.get_variable('temperature')))
-        print(" battery = {}".format(self.get_variable('battery')))
-        print(" tamper = {}".format(self.get_variable('tamper')))
-        print(" humidity = {}".format(self.get_variable('humidity')))
-        print(" illuminance = {}".format(self.get_variable('illuminance')))
-        print("---------------------------------------------")
+        pass
+        #print(" the current status is as follows:")
+        #print(" unitTime = {}".format(self.get_variable('unitTime')))
+        #print(" device_type = {}".format(self.get_variable('device_type')))
+        #print(" device_label = {}".format(self.get_variable('device_label')))
+        #print(" motion = {}".format(self.get_variable('motion')))
+        #print(" temperature = {}".format(self.get_variable('temperature')))
+        #print(" battery = {}".format(self.get_variable('battery')))
+        #print(" tamper = {}".format(self.get_variable('tamper')))
+        #print(" humidity = {}".format(self.get_variable('humidity')))
+        #print(" illuminance = {}".format(self.get_variable('illuminance')))
+        #print("---------------------------------------------")
 
 def main():
 

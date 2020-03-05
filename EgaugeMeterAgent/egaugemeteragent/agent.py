@@ -113,7 +113,7 @@ class Egaugemeteragent(Agent):
 
         pass
 
-    @Core.schedule(periodic(5))
+    @Core.schedule(periodic(60))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
@@ -132,6 +132,9 @@ class Egaugemeteragent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Egaugemeteragent,
                    version=__version__)
 

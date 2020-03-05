@@ -51,7 +51,7 @@ class API:
             print("Get Status Telnet - Wisco")
             # open connection
             tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            print(tn)
+            # print(tn)
 
             send_mess = '#01RAI'                                                                # EDIT !!!!!!!!
             tn.write((send_mess + "\r").encode('ascii'))
@@ -73,14 +73,13 @@ class API:
             else:
                 self.set_variable('offline_count', self.get_variable('offline_count')+1)
         except Exception as er:
-            print (er)
+            print(er)
             print('ERROR: classAPI_Telnet_Wisco failed to getDeviceStatus')
 
     def getDeviceStatusJson(self, data):
 
         # conve_json = json.loads(data)
         print(data)
-
         self.set_variable('moduletemp', data)
 
     def printDeviceStatus(self):

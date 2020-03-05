@@ -166,7 +166,7 @@ class Daikinagent(Agent):
         _log.info("Get Message : {}".format(message))
         msg = message
 
-        # print(msg)
+        # #print(msg)
         device_id = msg.get('device_id')
         command = msg.get('command')
 
@@ -207,7 +207,7 @@ class Daikinagent(Agent):
         self.daikin.setDeviceStatus(msg)
         del self.daikin
 
-    @Core.schedule(periodic(60))
+    @Core.schedule(periodic(120))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
@@ -231,6 +231,9 @@ class Daikinagent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Daikinagent,
                    version=__version__)
 

@@ -119,7 +119,7 @@ class Wiscotelnetagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(30))
+    @Core.schedule(periodic(60))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
@@ -144,6 +144,9 @@ class Wiscotelnetagent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Wiscotelnetagent,
                    version=__version__)
 
