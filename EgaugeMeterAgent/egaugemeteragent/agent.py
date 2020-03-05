@@ -56,22 +56,23 @@ class Egaugemeteragent(Agent):
 
         _log.info(msg="Start Get Status from {}".format(devices[1]))
 
-        try:
-            meter = api.API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter',
-                            device=(devices[1])['meter_id'], ip=(devices[1])['ip'], port=(devices[1])['port'])
+        # try:
 
-            meter.getDeviceStatus()
+        meter = api.API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter',
+                        device=(devices[1])['meter_id'], ip=(devices[1])['ip'], port=(devices[1])['port'])
 
-            # TODO : Update Firebase with _status variable
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('DT').set(multisensor.variables['unitTime'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('HUMIDITY').set(multisensor.variables['humidity'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('ILLUMINANCE').set(multisensor.variables['illuminance'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('MOTION').set(multisensor.variables['motion'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TAMPER').set(multisensor.variables['tamper'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TEMPERATURE').set(multisensor.variables['temperature'])
+        meter.getDeviceStatus()
+        # TODO : Update Firebase with _status variable
+        db.child(gateway_id).child('devicetype').child('powermeter').child('mdb').set(meter.variables['mdb'])
+        db.child(gateway_id).child('devicetype').child('powermeter').child('floor1plug').set(meter.variables['floor1plug'])
+        db.child(gateway_id).child('devicetype').child('powermeter').child('floor1light').set(meter.variables['floor1light'])
+        db.child(gateway_id).child('devicetype').child('powermeter').child('floor1air').set(meter.variables['floor1air'])
+        db.child(gateway_id).child('devicetype').child('powermeter').child('floor2plug').set(meter.variables['floor2plug'])
+        db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter.variables['floor2light'])
+        db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter.variables['floor2air'])
 
-        except Exception as err:
-            pass
+        # except Exception as err:
+        #     pass
 
 
     def __init__(self, config_path,
@@ -111,7 +112,7 @@ class Egaugemeteragent(Agent):
 
         pass
 
-    @Core.schedule(periodic(20))
+    @Core.schedule(periodic(5))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
