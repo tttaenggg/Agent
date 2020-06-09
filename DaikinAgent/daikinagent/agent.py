@@ -231,9 +231,6 @@ class Daikinagent(Agent):
 
 def main():
     """Main method called to start the agent."""
-    from gevent import monkey
-
-    monkey.patch_all()
     utils.vip_main(Daikinagent,
                    version=__version__)
 

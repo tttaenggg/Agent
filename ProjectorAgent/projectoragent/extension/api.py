@@ -42,32 +42,6 @@ class API:
     '''
 
     # ----------------------------------------------------------------------
-    # getDeviceStatus(), printDeviceStatus()
-    def getDeviceStatus(self):
-        try:
-            print("Get Status Telnet - Projetor")
-            # open connection
-            # tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            # print(tn)
-
-            # tn.set_debuglevel(100)
-
-            # read data
-            # data = tn.read_all()
-            # print("Data: {}".format(data))
-
-            # closed connection
-            # tn.close()
-
-        except Exception as err:
-            print("Error: cannot connect host/port")
-
-    def printDeviceStatus(self):
-        # now we can access the contents of the JSON like any other Python object
-        print(" the current status is as follows:")
-        print(" label = {}".format(self.get_variable('label')))
-
-    # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
     def setDeviceStatus(self, postmsg):
         setDeviceStatusResult = True
 
@@ -79,8 +53,8 @@ class API:
             # print("DATA status = {}".format(_data))
 
             # open connection
-            # tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            # print(tn)
+            tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
+            print(tn)
 
             # send data
             key_buttom = ['power', 'home', "menu", "up", "down", "left", "right", "ok", "back", "vup", "vdown", "mute", "source", "info", "displaymode"]
@@ -89,11 +63,11 @@ class API:
                     send_mess = self.get_variable("command") + _data
                     print("send_mess: {}".format(send_mess))
                     print("Sending message...")
-                    # tn.write((send_mess + "\r").encode('ascii'))
-                    # tn.close()
+                    tn.write((send_mess + "\r").encode('ascii'))
+                    tn.close()
 
             except:
-                # tn.close()
+                tn.close()
                 print("ERROR: classAPI_Telnet_Projector connection failure! @ setDeviceStatus")
                 setDeviceStatusResult = False
         else:
@@ -122,10 +96,10 @@ class API:
 # This main method will not be executed when this class is used as a module
 def main():
     # -------------Kittchen----------------
-    projector = API(model='Optoma', api='API3', agent_id='25PROPT101001', types='projector', ip='192.168.10.11', port=93, command='#')
+    projector = API(model='Optoma', api='API3', agent_id='25PROPT101001', types='projector', ip='192.168.10.11', port=81, command='projector#')
 
     # curtain.getDeviceStatus()
-    projector.setDeviceStatus({"status": "sou"})
+    projector.setDeviceStatus({"status": "menu"})
     time.sleep(3)
 
 
