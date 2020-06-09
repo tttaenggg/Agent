@@ -51,29 +51,39 @@ class Plugagent(Agent):
     """
 
     # TODO -- Need Revise again
-    def getstatus_proc(self, devices): # Function for MultiProcess
+    async def getstatus_proc(self, devices):  # Function for Asyncronous
 
         # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
-
         _log.info(msg="Start Get Status from {}".format(devices[1]))
+        loop = asyncio.get_event_loop()
 
-        try:
-            plug = api.API(model='TPlinkPlug', api='API3',
+        def getstatus_task(devices):
+
+            try:
+                plug = api.API(model='TPlinkPlug', api='API3',
                                agent_id='TPlinkPlugAgent', types='plug',
                                ip=devices[1], port=9999)
 
-            plug.getDeviceStatus()
+                plug.getDeviceStatus()
 
-            # TODO : Update Firebase with _status variable
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('STATUS').set(plug.variables['status'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('POWER').set(plug.variables['power'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('CURRENT').set(plug.variables['current'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('VOLTAGE').set(plug.variables['voltage'])
-            db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
+                # TODO : Update Firebase with _status variable
+                db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
+                db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('STATUS').set(plug.variables['status'])
+                db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('POWER').set(plug.variables['power'])
+                db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('CURRENT').set(plug.variables['current'])
+                db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('VOLTAGE').set(plug.variables['voltage'])
+                db.child(gateway_id).child('devicetype').child('plug').child(devices[0]).child('TIMESTAMP').set(datetime.now().replace(microsecond=0).isoformat())
 
+            except Exception as err:
+                pass
 
-        except Exception as err:
+        try:
+            loop.run_in_executor(None, getstatus_task, devices)
+            # response1 = await future1
+            loop.close()
+            res = await loop
+
+        except Exception as e:
             pass
 
 
@@ -164,6 +174,9 @@ class Plugagent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Plugagent,
                    version=__version__)
 
