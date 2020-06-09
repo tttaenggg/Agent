@@ -91,9 +91,9 @@ def main():
                   port=9999)
 
     TPLINK.getDeviceStatus()
-    TPLINK.setDeviceStatus({"status": "ON"})
+    # TPLINK.setDeviceStatus({"status": "ON"})
     # time.sleep(3)
-    TPLINK.getDeviceStatus()
+    # TPLINK.getDeviceStatus()
     # TPLINK.setDeviceStatus({"status": "OFF"})
     # time.sleep(3)
     # TPLINK.getDeviceStatus()
