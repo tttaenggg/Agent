@@ -5,15 +5,15 @@
             "scene_id" : "fl1_scene011",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "EO01", "status" : "ON"},
+                    "device_control" : {"device_id" : "EO01", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC103001", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC103001", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC103002", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC103002", "status" : "ON"},
                     "device_type" : "ac"
                 }
             ]
@@ -22,15 +22,15 @@
             "scene_id" : "fl1_scene012",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "EO01", "status" : "OFF"},
+                    "device_control" : {"device_id" : "EO01", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC103001", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC103001", "status" : "OFF"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC103002", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC103002", "status" : "OFF"},
                     "device_type" : "ac"
                 }
             ]
@@ -39,15 +39,15 @@
             "scene_id" : "fl1_scene013",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "EO01", "status" : "ON"},
+                    "device_control" : {"device_id" : "EO01", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC103001", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC103001", "status" : "OFF"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC103002", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC103002", "status" : "OFF"},
                     "device_type" : "ac"
                 }
             ]
@@ -56,51 +56,47 @@
             "scene_id" : "fl1_scene021",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "MT01", "status" : "ON"},
+                    "device_control" : {"device_id" : "MT01", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "MT02", "status" : "ON"},
+                    "device_control" : {"device_id" : "MT02", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "MT03", "status" : "ON"},
+                    "device_control" : {"device_id" : "MT03", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "MT04", "status" : "ON"},
+                    "device_control" : {"device_id" : "MT04", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "PT01", "status" : "ON"},
+                    "device_control" : {"device_id" : "PT01", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC101001", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC101001", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC101002", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC101002", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC101003", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC101003", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC101004", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC101004", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "SC999ALL", "status" : "DOWN"},
+                    "device_control" : {"device_id" : "SCWELALL", "status" : "DOWN"},
                     "device_type" : "curtain"
                 },
                 {
-                    "device_control" : {"deviceid" : "PT101001", "status" : "DOWN"},
-                    "device_type" : "projector"
-                },
-                {
-                    "device_control" : {"deviceid" : "SP101004", "status" : "ON"},
+                    "device_control" : {"device_id" : "SP101004", "status" : "ON"},
                     "device_type" : "plug"
                 }
             ]
@@ -109,51 +105,51 @@
             "scene_id" : "fl1_scene022",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "MT01", "status" : "ON"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "MT02", "status" : "OFF"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "MT03", "status" : "OFF"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "MT04", "status" : "ON"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "PT01", "status" : "ON"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "AC101001", "status" : "ON"},
-                    "device_type" : "ac"
-                },
-                {
-                    "device_control" : {"deviceid" : "AC101002", "status" : "ON"},
-                    "device_type" : "ac"
-                },
-                {
-                    "device_control" : {"deviceid" : "AC101003", "status" : "ON"},
-                    "device_type" : "ac"
-                },
-                {
-                    "device_control" : {"deviceid" : "AC101004", "status" : "ON"},
-                    "device_type" : "ac"
-                },
-                {
-                    "device_control" : {"deviceid" : "SC999ALL", "status" : "UP"},
+                    "device_control" : {"device_id" : "PT101001", "status" : "DOWN"},
                     "device_type" : "curtain"
                 },
                 {
-                    "device_control" : {"deviceid" : "PT101001", "status" : "DOWN"},
-                    "device_type" : "projector"
+                    "device_control" : {"device_id" : "MT01", "status" : "ON"},
+                    "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "SP101004", "status" : "ON"},
+                    "device_control" : {"device_id" : "MT02", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT03", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT04", "status" : "ON"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "PT01", "status" : "ON"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101001", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101002", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101003", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101004", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SC999ALL", "status" : "UP"},
+                    "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101004", "status" : "ON"},
                     "device_type" : "plug"
                 }
             ]
@@ -162,51 +158,47 @@
             "scene_id" : "fl1_scene023",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "MT01", "status" : "ON"},
+                    "device_control" : {"device_id" : "MT01", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "MT02", "status" : "OFF"},
+                    "device_control" : {"device_id" : "MT02", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "MT03", "status" : "OFF"},
+                    "device_control" : {"device_id" : "MT03", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "MT04", "status" : "ON"},
+                    "device_control" : {"device_id" : "MT04", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "PT01", "status" : "ON"},
+                    "device_control" : {"device_id" : "PT01", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC101001", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC101001", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC101002", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC101002", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC101003", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC101003", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC101004", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC101004", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "SC999ALL", "status" : "DOWN"},
+                    "device_control" : {"device_id" : "SCWELALL", "status" : "DOWN"},
                     "device_type" : "curtain"
                 },
                 {
-                    "device_control" : {"deviceid" : "PT101001", "status" : "DOWN"},
-                    "device_type" : "projector"
-                },
-                {
-                    "device_control" : {"deviceid" : "SP101004", "status" : "ON"},
+                    "device_control" : {"device_id" : "SP101004", "status" : "ON"},
                     "device_type" : "plug"
                 }
             ]
@@ -215,51 +207,51 @@
             "scene_id" : "fl1_scene024",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "MT01", "status" : "OFF"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "MT02", "status" : "OFF"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "MT03", "status" : "OFF"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "MT04", "status" : "OFF"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "PT01", "status" : "OFF"},
-                    "device_type" : "lighting"
-                },
-                {
-                    "device_control" : {"deviceid" : "AC101001", "status" : "OFF"},
-                    "device_type" : "ac"
-                },
-                {
-                    "device_control" : {"deviceid" : "AC101002", "status" : "OFF"},
-                    "device_type" : "ac"
-                },
-                {
-                    "device_control" : {"deviceid" : "AC101003", "status" : "OFF"},
-                    "device_type" : "ac"
-                },
-                {
-                    "device_control" : {"deviceid" : "AC101004", "status" : "OFF"},
-                    "device_type" : "ac"
-                },
-                {
-                    "device_control" : {"deviceid" : "SC999ALL", "status" : "DOWN"},
+                    "device_control" : {"device_id" : "PT101001", "status" : "UP"},
                     "device_type" : "curtain"
                 },
                 {
-                    "device_control" : {"deviceid" : "PT101001", "status" : "UP"},
-                    "device_type" : "projector"
+                    "device_control" : {"device_id" : "MT01", "status" : "OFF"},
+                    "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "SP101004", "status" : "OFF"},
+                    "device_control" : {"device_id" : "MT02", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT03", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT04", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "PT01", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101001", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101002", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101003", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101004", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SC999ALL", "status" : "DOWN"},
+                    "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101004", "status" : "OFF"},
                     "device_type" : "plug"
                 }
             ]
@@ -268,15 +260,15 @@
             "scene_id" : "fl1_scene031",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "BD01", "status" : "ON"},
+                    "device_control" : {"device_id" : "BD01", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC104001", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC104001", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "SP101002", "status" : "ON"},
+                    "device_control" : {"device_id" : "SP101002", "status" : "ON"},
                     "device_type" : "plug"
                 }
             ]
@@ -285,15 +277,15 @@
             "scene_id" : "fl1_scene032",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "BD01", "status" : "OFF"},
+                    "device_control" : {"device_id" : "BD01", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC104001", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC104001", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "SP101002", "status" : "ON"},
+                    "device_control" : {"device_id" : "SP101002", "status" : "ON"},
                     "device_type" : "plug"
                 }
             ]
@@ -302,15 +294,15 @@
             "scene_id" : "fl1_scene033",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "BD01", "status" : "OFF"},
+                    "device_control" : {"device_id" : "BD01", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC104001", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC104001", "status" : "OFF"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "SP101002", "status" : "OFF"},
+                    "device_control" : {"device_id" : "SP101002", "status" : "OFF"},
                     "device_type" : "plug"
                 }
             ]
@@ -319,31 +311,31 @@
             "scene_id" : "fl1_scene041",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "L2H", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H3", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC3", "status" : "ON"},
                     "device_type" : "lighting"
                 }
             ]
@@ -352,31 +344,31 @@
             "scene_id" : "fl1_scene042",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "L2H", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H3", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC3", "status" : "ON"},
                     "device_type" : "lighting"
                 }
             ]
@@ -385,31 +377,31 @@
             "scene_id" : "fl1_scene043",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "L2H", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2H", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H1", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2H1", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H2", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2H2", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H3", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2H3", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC1", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2WC1", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC2", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2WC2", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC3", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2WC3", "status" : "OFF"},
                     "device_type" : "lighting"
                 }
             ]
@@ -418,15 +410,15 @@
             "scene_id" : "fl2_scene011",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "OF1", "status" : "ON"},
+                    "device_control" : {"device_id" : "OF1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC201001", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC201001", "status" : "ON"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC201002", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC201002", "status" : "ON"},
                     "device_type" : "ac"
                 }
             ]
@@ -435,15 +427,15 @@
             "scene_id" : "fl2_scene012",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "OF1", "status" : "OFF"},
+                    "device_control" : {"device_id" : "OF1", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC201001", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC201001", "status" : "OFF"},
                     "device_type" : "ac"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC201002", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC201002", "status" : "OFF"},
                     "device_type" : "ac"
                 }
             ]
@@ -452,11 +444,11 @@
             "scene_id" : "fl2_scene013",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "SC101003", "status" : "UP"},
+                    "device_control" : {"device_id" : "SC101003", "status" : "UP"},
                     "device_type" : "curtain"
                 },
                 {
-                    "device_control" : {"deviceid" : "SC101004", "status" : "UP"},
+                    "device_control" : {"device_id" : "SC101004", "status" : "UP"},
                     "device_type" : "curtain"
                 }
             ]
@@ -465,11 +457,11 @@
             "scene_id" : "fl2_scene014",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "SC101003", "status" : "DOWN"},
+                    "device_control" : {"device_id" : "SC101003", "status" : "DOWN"},
                     "device_type" : "curtain"
                 },
                 {
-                    "device_control" : {"deviceid" : "SC101004", "status" : "DOWN"},
+                    "device_control" : {"device_id" : "SC101004", "status" : "DOWN"},
                     "device_type" : "curtain"
                 }
             ]
@@ -478,11 +470,11 @@
             "scene_id" : "fl2_scene021",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "OF2", "status" : "ON"},
+                    "device_control" : {"device_id" : "OF2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC203002", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC203002", "status" : "ON"},
                     "device_type" : "ac"
                 }
             ]
@@ -491,11 +483,11 @@
             "scene_id" : "fl2_scene022",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "OF2", "status" : "OFF"},
+                    "device_control" : {"device_id" : "OF2", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC203002", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC203002", "status" : "OFF"},
                     "device_type" : "ac"
                 }
             ]
@@ -504,7 +496,7 @@
             "scene_id" : "fl2_scene023",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "SC101005", "status" : "UP"},
+                    "device_control" : {"device_id" : "SC101005", "status" : "UP"},
                     "device_type" : "curtain"
                 }
             ]
@@ -513,7 +505,7 @@
             "scene_id" : "fl2_scene024",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "SC101005", "status" : "DOWN"},
+                    "device_control" : {"device_id" : "SC101005", "status" : "DOWN"},
                     "device_type" : "curtain"
                 }
             ]
@@ -522,11 +514,11 @@
             "scene_id" : "fl2_scene031",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "MGC", "status" : "ON"},
+                    "device_control" : {"device_id" : "MGC", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC202001", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC202001", "status" : "OFF"},
                     "device_type" : "ac"
                 }
             ]
@@ -535,11 +527,11 @@
             "scene_id" : "fl2_scene032",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "MGC", "status" : "ON"},
+                    "device_control" : {"device_id" : "MGC", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC202001", "status" : "ON"},
+                    "device_control" : {"device_id" : "AC202001", "status" : "ON"},
                     "device_type" : "ac"
                 }
             ]
@@ -548,11 +540,11 @@
             "scene_id" : "fl2_scene033",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "MGC", "status" : "OFF"},
+                    "device_control" : {"device_id" : "MGC", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "AC202001", "status" : "OFF"},
+                    "device_control" : {"device_id" : "AC202001", "status" : "OFF"},
                     "device_type" : "ac"
                 }
             ]
@@ -561,31 +553,31 @@
             "scene_id" : "fl2_scene041",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "L2H", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H3", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC3", "status" : "ON"},
                     "device_type" : "lighting"
                 }
             ]
@@ -594,31 +586,31 @@
             "scene_id" : "fl2_scene042",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "L2H", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2H3", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L2WC3", "status" : "ON"},
                     "device_type" : "lighting"
                 }
             ]
@@ -627,31 +619,31 @@
             "scene_id" : "fl2_scene043",
             "scenecontrol" : [
                 {
-                    "device_control" : {"deviceid" : "L2H", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2H", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H1", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2H1", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H2", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2H2", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2H3", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2H3", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC1", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2WC1", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC2", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2WC2", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"deviceid" : "L2WC3", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L2WC3", "status" : "OFF"},
                     "device_type" : "lighting"
                 }
             ]

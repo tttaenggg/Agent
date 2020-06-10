@@ -134,7 +134,12 @@ class Plugagent(Agent):
 
         # print(msg)
         device_id = msg.get('device_id')
-        command = msg.get('command')
+        if 'command' in msg.keys():
+            command = json.loads(msg.get('command'))  # {status: ON}
+        elif 'status' in msg.keys():
+            command = {"status": msg.get('status')}
+        else:
+            command = {}
 
         print(device_id)
         print(command)
