@@ -72,6 +72,7 @@ class Egaugemeteragent(Agent):
             db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter.variables['floor2light'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter.variables['floor2air'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter.variables['edb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('eoroom_air').set(abs(float(meter.variables['eoroom_air'])))
             db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
                 datetime.now().replace(microsecond=0).isoformat())
         except:
@@ -132,68 +133,35 @@ class Egaugemeteragent(Agent):
 
     @Core.schedule(periodic(600))
     def updatestatus2(self):
-        _log.info(msg="Get Current Status")
-        procs = []
 
-        for k, v in self.members.items():
-            devices = (k, v)
-            proc = Process(target=self.getstatus_proc2, args=(devices,))
-            procs.append(proc)
-            proc.start()
-
-        # TODO : if you want to wait the process completed Uncomment code below
-        # for proc in procs:
-        #     proc.join()
-
-    def getstatus_proc2(self, devices):  # Function for MultiProcess
-
-        # Devices is tuple index 0 is Devices ID , 1 is IPADDRESS
-
-        _log.info(msg="Start Get Status from {}".format(devices[1]))
-
-        # try:
-
-        meter = api.API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter',
-                        device=(devices[1])['meter_id'], ip=(devices[1])['ip'], port=(devices[1])['port'])
+        meter2 = api.API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter',
+                        device='egauge50040', ip='192.168.10.21', port='82')
 
         try:
-            meter.getDeviceStatus()
+            meter2.getDeviceStatus()
             # TODO : Update Firebase with _status variable
-            db.child(gateway_id).child('devicetype').child('powermeter').child('mdb').set(meter.variables['mdb'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1plug').set(meter.variables['floor1plug'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1light').set(meter.variables['floor1light'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1air').set(meter.variables['floor1air'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2plug').set(meter.variables['floor2plug'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter.variables['floor2light'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter.variables['floor2air'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter.variables['edb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('mdb').set(meter2.variables['mdb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1plug').set(meter2.variables['floor1plug'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1light').set(meter2.variables['floor1light'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1air').set(meter2.variables['floor1air'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2plug').set(meter2.variables['floor2plug'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter2.variables['floor2light'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter2.variables['floor2air'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter2.variables['edb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('eoroom_air').set(abs(float(meter2.variables['eoroom_air'])))
             db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
                 datetime.now().replace(microsecond=0).isoformat())
         except:
             print("error")
 
-        try:
-            meter.getDeviceStatus()
-            # TODO : Update Firebase with _status variable
-            db.child(gateway_id).child('devicetype').child('powermeter').child('mdb').set(meter.variables['mdb'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1plug').set(meter.variables['floor1plug'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1light').set(meter.variables['floor1light'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1air').set(meter.variables['floor1air'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2plug').set(meter.variables['floor2plug'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter.variables['floor2light'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter.variables['floor2air'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter.variables['edb'])
-            db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
-                datetime.now().replace(microsecond=0).isoformat())
-        except:
-            print("error")
         #calculate
         try:
-            tottalload = abs(float(meter.variables['mdb']))
-            floor2load = abs(float(meter.variables['floor2plug'])+ float(meter.variables['floor2light'])+ float(meter.variables['floor2air']))
-            precisionac = abs(float(meter.variables['floor2air'])+ float(meter.variables['floor2air']))
-            floor1load = abs(float(meter.variables['floor1plug'])+ float(meter.variables['floor1light'])+ float(meter.variables['floor1air']))
-            edb = abs(float(meter.variables['edb']))
+            tottalload = abs(float(meter2.variables['mdb']))
+            floor2load = abs(float(meter2.variables['floor2plug'])+ float(meter2.variables['floor2light'])+ float(meter2.variables['floor2air']))
+            precisionac = abs(float(meter2.variables['floor2air'])+ float(meter2.variables['floor2air']))
+            floor1load = abs(float(meter2.variables['floor1plug'])+ float(meter2.variables['floor1light'])+ float(meter2.variables['floor1air']))
+            edb = abs(float(meter2.variables['edb']))
+            eoroom_air = abs(float(meter2.variables['eoroom_air']))
         except:
             print("")
 
@@ -202,11 +170,11 @@ class Egaugemeteragent(Agent):
             param = db.child("peasbhmsr").child('devicetype').child('inverter').child('IN202001').get()
             inver_val = param.val()
             BATTERY_POWER = inver_val['BATTERY_POWER']
-            PV_TOTAL_POWER = inver_val['BATTERY_POWER']
-            PV_total_P = inver_val['BATTERY_POWER']
-            SOH = inver_val['BATTERY_POWER']
-            batt_percen = inver_val['BATTERY_POWER']
-            grid_P = inver_val['BATTERY_POWER']
+            PV_TOTAL_POWER = inver_val['PV_TOTAL_POWER']
+            PV_total_P = inver_val['PV_total_P']
+            SOH = inver_val['SOH']
+            batt_percen = inver_val['batt_percen']
+            grid_P = inver_val['grid_P']
             load_act_P = inver_val['load_act_P']
         except:
             print("error")
@@ -242,6 +210,9 @@ class Egaugemeteragent(Agent):
                 content=response.content))
         except requests.exceptions.RequestException:
             print('HTTP Request failed')
+
+
+
 
         # except Exception as err:
         #     pass
