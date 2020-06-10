@@ -131,7 +131,7 @@ class Egaugemeteragent(Agent):
         #     proc.join()
 
     @Core.schedule(periodic(600))
-    def updatestatus(self):
+    def updatestatus2(self):
         _log.info(msg="Get Current Status")
         procs = []
 
