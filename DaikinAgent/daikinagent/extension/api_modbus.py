@@ -127,12 +127,12 @@ class API:
 
         if swing == '3':
             swing = 'VH'
-        self.set_variable('STATUS', status)
-        self.set_variable('TEMPERATURE', (set_temperature))
-        self.set_variable('SET_TEMPERATURE', set_temperature)
-        self.set_variable('SET_HUMIDITY', set_humidity)
-        self.set_variable('MODE', strmode)
-        self.set_variable('FAN_SPEED', fan)
+        self.set_variable('status', status)
+        self.set_variable('current_temperature', (set_temperature))
+        self.set_variable('set_temperature', set_temperature)
+        self.set_variable('set_humidity', set_humidity)
+        self.set_variable('mode', strmode)
+        self.set_variable('fan', fan)
         self.set_variable('swing', swing)
         self.printDeviceStatus()
 
@@ -249,7 +249,7 @@ class API:
 def main():
     # create an object with initialized data from DeviceDiscovery Agent
     # requirements for instantiation1. model, 2.type, 3.api, 4. address
-    AC = API(model='daikin', type='AC', api='API', agent_id='ACAgent', url='192.168.10.240',
+    AC = API(model='daikin', type='AC', api='API', agent_id='ACAgent', url='192.168.10.239',
                                      port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
 
     # example>>>>>>>>>>>>>>>
@@ -268,3 +268,4 @@ def main():
     # AC.getDeviceStatus()
     # AC.setDeviceStatus({'swing':'ON','device': '1DAIK1200138'})
 if __name__ == "__main__": main()
+
