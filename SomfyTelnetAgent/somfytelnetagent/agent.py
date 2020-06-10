@@ -76,13 +76,18 @@ class Curtainagent(Agent):
         msg = message
         # print(msg)
         device_id = msg.get('device_id')
-        command = json.loads(msg.get('command'))
+        if 'command' in msg.keys():
+            command = json.loads(msg.get('command')) # {status: ON}
+        elif 'status' in msg.keys():
+            command = {"status": msg.get('status')}
+        else:
+            command ={}
 
         print(device_id)
         print(command)
         print("----------------------------------------------")
         device_info = self.members.get(device_id)
-        if '999ALL' in device_id : # if True it mean control group devices and device_info is list
+        if 'SC999ALL' in device_id : # if True it mean control group devices and device_info is list
             for tx in device_info['command']:
                 self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
                                        ip=device_info['ip'], port=device_info['port'],
@@ -95,7 +100,18 @@ class Curtainagent(Agent):
                 time.sleep(3)
                 del self.curtain
 
+        elif 'SCWELALL' in device_id : # if True it mean control group devices and device_info is list
+            for tx in device_info['command']:
+                self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
+                                       ip=device_info['ip'], port=device_info['port'],
+                                       command=tx)
 
+                # self.plug.getDeviceStatus()
+                # self.curtain.setAllStatus(command, device_info['command'])
+                # self.plug.getDeviceStatus()
+                self.curtain.setDeviceStatus(command)
+                time.sleep(3)
+                del self.curtain
         else:
 
             self.curtain = api.API(model='Somfy', api='API3', agent_id=device_id, types='curtain',
@@ -105,6 +121,7 @@ class Curtainagent(Agent):
             # self.plug.getDeviceStatus()
             self.curtain.setDeviceStatus(command)
             # self.plug.getDeviceStatus()
+            time.sleep(3)
             del self.curtain
 
 

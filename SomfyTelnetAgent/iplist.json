@@ -5,6 +5,12 @@
         "command": ["curtain#conference#right#", "curtain#conference#left#"]
 
     },
+    "SCWELALL": {
+        "ip" : "192.168.10.11",
+        "port": 93,
+        "command": ["curtain#conference#right#", "curtain#conference#left#", "screen#"]
+
+    },
 
     "SC888ALL": {
         "ip" : "192.168.10.11",
