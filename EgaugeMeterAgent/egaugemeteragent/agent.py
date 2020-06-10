@@ -72,6 +72,7 @@ class Egaugemeteragent(Agent):
             db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter.variables['floor2light'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter.variables['floor2air'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter.variables['edb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('eoroom_air').set(abs(float(meter.variables['eoroom_air'])))
             db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
                 datetime.now().replace(microsecond=0).isoformat())
         except:
@@ -147,6 +148,7 @@ class Egaugemeteragent(Agent):
             db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter2.variables['floor2light'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter2.variables['floor2air'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter2.variables['edb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('eoroom_air').set(abs(float(meter2.variables['eoroom_air'])))
             db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
                 datetime.now().replace(microsecond=0).isoformat())
         except:
@@ -159,6 +161,7 @@ class Egaugemeteragent(Agent):
             precisionac = abs(float(meter2.variables['floor2air'])+ float(meter2.variables['floor2air']))
             floor1load = abs(float(meter2.variables['floor1plug'])+ float(meter2.variables['floor1light'])+ float(meter2.variables['floor1air']))
             edb = abs(float(meter2.variables['edb']))
+            eoroom_air = abs(float(meter2.variables['eoroom_air']))
         except:
             print("")
 

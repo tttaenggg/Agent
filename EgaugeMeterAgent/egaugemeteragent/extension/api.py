@@ -50,12 +50,10 @@ class API:
         getDeviceStatusResult = True
         import requests
         url = 'http://'+self.get_variable("ip") + "/cgi-bin/egauge?inst&tot"
-        print(url)
         response = urllib.request.urlopen(url)
         data = response.read()  # a `bytes` object
         text = data.decode('utf-8')  # a `str`;
         soup = BeautifulSoup(text, 'xml')
-
         try:
             for h in soup.find_all(n="MDB PANEL"):
                 mdb_text = h.find('i')
@@ -116,6 +114,15 @@ class API:
         except:
             print("error no 2floorlight i data")
 
+        try:
+            for h in soup.find_all(n="EO Room  Air"):
+                eo_room_text = h.find('i')
+            eo_room = (eo_room_text.text)
+        except:
+            print("error no eo_room_text data")
+
+
+
 
         self.set_variable('mdb', str(mdb))
         self.set_variable('floor1plug', str(floor1plug))
@@ -125,6 +132,7 @@ class API:
         self.set_variable('floor2light', str(floor2light))
         self.set_variable('floor2air', str(floor2air))
         self.set_variable('edb', str(edb))
+        self.set_variable('eoroom_air', str(eo_room))
         self.printDeviceStatus()
 
     def printDeviceStatus(self):
@@ -137,6 +145,8 @@ class API:
         print(" floor2plug = {}".format(self.get_variable('floor2plug')))
         print(" floor2light = {}".format(self.get_variable('floor2light')))
         print(" floor2air = {}".format(self.get_variable('floor2air')))
+        print(" floor2air = {}".format(self.get_variable('floor2air')))
+        print(" eoroom_air = {}".format(self.get_variable('eoroom_air')))
         print(" edb = {}".format(self.get_variable('edb')))
 
 
