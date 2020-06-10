@@ -61,8 +61,6 @@ class Daikinagent(Agent):
         def getstatus_task(devices):
 
             if (devices[0]) == 'AC201001':
-                print("device0")
-                print(devices[0])
                 try:
                     daikin = api_modbus.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=devices[1],
                                      port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
@@ -71,10 +69,8 @@ class Daikinagent(Agent):
                     # TODO : Update Firebase with _status variable
 
                 except Exception as err:
-                    pass
+                    print('error1')
             elif (devices[0]) == 'AC201002':
-                print("device0")
-                print(devices[0])
                 try:
                     daikin = api_modbus.API(model='daikin', type='AC', api='API', agent_id='ACAgent', url=devices[1],
                                      port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
@@ -83,7 +79,7 @@ class Daikinagent(Agent):
                     # TODO : Update Firebase with _status variable
 
                 except Exception as err:
-                    pass
+                    print('error2')
 
             else:
                 try:
@@ -94,27 +90,27 @@ class Daikinagent(Agent):
 
                     # TODO : Update Firebase with _status variable
                 except Exception as err:
-                    pass
+                    print('error3')
 
-            # try:
-            db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('DT').set(
-                datetime.now().replace(microsecond=0).isoformat())
-            db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('STATUS').set(
-                daikin.variables['status'])
-            db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('MODE').set(
-                daikin.variables['mode'])
-            db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('FAN_SPEED').set(
-                daikin.variables['fan'])
-            db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('SET_TEMPERATURE').set(
-                daikin.variables['set_temperature'])
-            db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('SET_HUMIDITY').set(
-                daikin.variables['set_humidity'])
-            db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('TEMPERATURE').set(
-                daikin.variables['current_temperature'])
-            db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('TIMESTAMP').set(
-                datetime.now().replace(microsecond=0).isoformat())
-            # except:
-            #     print("error firebase")
+            try:
+                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('DT').set(
+                    datetime.now().replace(microsecond=0).isoformat())
+                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('STATUS').set(
+                    daikin.variables['status'])
+                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('MODE').set(
+                    daikin.variables['mode'])
+                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('FAN_SPEED').set(
+                    daikin.variables['fan'])
+                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('SET_TEMPERATURE').set(
+                    daikin.variables['set_temperature'])
+                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('SET_HUMIDITY').set(
+                    daikin.variables['set_humidity'])
+                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('TEMPERATURE').set(
+                    daikin.variables['current_temperature'])
+                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('TIMESTAMP').set(
+                    datetime.now().replace(microsecond=0).isoformat())
+            except:
+                print("error firebase")
 
         try:
             loop.run_in_executor(None, getstatus_task, devices)
