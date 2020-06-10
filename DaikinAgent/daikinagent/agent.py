@@ -91,26 +91,30 @@ class Daikinagent(Agent):
                     # TODO : Update Firebase with _status variable
                 except Exception as err:
                     print('error3')
-
-            try:
-                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('DT').set(
-                    datetime.now().replace(microsecond=0).isoformat())
-                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('STATUS').set(
-                    daikin.variables['status'])
-                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('MODE').set(
-                    daikin.variables['mode'])
-                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('FAN_SPEED').set(
-                    daikin.variables['fan'])
-                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('SET_TEMPERATURE').set(
-                    daikin.variables['set_temperature'])
-                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('SET_HUMIDITY').set(
-                    daikin.variables['set_humidity'])
-                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('TEMPERATURE').set(
-                    daikin.variables['current_temperature'])
-                db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('TIMESTAMP').set(
-                    datetime.now().replace(microsecond=0).isoformat())
-            except:
-                print("error firebase")
+            print("status")
+            print(daikin.variables['status'])
+            if daikin.variables['status'] == 'ON' or daikin.variables['status'] == 'OFF':
+                try:
+                    db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('DT').set(
+                        datetime.now().replace(microsecond=0).isoformat())
+                    db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('STATUS').set(
+                        daikin.variables['status'])
+                    db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('MODE').set(
+                        daikin.variables['mode'])
+                    db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('FAN_SPEED').set(
+                        daikin.variables['fan'])
+                    db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('SET_TEMPERATURE').set(
+                        daikin.variables['set_temperature'])
+                    db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('SET_HUMIDITY').set(
+                        daikin.variables['set_humidity'])
+                    db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('TEMPERATURE').set(
+                        daikin.variables['current_temperature'])
+                    db.child(gateway_id).child('devicetype').child('ac').child(devices[0]).child('TIMESTAMP').set(
+                        datetime.now().replace(microsecond=0).isoformat())
+                except:
+                    print("error firebase")
+            else:
+                print('cannot get status')
 
         try:
             loop.run_in_executor(None, getstatus_task, devices)
