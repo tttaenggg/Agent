@@ -59,7 +59,6 @@ class API:
         try:
             # open connection
             tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            print(tn)
 
             raw_data = {}
 
@@ -143,14 +142,14 @@ class API:
             # raw_data['PF'] = (tn.read_some().hex())
             #
             # # Register:47-0x002F ===== Battery percentage (2b+)
-            # send_mess = b"\x02\x04\x00\x2F\x00\x01\x00\x30"
-            # tn.write(send_mess)
-            # raw_data['batt_percen'] = (tn.read_some().hex())
+            send_mess = b"\x02\x04\x00\x2F\x00\x01\x00\x30"
+            tn.write(send_mess)
+            raw_data['batt_percen'] = (tn.read_some().hex())
             #
             # # Register:49-0x0031 ===== Load active power (2b+)
-            # send_mess = b"\x02\x04\x00\x31\x00\x01\x60\x36"
-            # tn.write(send_mess)
-            # raw_data['load_act_P'] = (tn.read_some().hex())
+            send_mess = b"\x02\x04\x00\x31\x00\x01\x60\x36"
+            tn.write(send_mess)
+            raw_data['load_act_P'] = (tn.read_some().hex())
             #
             # # Register:51-0x0033 ===== PV1 power (2b+-)
             # send_mess = b"\x02\x04\x00\x33\x00\x01\xC1\xF6"
@@ -221,14 +220,14 @@ class API:
             raw_data['PV_total_P'] = (tn.read_some().hex())
 
             # Register:113-0x0071 ===== Output power (2b+-)
-            # send_mess = b"\x02\x04\x00\x71\x00\x01\x61\xE2"
-            # tn.write(send_mess)
-            # raw_data['output_P'] = (tn.read_some().hex())
+            send_mess = b"\x02\x04\x00\x71\x00\x01\x61\xE2"
+            tn.write(send_mess)
+            raw_data['output_P'] = (tn.read_some().hex())
             #
             # # Register:166-0x00A6 ===== SOH (2b+)
-            # send_mess = b"\x02\x04\x00\xA6\x00\x01\xD1\xDA"
-            # tn.write(send_mess)
-            # raw_data['SOH'] = (tn.read_some().hex())
+            send_mess = b"\x02\x04\x00\xA6\x00\x01\xD1\xDA"
+            tn.write(send_mess)
+            raw_data['SOH'] = (tn.read_some().hex())
             #
             # # Register:176-0x00B0 ===== BMS battery status (1b)
             # send_mess = b"\x02\x04\x00\xB0\x00\x01\x30\x1E"
@@ -250,6 +249,14 @@ class API:
                 self.set_variable('offline_count', self.get_variable('offline_count')+1)
         except Exception as er:
             print (er)
+            # self.set_variable('batt_P', (0))
+            # self.set_variable('batt_percen', (0))
+            # self.set_variable('load_act_P', (0))
+            # self.set_variable('PV_total_P', (0))
+            # self.set_variable('output_P', (0))
+            # self.set_variable('SOH', (0))
+            # self.printDeviceStatus()
+
             print('ERROR: classAPI_Telnet_Inverter failed to getDeviceStatus')
 
     def getDeviceStatusJson(self, data):
@@ -269,12 +276,10 @@ class API:
         # self.set_variable('output_volt_VW', str(int(data["output_volt_VW"], 16) / 10))
         # self.set_variable('output_volt_WU', str(int(data["output_volt_WU"], 16) / 10))
         # self.set_variable('output_freq', str(int(data["output_freq"], 16) / 100))
-        self.set_variable('batt_P', str((((int(data["batt_P"], 16) + 0x8000) & 0xFFFF) - 0x8000) / 10))
         # self.set_variable('P_grid_freq', str(int(data["P_grid_freq"], 16) / 100))
         # self.set_variable('PF_symbol', str(int(data["PF_symbol"], 16)))
         # self.set_variable('PF', str(int(data["PF"], 16) / 1000))
-        # self.set_variable('batt_percen', str(int(data["batt_percen"], 16)))
-        # self.set_variable('load_act_P', str(int(data["load_act_P"], 16) / 10))
+
         # self.set_variable('PV1_P', str(int(data["PV1_P"], 16) / 10))
         # self.set_variable('load_cur_A', str((((int(data["load_cur_A"], 16) + 0x8000) & 0xFFFF) - 0x8000) / 10))
         # self.set_variable('load_cur_B', str((((int(data["load_cur_B"], 16) + 0x8000) & 0xFFFF) - 0x8000) / 10))
@@ -287,9 +292,13 @@ class API:
         # self.set_variable('total_P_intake_grid', str(int(data["total_P_intake_grid"],16)/10))
         # self.set_variable('daily_P_fed_grid', str(int(data["daily_P_fed_grid"],16)/10))
         # self.set_variable('total_P_fed_grid', str(int(data["total_P_fed_grid"],16)/10))
+
+        self.set_variable('batt_P', str((((int(data["batt_P"], 16) + 0x8000) & 0xFFFF) - 0x8000) / 10))
+        self.set_variable('batt_percen', str(int(data["batt_percen"], 16)))
+        self.set_variable('load_act_P', str(int(data["load_act_P"], 16) / 10))
         self.set_variable('PV_total_P', str((((int(data["PV_total_P"], 16) + 0x8000) & 0xFFFF) - 0x8000)/10))
-        # self.set_variable('output_P', str((((int(data["output_P"], 16) + 0x8000) & 0xFFFF) - 0x8000)/10))
-        # self.set_variable('SOH', str(int(data["SOH"],16)))
+        self.set_variable('output_P', str((((int(data["output_P"], 16) + 0x8000) & 0xFFFF) - 0x8000)/10))
+        self.set_variable('SOH', str(int(data["SOH"],16)))
         # self.set_variable('BMS_batt_status', str(info_BMS_batt_status[int(data["BMS_batt_status"][:2],16)]))
 
 
@@ -312,8 +321,8 @@ class API:
         # print(" Power grid frequency = {}".format(self.get_variable('P_grid_freq')))
         # print(" Power factor symbol (screen none) = {}".format(self.get_variable('PF_symbol')))
         # print(" Power factor = {}".format(self.get_variable('PF')))
-        # print(" Battery percentage = {}".format(self.get_variable('batt_percen')))
-        # print(" Load active power = {}".format(self.get_variable('load_act_P')))
+        print(" Battery percentage = {}".format(self.get_variable('batt_percen')))
+        print(" Load active power = {}".format(self.get_variable('load_act_P')))
         # print(" PV1 power = {}".format(self.get_variable('PV1_P')))
         # print(" Load current A = {}".format(self.get_variable('load_cur_A')))
         # print(" Load current B = {}".format(self.get_variable('load_cur_B')))
@@ -327,8 +336,8 @@ class API:
         # print(" Daily power fed to grid = {}".format(self.get_variable('daily_P_fed_grid')))
         # print(" Total power fed to grid = {}".format(self.get_variable('total_P_fed_grid')))
         print(" PV total power = {}".format(self.get_variable('PV_total_P')))
-        # print(" Output power = {}".format(self.get_variable('output_P')))
-        # print(" SOH = {}".format(self.get_variable('SOH')))
+        print(" Output power = {}".format(self.get_variable('output_P')))
+        print(" SOH = {}".format(self.get_variable('SOH')))
         # print(" BMS battery status = {}".format(self.get_variable('BMS_batt_status')))
 
     # ----------------------------------------------------------------------
