@@ -63,6 +63,7 @@ class Invertertelnetagent(Agent):
             inverter.getDeviceStatus()
 
 
+
             # TODO : Update Firebase with _status variable
             try:
 
@@ -136,7 +137,7 @@ class Invertertelnetagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(120))
+    @Core.schedule(periodic(339))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
