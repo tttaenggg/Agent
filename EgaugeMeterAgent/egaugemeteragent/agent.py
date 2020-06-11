@@ -113,7 +113,6 @@ class Egaugemeteragent(Agent):
 
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
-        
         # TODO :  Start Server Listener Here
 
         pass
