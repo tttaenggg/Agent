@@ -54,6 +54,8 @@ class API:
         data = response.read()  # a `bytes` object
         text = data.decode('utf-8')  # a `str`;
         soup = BeautifulSoup(text, 'xml')
+        print(soup)
+
         try:
             for h in soup.find_all(n="MDB PANEL"):
                 mdb_text = h.find('i')
@@ -121,8 +123,19 @@ class API:
         except:
             print("error no eo_room_text data")
 
+        try:
+            for h in soup.find_all(n="PV GENERTION"):
+                PV_GENERTION_text = h.find('i')
+            PV_GENERTION = (PV_GENERTION_text.text)
+        except:
+            print("error no eo_room_text data")
 
-
+        try:
+            for h in soup.find_all(n="Grid Import"):
+                Grid_Import_text = h.find('i')
+            Grid_Import = (Grid_Import_text.text)
+        except:
+            print("error no eo_room_text data")
 
         self.set_variable('mdb', str(mdb))
         self.set_variable('floor1plug', str(floor1plug))
@@ -133,6 +146,8 @@ class API:
         self.set_variable('floor2air', str(floor2air))
         self.set_variable('edb', str(edb))
         self.set_variable('eoroom_air', str(eo_room))
+        self.set_variable('PV_GENERTION', str(PV_GENERTION))
+        self.set_variable('Grid_Import', str(Grid_Import))
         self.printDeviceStatus()
 
     def printDeviceStatus(self):
@@ -148,6 +163,8 @@ class API:
         print(" floor2air = {}".format(self.get_variable('floor2air')))
         print(" eoroom_air = {}".format(self.get_variable('eoroom_air')))
         print(" edb = {}".format(self.get_variable('edb')))
+        print(" PV_GENERTION = {}".format(self.get_variable('PV_GENERTION')))
+        print(" Grid_Import = {}".format(self.get_variable('Grid_Import')))
 
 
     # ----------------------------------------------------------------------
