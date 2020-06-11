@@ -96,9 +96,14 @@
                     "device_type" : "curtain"
                 },
                 {
+                    "device_control" : {"device_id" : "SP101001", "status" : "ON"},
+                    "device_type" : "plug"
+                },
+                {
                     "device_control" : {"device_id" : "SP101004", "status" : "ON"},
                     "device_type" : "plug"
                 }
+
             ]
         },
         {
@@ -147,6 +152,10 @@
                 {
                     "device_control" : {"device_id" : "SC999ALL", "status" : "UP"},
                     "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101001", "status" : "ON"},
+                    "device_type" : "plug"
                 },
                 {
                     "device_control" : {"device_id" : "SP101004", "status" : "ON"},
@@ -198,8 +207,16 @@
                     "device_type" : "curtain"
                 },
                 {
+                    "device_control" : {"device_id" : "SP101001", "status" : "ON"},
+                    "device_type" : "plug"
+                },
+                {
                     "device_control" : {"device_id" : "SP101004", "status" : "ON"},
                     "device_type" : "plug"
+                },
+                {
+                    "device_control" : {"device_id" : "PR101001", "status" : "POWER"},
+                    "device_type" : "projector"
                 }
             ]
         },
@@ -249,6 +266,10 @@
                 {
                     "device_control" : {"device_id" : "SC999ALL", "status" : "DOWN"},
                     "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101001", "status" : "OFF"},
+                    "device_type" : "plug"
                 },
                 {
                     "device_control" : {"device_id" : "SP101004", "status" : "OFF"},
@@ -444,24 +465,17 @@
             "scene_id" : "fl2_scene013",
             "scenecontrol" : [
                 {
-                    "device_control" : {"device_id" : "SC101003", "status" : "UP"},
-                    "device_type" : "curtain"
-                },
-                {
-                    "device_control" : {"device_id" : "SC101004", "status" : "UP"},
+                    "device_control" : {"device_id" : "SC888ALL", "status" : "UP"},
                     "device_type" : "curtain"
                 }
+
             ]
         },
         {
             "scene_id" : "fl2_scene014",
             "scenecontrol" : [
                 {
-                    "device_control" : {"device_id" : "SC101003", "status" : "DOWN"},
-                    "device_type" : "curtain"
-                },
-                {
-                    "device_control" : {"device_id" : "SC101004", "status" : "DOWN"},
+                    "device_control" : {"device_id" : "SC888ALL", "status" : "DOWN"},
                     "device_type" : "curtain"
                 }
             ]

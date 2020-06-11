@@ -82,7 +82,7 @@ class Automation1agent(Agent):
 
         pass
 
-    @Core.schedule(periodic(900))
+    @Core.schedule(periodic(600))
     def updatestatus(self):
         _log.info(msg="Check multisensor data from firebase")
 
@@ -117,7 +117,7 @@ class Automation1agent(Agent):
                                   parity='E', baudrate=9600,
                                   startregis=2006, startregisr=2012)
 
-            self.daikin.setDeviceStatus({"status": "ON"})
+            self.daikin.setDeviceStatus({"status": "ON", "mode": "COLD", "stemp":"18"})
             # self.daikin.getDeviceStatus()
             del self.daikin
             db.child(gateway_id).child('time_automation1').set(datetime.now().replace(microsecond=0).isoformat())
