@@ -73,6 +73,8 @@ class Egaugemeteragent(Agent):
             db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter.variables['floor2air'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter.variables['edb'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('eoroom_air').set(abs(float(meter.variables['eoroom_air'])))
+            db.child(gateway_id).child('devicetype').child('powermeter').child('PV_GENERTION').set(meter.variables['PV_GENERTION'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('Grid_Import').set(abs(float(meter.variables['Grid_Import'])))
             db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
                 datetime.now().replace(microsecond=0).isoformat())
         except:
@@ -149,6 +151,8 @@ class Egaugemeteragent(Agent):
             db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter2.variables['floor2air'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter2.variables['edb'])
             db.child(gateway_id).child('devicetype').child('powermeter').child('eoroom_air').set(abs(float(meter2.variables['eoroom_air'])))
+            db.child(gateway_id).child('devicetype').child('powermeter').child('PV_GENERTION').set(meter2.variables['PV_GENERTION'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('Grid_Import').set(abs(float(meter2.variables['Grid_Import'])))
             db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
                 datetime.now().replace(microsecond=0).isoformat())
         except:
@@ -162,6 +166,8 @@ class Egaugemeteragent(Agent):
             floor1load = abs(float(meter2.variables['floor1plug'])+ float(meter2.variables['floor1light'])+ float(meter2.variables['floor1air']))
             edb = abs(float(meter2.variables['edb']))
             eoroom_air = abs(float(meter2.variables['eoroom_air']))
+            Grid_Import = abs(float(meter2.variables['Grid_Import']))
+            PV_GENERTION = abs(float(meter2.variables['PV_GENERTION']))
         except:
             print("")
 
@@ -192,8 +198,8 @@ class Egaugemeteragent(Agent):
                     "topic": "msr01",
                     "type": "devicecontrol",
                     "message": {
-                        "pv": PV_TOTAL_POWER,
-                        "grid": grid_P,
+                        "pv": PV_GENERTION,
+                        "grid": Grid_Import,
                         "batt": BATTERY_POWER,
                         "percentbatt": batt_percen,
                         "tottalload": tottalload,
