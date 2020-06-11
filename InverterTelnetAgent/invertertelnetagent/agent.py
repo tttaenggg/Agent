@@ -137,7 +137,8 @@ class Invertertelnetagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(339))
+
+    @Core.schedule(periodic(317))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
