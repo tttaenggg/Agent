@@ -137,8 +137,16 @@ class Invertertelnetagent(Agent):
 
         pass
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+    @Core.schedule(periodic(317))
+=======
+    @Core.schedule(periodic(339))
+>>>>>>> 26023797a2f2c7605e591383f06600e8743d0c53
+=======
 
     @Core.schedule(periodic(317))
+>>>>>>> ee793a591de2554948d8efea5816b42df089890b
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
