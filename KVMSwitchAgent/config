@@ -3,5 +3,5 @@
   "agentid": "kvmswitchagent", #Integers
   "message": "Hello From KVMSwitch", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/KVMSwitchAgent/iplist.json"
+  "pathconf" : "/Agent/KVMSwitchAgent/iplist.json"
 }

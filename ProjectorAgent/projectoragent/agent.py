@@ -12,7 +12,7 @@ from pprint import pformat
 import json
 import socket
 from .extension import api
-
+import os
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -40,7 +40,7 @@ class Projectoragent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        self.members = json.load(open(self.iplist_path))
+        self.members = json.load(open(os.environ['VOLTTRON_ROOT']+self.iplist_path))
 
         _log.debug("IP List : {}".format(self.members))
 
@@ -75,7 +75,12 @@ class Projectoragent(Agent):
         msg = message
         # print(msg)
         device_id = msg.get('device_id')
-        command = msg.get('command')
+        if 'command' in msg.keys():
+            command = json.loads(msg.get('command'))  # {status: ON}
+        elif 'status' in msg.keys():
+            command = {"status": msg.get('status')}
+        else:
+            command = {}
 
         print(device_id)
         print(command)

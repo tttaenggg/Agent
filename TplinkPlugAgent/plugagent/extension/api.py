@@ -87,7 +87,7 @@ class API:
 def main():
 
     # -------------Kittchen----------------
-    TPLINK = API(model='TPlinkPlug', api='API3', agent_id='TPlinkPlugAgent',types='plug', ip='192.168.10.123',
+    TPLINK = API(model='TPlinkPlug', api='API3', agent_id='TPlinkPlugAgent',types='plug', ip='192.168.10.126',
                   port=9999)
 
     TPLINK.getDeviceStatus()

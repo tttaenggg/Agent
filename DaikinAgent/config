@@ -3,5 +3,5 @@
   "agentid": "daikinagent", #Integers
   "message": "Hello From Daikin", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/DaikinAgent/iplist.json"
+  "pathconf" : "/Agent/DaikinAgent/iplist.json"
 }

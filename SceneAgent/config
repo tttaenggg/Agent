@@ -4,7 +4,7 @@
   "agentid": "sceneagent", #Integers
   "message": "Hello From Scene Agent", #strings
   "log-level": "INFO",
-  "scenelistpath": "Agent/SceneAgent/scenelist.json"
+  "scenelistpath": "/Agent/SceneAgent/scenelist.json"
 
 
 }

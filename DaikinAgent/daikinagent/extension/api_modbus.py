@@ -136,17 +136,18 @@ class API:
         self.set_variable('swing', swing)
         self.printDeviceStatus()
 
+
     def printDeviceStatus(self):
 
         # now we can access the contents of the JSON like any other Python object
         print(" the current status is as follows:")
-        print(" status = {}".format(self.get_variable('status')))
-        print(" current_temperature = {}".format(self.get_variable('current_temperature')))
-        print(" set_temperature = {}".format(self.get_variable('set_temperature')))
-        print(" set_humidity = {}".format(self.get_variable('set_humidity')))
-        print(" mode = {}".format(self.get_variable('mode')))
-        print(" fan = {}".format(self.get_variable('fan')))
-        print(" swing = {}".format(self.get_variable('swing')))
+        print(" status = {}".format(self.get_variable('STATUS')))
+        print(" current_temperature = {}".format(self.get_variable('TEMPERATURE')))
+        print(" set_temperature = {}".format(self.get_variable('SET_TEMPERATURE')))
+        print(" set_humidity = {}".format(self.get_variable('SET_HUMIDITY')))
+        print(" mode = {}".format(self.get_variable('MODE')))
+        print(" fan = {}".format(self.get_variable('FAN_SPEED')))
+        # print(" swing = {}".format(self.get_variable('swing')))
         print("---------------------------------------------")
 
     # setDeviceStatus(postmsg), isPostmsgValid(postmsg), convertPostMsg(postmsg)
@@ -248,21 +249,23 @@ class API:
 def main():
     # create an object with initialized data from DeviceDiscovery Agent
     # requirements for instantiation1. model, 2.type, 3.api, 4. address
-    AC = API(model='daikin', type='AC', api='API', agent_id='ACAgent', url='192.168.10.239')
+    AC = API(model='daikin', type='AC', api='API', agent_id='ACAgent', url='192.168.10.239',
+                                     port=502, parity='E', baudrate=9600, startregis=2006, startregisr=2012)
 
     # example>>>>>>>>>>>>>>>
-    AC.setDeviceStatus({"status": "ON","username": "hive5"})
-    time.sleep(2)
-    AC.setDeviceStatus({'stemp':'22'})
-    AC.setDeviceStatus({"status": "OFF"})
+    # AC.setDeviceStatus({"status": "ON","username": "hive5"})
+    # time.sleep(2)
+    # AC.setDeviceStatus({'stemp':'22'})
+    # AC.setDeviceStatus({"status": "OFF"})
 
     # AC.setDeviceStatus({'status': 'ON', 'mode': 'COLD', 'device': '1DAIK1200138'})
     # AC.setDeviceStatus({'status': 'ON', 'device': '1DAIK1200138'})
     # time.sleep(6)
     # time.sleep(3)
-    # AC.getDeviceStatus()
+    AC.getDeviceStatus()
     # AC.setDeviceStatus({'stemp':'25'})
     # time.sleep(3)
     # AC.getDeviceStatus()
     # AC.setDeviceStatus({'swing':'ON','device': '1DAIK1200138'})
 if __name__ == "__main__": main()
+

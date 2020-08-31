@@ -98,7 +98,7 @@ class Aeotecagent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        with open(self.iplist_path) as f:
+        with open(os.environ['VOLTTRON_ROOT']+self.iplist_path) as f:
             self.members = json.load(f)
 
         f.close()
@@ -127,7 +127,7 @@ class Aeotecagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(20))
+    @Core.schedule(periodic(120))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []

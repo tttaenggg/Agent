@@ -17,7 +17,7 @@ from multiprocessing import Process
 from Agent import settings
 import pyrebase
 from datetime import datetime
-
+import os
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
@@ -56,22 +56,29 @@ class Egaugemeteragent(Agent):
 
         _log.info(msg="Start Get Status from {}".format(devices[1]))
 
+        # try:
+
+        meter = api.API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter',
+                        device=(devices[1])['meter_id'], ip=(devices[1])['ip'], port=(devices[1])['port'])
+
         try:
-            meter = api.API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter',
-                            device=(devices[1])['meter_id'], ip=(devices[1])['ip'], port=(devices[1])['port'])
-
             meter.getDeviceStatus()
-
             # TODO : Update Firebase with _status variable
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('DT').set(multisensor.variables['unitTime'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('HUMIDITY').set(multisensor.variables['humidity'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('ILLUMINANCE').set(multisensor.variables['illuminance'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('MOTION').set(multisensor.variables['motion'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TAMPER').set(multisensor.variables['tamper'])
-            # db.child(gateway_id).child('devicetype').child('multisensor').child(devices[0]).child('TEMPERATURE').set(multisensor.variables['temperature'])
-
-        except Exception as err:
-            pass
+            db.child(gateway_id).child('devicetype').child('powermeter').child('mdb').set(meter.variables['mdb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1plug').set(meter.variables['floor1plug'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1light').set(meter.variables['floor1light'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1air').set(meter.variables['floor1air'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2plug').set(meter.variables['floor2plug'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter.variables['floor2light'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter.variables['floor2air'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter.variables['edb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('eoroom_air').set(abs(float(meter.variables['eoroom_air'])))
+            db.child(gateway_id).child('devicetype').child('powermeter').child('PV_GENERTION').set(meter.variables['PV_GENERTION'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('Grid_Import').set(abs(float(meter.variables['Grid_Import'])))
+            db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
+                datetime.now().replace(microsecond=0).isoformat())
+        except:
+            print("error")
 
 
     def __init__(self, config_path,
@@ -85,7 +92,7 @@ class Egaugemeteragent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        self.members = json.load(open(self.iplist_path))
+        self.members = json.load(open(os.environ['VOLTTRON_ROOT']+self.iplist_path))
 
         _log.debug("IP List : {}".format(self.members))
 
@@ -106,12 +113,11 @@ class Egaugemeteragent(Agent):
 
     @Core.receiver("onstart")
     def onstart(self, sender, **kwargs):
-        
         # TODO :  Start Server Listener Here
 
         pass
 
-    @Core.schedule(periodic(20))
+    @Core.schedule(periodic(60))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
@@ -126,10 +132,102 @@ class Egaugemeteragent(Agent):
         # for proc in procs:
         #     proc.join()
 
+    @Core.schedule(periodic(600))
+    def updatestatus2(self):
+
+        meter2 = api.API(model='eGauge', api='API3', agent_id='05EGA010101', types='powermeter',
+                        device='egauge50040', ip='192.168.10.21', port='82')
+
+        try:
+            meter2.getDeviceStatus()
+            # TODO : Update Firebase with _status variable
+            db.child(gateway_id).child('devicetype').child('powermeter').child('mdb').set(meter2.variables['mdb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1plug').set(meter2.variables['floor1plug'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1light').set(meter2.variables['floor1light'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor1air').set(meter2.variables['floor1air'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2plug').set(meter2.variables['floor2plug'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2light').set(meter2.variables['floor2light'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('floor2air').set(meter2.variables['floor2air'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('edb').set(meter2.variables['edb'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('eoroom_air').set(abs(float(meter2.variables['eoroom_air'])))
+            db.child(gateway_id).child('devicetype').child('powermeter').child('PV_GENERTION').set(meter2.variables['PV_GENERTION'])
+            db.child(gateway_id).child('devicetype').child('powermeter').child('Grid_Import').set(abs(float(meter2.variables['Grid_Import'])))
+            db.child(gateway_id).child('devicetype').child('powermeter').child('TIMESTAMP').set(
+                datetime.now().replace(microsecond=0).isoformat())
+        except:
+            print("error")
+
+        #calculate
+        try:
+            tottalload = abs(float(meter2.variables['mdb']))
+            floor2load = abs(float(meter2.variables['floor2plug'])+ float(meter2.variables['floor2light'])+ float(meter2.variables['floor2air']))
+            precisionac = abs(float(meter2.variables['floor2air'])+ float(meter2.variables['floor2air']))
+            floor1load = abs(float(meter2.variables['floor1plug'])+ float(meter2.variables['floor1light'])+ float(meter2.variables['floor1air']))
+            edb = abs(float(meter2.variables['edb']))
+            eoroom_air = abs(float(meter2.variables['eoroom_air']))
+            Grid_Import = abs(float(meter2.variables['Grid_Import']))
+            PV_GENERTION = abs(float(meter2.variables['PV_GENERTION']))
+        except:
+            print("")
+
+
+        try:
+            param = db.child("peasbhmsr").child('devicetype').child('inverter').child('IN202001').get()
+            inver_val = param.val()
+            BATTERY_POWER = inver_val['BATTERY_POWER']
+            PV_TOTAL_POWER = inver_val['PV_TOTAL_POWER']
+            PV_total_P = inver_val['PV_total_P']
+            SOH = inver_val['SOH']
+            batt_percen = inver_val['batt_percen']
+            grid_P = inver_val['grid_P']
+            load_act_P = inver_val['load_act_P']
+        except:
+            print("error")
+
+        import requests
+        import json
+
+        try:
+            response = requests.post(
+                url="https://msrdatalog.herokuapp.com/energy/api/record",
+                headers={
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+                data=json.dumps({
+                    "topic": "msr01",
+                    "type": "devicecontrol",
+                    "message": {
+                        "pv": PV_GENERTION,
+                        "grid": Grid_Import,
+                        "batt": BATTERY_POWER,
+                        "percentbatt": batt_percen,
+                        "tottalload": tottalload,
+                        "floor2load": floor2load,
+                        "precisionac": precisionac,
+                        "edbload": edb,
+                        "floor1load": floor1load
+                    }
+                })
+            )
+            print('Response HTTP Status Code: {status_code}'.format(
+                status_code=response.status_code))
+            print('Response HTTP Response Body: {content}'.format(
+                content=response.content))
+        except requests.exceptions.RequestException:
+            print('HTTP Request failed')
+
+
+
+
+        # except Exception as err:
+        #     pass
 
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Egaugemeteragent,
                    version=__version__)
 

@@ -3,5 +3,5 @@
   "agentid": "invertertelnetagent", #Integers
   "message": "Hello From Growatt", #strings
   "log-level": "INFO",
-  "pathconf" : "Agent/InverterTelnetAgent/iplist.json"
+  "pathconf" : "/Agent/InverterTelnetAgent/iplist.json"
 }

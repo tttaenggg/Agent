@@ -51,16 +51,15 @@ class API:
             print("Get Status Telnet - Wisco")
             # open connection
             tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            print(tn)
+            # print(tn)
 
             send_mess = '#01RAI'                                                                # EDIT !!!!!!!!
             tn.write((send_mess + "\r").encode('ascii'))
 
             # read data
-            raw_data = (tn.read_until(b"\r").decode('ascii'))[3:]
+            raw_data = (tn.read_until(b"\r").decode('ascii'))[3:-1]
             # raw_data = tn.read_all()
             # print(tn.read_eager())
-            print("Type Data: {}".format(type(raw_data)))
             print("Data: {}".format(raw_data))
 
             # closed connection
@@ -74,20 +73,19 @@ class API:
             else:
                 self.set_variable('offline_count', self.get_variable('offline_count')+1)
         except Exception as er:
-            print (er)
+            print(er)
             print('ERROR: classAPI_Telnet_Wisco failed to getDeviceStatus')
 
     def getDeviceStatusJson(self, data):
 
         # conve_json = json.loads(data)
         print(data)
-
-        self.set_variable('temperature', data)
+        self.set_variable('moduletemp', data)
 
     def printDeviceStatus(self):
         # now we can access the contents of the JSON like any other Python object
         print(" the current status is as follows:")
-        # print(" label = {}".format(self.get_variable('label')))
+        print(" module temp = {}".format(self.get_variable('moduletemp')))
 
     # ----------------------------------------------------------------------
 
@@ -98,7 +96,7 @@ def main():
     wisco = API(model='Wisco', api='API3', agent_id='27WIS010101', types='sensor', ip='192.168.10.11', port=93)
 
     wisco.getDeviceStatus()
-    time.sleep(3)
+    # time.sleep(3)
 
 
 if __name__ == "__main__": main()

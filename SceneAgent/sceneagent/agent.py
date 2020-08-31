@@ -14,7 +14,7 @@ import socket
 import time
 from multiprocessing import Process
 import asyncio
-
+import os, time
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
@@ -37,12 +37,12 @@ class Sceneagent(Agent):
         self._heartbeat_period = self.config.get('heartbeat_period',
                                                  DEFAULT_HEARTBEAT_PERIOD)
         self._scenelist_path = self.config.get('scenelistpath')
-        self.sceneconf = json.load(open(self._scenelist_path))
+        self.sceneconf = json.load(open(os.environ['VOLTTRON_ROOT']+self._scenelist_path))
 
         _log.info(">>> : Found {} Scene Control List".format(len(self.sceneconf.get('scenelist'))))
 
         self.scenelist = self.sceneconf.get('scenelist')
-        self.sceneid = [scene.get('sceneid') for scene in self.scenelist]
+        self.sceneid = [scene.get('scene_id') for scene in self.scenelist]
         _log.info(">>> : Scene ID : {}".format(self.sceneid))
 
 
@@ -92,19 +92,25 @@ class Sceneagent(Agent):
 
     @PubSub.subscribe('pubsub', "web/control/scene")
     def on_match_sendcommand(self, peer, sender, bus,  topic, headers, message):
+        _log.info(msg="Matchedd Topic from  Listener")
+        _log.info(msg=message)
+        _log.info(msg="Scene Config = {}".format(self.sceneconf))
         _topic = self.sceneconf.get('topic')
-        sceneid = message.get('sceneid')
+        sceneid= message.get('sceneid')
+        #sceneid = msg_tmp.get('sceneid')
 
         procs = []
-
+        scenecontrol =[]
         if sceneid in self.sceneid:
             _log.debug(" >>> :Scene ID matched")
             for i in self.scenelist:
+                _log.info(msg=i)
 
-                if sceneid == i.get('sceneid'):
+                if sceneid == i.get('scene_id'):
+                    _log.info(">>> {a} == {b}".format(a=sceneid, b=i.get('scene_id')))
                     # - do stuff control Device
                     scenecontrol = i.get('scenecontrol')
-                    # _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
+                    _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
                     break
             i = 0
             for device in scenecontrol:
@@ -112,25 +118,19 @@ class Sceneagent(Agent):
                 pub_topic = _topic + (device.get('device_type')).lower()
                 pub_body = device.get('device_control')
 
-                data = {"topic": pub_topic, "body": pub_body,"id": i}
-                # self.sendCommand(data=data)
+                if 'web/control/curtain' == pub_topic:
+                    self.vip.pubsub.publish('pubsub', pub_topic,
+                                            message=pub_body
+                                            )
+                    time.sleep(5)
+                else:
+                    data = {"topic": pub_topic, "body": pub_body,"id": i}
+                    # self.sendCommand(data=data)
 
-                # asyncio.run(self.sendCommand(device))
-
-                loop = asyncio.get_event_loop()
-                loop.run_until_complete(self.sendCommand(data))
-                # i += 1
-                # proc = Process(target=self.sendCommand, args=(data,))
-                # procs.append(proc)
-                # proc.start()
-
-
-            # TODO : remove if no need waitting
-            # for proc in procs:
-            #     pid = proc.pid
-            #     proc.join()
-            #     _log.info(msg="Process ID : {} Completed".format(pid))
-
+                    # asyncio.run(self.sendCommand(device))
+                    _log.debug(msg="Data to Pub : {}".format(data))
+                    loop = asyncio.get_event_loop()
+                    loop.run_until_complete(self.sendCommand(data))
 
 
 def main():

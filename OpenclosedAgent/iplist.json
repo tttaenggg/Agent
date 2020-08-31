@@ -2,7 +2,7 @@
     "DS101001" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
-        "device" : "83b90785-a2ed-4b5b-b119-c670eace2feb"
+        "device" : "08d43130-7957-4e43-9bf7-7f51c9d8adf6"
     },
     "DS103001" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
@@ -22,7 +22,7 @@
     "DS109001" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
-        "device" : "a5973efd-be9b-4eaf-bc9a-55eec19ba84f"
+        "device" : "6135b8d3-088e-4a20-96c7-e30ad27d2372"
     },
     "DS109002" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
@@ -42,7 +42,7 @@
     "DS202002" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
-        "device" : "2bbd7280-9999-49f2-abe9-88ec9d50383f"
+        "device" : "a368ab59-945f-450a-9416-a2909d9e873a"
     },
     "DS203001" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
@@ -88,7 +88,7 @@
     "WS103001" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",
         "bearer": "Bearer cfe2264b-aa9e-4983-9881-3c041f3abbb1",
-        "device" : "9d322114-89a8-4dd9-b25b-cfbac0dbded9"
+        "device" : "2e208c41-6968-4adc-881c-3c1c8f43aa8d"
     },
     "WS103002" : {
         "url": "https://graph-ap02-apnortheast2.api.smartthings.com/api/smartapps/installations/9c0d73e3-b80b-4cbc-bc7c-b36de7d36f79/contactSensors/",

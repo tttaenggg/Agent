@@ -18,7 +18,7 @@ from Agent import settings
 import pyrebase
 from datetime import datetime
 import asyncio, concurrent.futures
-
+import os
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
@@ -67,7 +67,7 @@ class Wiscotelnetagent(Agent):
 
                 # TODO : Update Firebase with _status variable
                 db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
-                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('MODULETEMP').set(wisco.variables['temperature'])
+                db.child(gateway_id).child('devicetype').child('weatherstation').child(devices[0]).child('MODULETEMP').set(wisco.variables['moduletemp'])
 
             except Exception as err:
                 pass
@@ -93,7 +93,7 @@ class Wiscotelnetagent(Agent):
                                                  DEFAULT_HEARTBEAT_PERIOD)
 
         self.iplist_path = self.config.get('pathconf')
-        self.members = json.load(open(self.iplist_path))
+        self.members = json.load(open(os.environ['VOLTTRON_ROOT']+self.iplist_path))
 
         _log.debug("IP List : {}".format(self.members))
 
@@ -119,7 +119,7 @@ class Wiscotelnetagent(Agent):
 
         pass
 
-    @Core.schedule(periodic(10))
+    @Core.schedule(periodic(60))
     def updatestatus(self):
         _log.info(msg="Get Current Status")
         procs = []
@@ -144,6 +144,9 @@ class Wiscotelnetagent(Agent):
 
 def main():
     """Main method called to start the agent."""
+    from gevent import monkey
+
+    monkey.patch_all()
     utils.vip_main(Wiscotelnetagent,
                    version=__version__)
 

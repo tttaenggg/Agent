@@ -43,24 +43,6 @@ class API:
 
     # ----------------------------------------------------------------------
     # getDeviceStatus(), printDeviceStatus()
-    def getDeviceStatus(self):
-        try:
-            print("Get Status Telnet - KVM Switch")
-            # open connection
-            # tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            # print(tn)
-
-            # tn.set_debuglevel(100)
-
-            # read data
-            # data = tn.read_all()
-            # print("Data: {}".format(data))
-
-            # closed connection
-            # tn.close()
-
-        except Exception as err:
-            print("Error: cannot connect host/port")
 
     def printDeviceStatus(self):
         # now we can access the contents of the JSON like any other Python object
@@ -79,8 +61,8 @@ class API:
             # print("DATA status = {}".format(_data))
 
             # open connection
-            # tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
-            # print(tn)
+            tn = telnetlib.Telnet(self.get_variable("ip"), self.get_variable("port"))
+            print(tn)
 
             # send data
             key_buttom = ['input1', 'input2', 'input3', 'input4']
@@ -89,10 +71,11 @@ class API:
                     send_mess = self.get_variable("command") + _data
                     print("send_mess: {}".format(send_mess))
                     print("Sending message...")
-                    # tn.write((send_mess + "\r").encode('ascii'))
-                    # tn.close()
+                    tn.write((send_mess + "\r").encode('ascii'))
+                    tn.close()
 
             except:
+                tn.close()
                 print("ERROR: classAPI_Telnet_Somfy_Curtain connection failure! @ setDeviceStatus")
                 setDeviceStatusResult = False
         else:
@@ -102,6 +85,7 @@ class API:
 
     def isPostMsgValid(self, postmsg):  # check validity of postmsg
         dataValidity = True
+        print(type(postmsg))
         # TODO algo to check whether postmsg is valid
         return dataValidity
 
@@ -121,10 +105,10 @@ class API:
 # This main method will not be executed when this class is used as a module
 def main():
     # -------------Kittchen----------------
-    switch = API(model='Somfy', api='API3', agent_id='08SOMSC101001', types='curtain', ip='192.168.10.11', port=93, command='#')
+    switch = API(model='Somfy', api='API3', agent_id='08SOMSC101001', types='curtain', ip='192.168.10.11', port=81, command='kvm#')
 
     # curtain.getDeviceStatus()
-    switch.setDeviceStatus({"status": "p1"})
+    switch.setDeviceStatus({"status": "input1"})
     time.sleep(3)
 
 
