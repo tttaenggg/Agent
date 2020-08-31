@@ -332,31 +332,31 @@
             "scene_id" : "fl1_scene041",
             "scenecontrol" : [
                 {
-                    "device_control" : {"device_id" : "L2H", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1H1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1H2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1H3", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1T", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1WC1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1WC2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1WC3", "status" : "ON"},
                     "device_type" : "lighting"
                 }
             ]
@@ -365,31 +365,31 @@
             "scene_id" : "fl1_scene042",
             "scenecontrol" : [
                 {
-                    "device_control" : {"device_id" : "L2H", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1H1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1H2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1H3", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1T", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC1", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1WC1", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC2", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1WC2", "status" : "ON"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC3", "status" : "ON"},
+                    "device_control" : {"device_id" : "L1WC3", "status" : "ON"},
                     "device_type" : "lighting"
                 }
             ]
@@ -398,31 +398,31 @@
             "scene_id" : "fl1_scene043",
             "scenecontrol" : [
                 {
-                    "device_control" : {"device_id" : "L2H", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L1H1", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H1", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L1H2", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H2", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L1H3", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2H3", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L1T", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC1", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L1WC1", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC2", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L1WC2", "status" : "OFF"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "L2WC3", "status" : "OFF"},
+                    "device_control" : {"device_id" : "L1WC3", "status" : "OFF"},
                     "device_type" : "lighting"
                 }
             ]
