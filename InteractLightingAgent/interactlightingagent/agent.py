@@ -13,15 +13,36 @@ import json
 import socket
 from .extension import api
 from volttron.platform.scheduling import periodic
+from multiprocessing import Process
+from Agent import settings
+import pyrebase
+from datetime import datetime
+import asyncio, concurrent.futures
 import os
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a Somfy (Telnet) Agent'
-DEFAULT_AGENTID = "SomfyTelnetAgent"
+DEFAULT_MESSAGE = 'I am an Interact Agent'
+DEFAULT_AGENTID = "InteractLightingAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
+
+gateway_id = settings.gateway_id
+
+# firebase config
+try:
+    config = {
+        "apiKey": settings.FIREBASE['apiKeyLight'],
+        "authDomain": settings.FIREBASE['authLight'],
+        "databaseURL": settings.FIREBASE['databaseLight'],
+        "storageBucket": settings.FIREBASE['storageLight']
+    }
+    firebase = pyrebase.initialize_app(config)
+    db =firebase.database()
+
+except Exception as er:
+    _log.debug(er)
 
 
 
@@ -95,6 +116,11 @@ class Interactlightingagent(Agent):
             # self.plug.getDeviceStatus()
             self.interact.setDeviceStatus(command, self.access_token)
             # self.plug.getDeviceStatus()
+
+            # firebase
+            db.child(gateway_id).child('devicetype').child('lighting').child(device_id).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
+            db.child(gateway_id).child('devicetype').child('lighting').child(device_id).child('STATUS').set(command["status"])
+
         except Exception as err:
             pass
 
