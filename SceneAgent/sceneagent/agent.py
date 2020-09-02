@@ -8,13 +8,18 @@ import logging
 import sys
 from volttron.platform.agent import utils
 from volttron.platform.vip.agent import Agent, Core, RPC, PubSub
+from volttron.platform.scheduling import periodic
 from pprint import pformat
 import json
 import socket
 import time
 from multiprocessing import Process
+from Agent import settings
+import pyrebase
+from datetime import datetime
 import asyncio
 import os, time
+
 _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
@@ -22,6 +27,22 @@ __version__ = "0.1"
 DEFAULT_MESSAGE = 'I am a Scene Agent'
 DEFAULT_AGENTID = "SceneAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
+
+gateway_id = settings.gateway_id
+
+# firebase config
+try:
+    config = {
+        "apiKey": settings.FIREBASE['apiKeyLight'],
+        "authDomain": settings.FIREBASE['authLight'],
+        "databaseURL": settings.FIREBASE['databaseLight'],
+        "storageBucket": settings.FIREBASE['storageLight']
+    }
+    firebase = pyrebase.initialize_app(config)
+    db =firebase.database()
+
+except Exception as er:
+    _log.debug(er)
 
 
 
@@ -111,6 +132,12 @@ class Sceneagent(Agent):
                     # - do stuff control Device
                     scenecontrol = i.get('scenecontrol')
                     _log.debug("GET SCENE CONTROL : {}".format(scenecontrol))
+
+                    # firebase
+                    db.child(gateway_id).child('scene').child(i.get('scene_room')).child('DT').set(datetime.now().replace(microsecond=0).isoformat())
+                    db.child(gateway_id).child('scene').child(i.get('scene_room')).child('scene_id').set(i.get('scene_id'))
+                    db.child(gateway_id).child('scene').child(i.get('scene_room')).child('scene_name').set(i.get('scene_name'))
+
                     break
             i = 0
             for device in scenecontrol:
