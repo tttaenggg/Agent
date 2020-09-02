@@ -124,7 +124,7 @@ class Sceneagent(Agent):
         scenecontrol =[]
         if sceneid in self.sceneid:
             _log.debug(" >>> :Scene ID matched")
-            for i in self.sceneid:
+            for i in self.scenelist:
                 _log.info(msg=i)
 
                 if sceneid == i.get('scene_id'):
