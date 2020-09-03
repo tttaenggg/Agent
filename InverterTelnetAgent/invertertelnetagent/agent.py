@@ -68,7 +68,7 @@ class Invertertelnetagent(Agent):
                 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                 client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-                addr = ("192.168.10.11", 1033)
+                addr = ("192.168.10.11", 1032)
 
                 # check case
                 if cmd == 'batt_P':
