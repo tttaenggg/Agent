@@ -54,7 +54,7 @@ class API:
         data = response.read()  # a `bytes` object
         text = data.decode('utf-8')  # a `str`;
         soup = BeautifulSoup(text, 'xml')
-        print(soup)
+        # print(soup)
 
         try:
             for h in soup.find_all(n="Total Usage"):
@@ -70,14 +70,14 @@ class API:
         try:
             for h in soup.find_all(n="1 Floor Plug"):
                 floor1plug_text = h.find('i')
-            floor1plug = (floor1plug_text.text)
+            floor1plug = abs(float(floor1plug_text.text))
         except:
             print("error no 1floorplug i data")
 
         try:
             for h in soup.find_all(n="1 Floor Light"):
                 floor1light_text = h.find('i')
-            floor1light = (floor1light_text.text)
+            floor1light = abs(float(floor1light_text.text))
         except:
             print("error no 1floorlight i data")
 
@@ -85,21 +85,21 @@ class API:
         try:
             for h in soup.find_all(n="1 Floor Air"):
                 floor1air_text = h.find('i')
-            floor1air = (floor1air_text.text)
+            floor1air = abs(float(floor1air_text.text))
         except:
             print("error no 1floorlight i data")
 
         try:
             for h in soup.find_all(n="2 Floor Plug"):
                 floor2plug_text = h.find('i')
-            floor2plug = (floor2plug_text.text)
+            floor2plug = abs(float(floor2plug_text.text))
         except:
             print("error no 2floorplug i data")
 
         try:
             for h in soup.find_all(n="2 Floor Light"):
                 floor2light_text = h.find('i')
-            floor2light = (floor2light_text.text)
+            floor2light = abs(float(floor2light_text.text))
         except:
             print("error no 2floorlight i data")
 
@@ -107,7 +107,7 @@ class API:
         try:
             for h in soup.find_all(n="2 Floor Air"):
                 floor2air_text = h.find('i')
-            floor2air = (floor2air_text.text)
+            floor2air = abs(float(floor2air_text.text))
         except:
             print("error no 2floorlight i data")
 
@@ -115,28 +115,28 @@ class API:
         try:
             for h in soup.find_all(n="EBD"):
                 edb_text = h.find('i')
-            edb = (edb_text.text)
+            edb = abs(float(edb_text.text))
         except:
             print("error no 2floorlight i data")
 
         try:
             for h in soup.find_all(n="EO Room  Air"):
                 eo_room_text = h.find('i')
-            eo_room = (eo_room_text.text)
+            eo_room = abs(float(eo_room_text.text))
         except:
             print("error no eo_room_text data")
 
         try:
             for h in soup.find_all(n="PV GENERTION"):
                 PV_GENERTION_text = h.find('i')
-            PV_GENERTION = (PV_GENERTION_text.text)
+            PV_GENERTION = abs(float(PV_GENERTION_text.text))
         except:
             print("error no eo_room_text data")
 
         try:
             for h in soup.find_all(n="Grid Import"):
                 Grid_Import_text = h.find('i')
-            Grid_Import = (Grid_Import_text.text)
+            Grid_Import = abs(float(Grid_Import_text.text))
         except:
             print("error no eo_room_text data")
 
