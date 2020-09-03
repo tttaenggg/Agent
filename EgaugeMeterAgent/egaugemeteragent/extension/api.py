@@ -57,10 +57,13 @@ class API:
         print(soup)
 
         try:
-            for h in soup.find_all(n="MDB PANEL"):
+            for h in soup.find_all(n="Total Usage"):
                 mdb_text = h.find('i')
 
-            mdb = (mdb_text.text)
+            try:
+                mdb = abs(float(mdb_text.text))
+            except:
+                print("error")
         except:
             print ("error no mdb i data")
 
