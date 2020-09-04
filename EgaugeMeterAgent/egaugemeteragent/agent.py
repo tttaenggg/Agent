@@ -172,6 +172,8 @@ class Egaugemeteragent(Agent):
 
 
         try:
+            batt_percen = 0
+            BATTERY_POWER = 0
             param = db.child("peasbhmsr").child('devicetype').child('inverter').child('IN202001').get()
             inver_val = param.val()
             BATTERY_POWER = inver_val['BATTERY_POWER']
