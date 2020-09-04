@@ -19,8 +19,11 @@ import pyrebase
 from datetime import datetime
 
 import time
-import socket
 from threading import Thread
+
+import sys
+import socket
+from time import sleep
 
 _log = logging.getLogger(__name__)
 utils.setup_logging()
@@ -32,13 +35,9 @@ DEFAULT_HEARTBEAT_PERIOD = 5
 
 gateway_id = settings.gateway_id
 
-conn = ('', 1033)
-info_data = {'batt_P': '1',
-             'batt_percen': '2',
-             'load_act_P': '3',
-             'PV_total_P': '1',
-             'output_P': '1',
-             'SOH': '2'}
+conn = ('', 1032)
+data_list = {}
+
 
 
 # firebase config
@@ -56,86 +55,10 @@ except Exception as er:
     _log.debug(er)
 
 
-
 class Invertertelnetagent(Agent):
     """
     Document agent constructor here.
     """
-
-    def polling_data(self, cmd, command_type):
-        def sendData(cmd):
-            try:
-                client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-                addr = ("192.168.10.11", 1032)
-
-                # check case
-                if cmd == 'batt_P':
-                    client_socket.sendto(b"\x02\x04\x00\x11\x00\x01\x61\xFC", addr)
-
-                elif cmd == 'batt_percen':
-                    client_socket.sendto(b"\x02\x04\x00\x2F\x00\x01\x00\x30", addr)
-
-                elif cmd == 'load_act_P':
-                    client_socket.sendto(b"\x02\x04\x00\x31\x00\x01\x60\x36", addr)
-
-                elif cmd == 'PV_total_P':
-                    client_socket.sendto(b"\x02\x04\x00\x6C\x00\x01\xF1\xE4", addr)
-
-                elif cmd == 'output_P':
-                    client_socket.sendto(b"\x02\x04\x00\x71\x00\x01\x61\xE2", addr)
-
-                elif cmd == 'SOH':
-                    client_socket.sendto(b"\x02\x04\x00\xA6\x00\x01\xD1\xDA", addr)
-
-                else:
-                    pass
-
-                print("Send")
-            except socket.timeout:
-                print('REQUEST TIMED OUT')
-
-        def recvData(command_type):
-            print(">>>> {}".format(command_type))
-            ss = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            ss.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            ss.bind(conn)
-            while 1:
-                message, address = ss.recvfrom(1024)
-                hexmsg = message.hex()
-                print(hexmsg)
-                rawdata = ('0' * ((int(hexmsg[4:6]) * 2) - len(hexmsg[6:-4]))) + hexmsg[6:-4]
-                data = ''
-
-                # check case
-                if command_type == '1':
-                    data = str((((int(rawdata, 16) + 0x8000) & 0xFFFF) - 0x8000) / 10)
-
-                elif command_type == '2':
-                    data = str(int(rawdata, 16))
-
-                elif command_type == '3':
-                    data = str(int(rawdata, 16) / 10)
-
-                else:
-                    pass
-
-                print(data)
-
-                break
-
-            return data
-
-        t1 = Thread(target=sendData, args=(cmd,))
-        t2 = Thread(target=recvData, args=(command_type,))
-
-        t1.start()
-        t2.start()
-
-        t1.join()
-        t2.join()
-
 
     def update_firebase(self, all_data):
 
@@ -209,27 +132,110 @@ class Invertertelnetagent(Agent):
     def updatestatus(self):
         _log.info(msg="Get Current Status")
 
-        data_list = {}
+        info_data = {'batt_P': '1',
+                     'batt_percen': '2',
+                     'load_act_P': '3',
+                     'PV_total_P': '1',
+                     'output_P': '1',
+                     'SOH': '2'}
 
         for k, v in info_data.items():
             print("{} --- {}".format(k, v))
-            data_list[k] = self.polling_data(k, v)
+            polling_data(k, v)
 
         # firebase
         self.update_firebase(data_list)
+        
+        
+def polling_data(cmd, command_type):
+    def sendData(cmd):
+        try:
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            client_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+            addr = ("192.168.10.11", 1032)
+
+            # check case
+            if cmd == 'batt_P':
+                client_socket.sendto(b"\x02\x04\x00\x11\x00\x01\x61\xFC", addr)
+
+            elif cmd == 'batt_percen':
+                client_socket.sendto(b"\x02\x04\x00\x2F\x00\x01\x00\x30", addr)
+
+            elif cmd == 'load_act_P':
+                client_socket.sendto(b"\x02\x04\x00\x31\x00\x01\x60\x36", addr)
+
+            elif cmd == 'PV_total_P':
+                client_socket.sendto(b"\x02\x04\x00\x6C\x00\x01\xF1\xE4", addr)
+
+            elif cmd == 'output_P':
+                client_socket.sendto(b"\x02\x04\x00\x71\x00\x01\x61\xE2", addr)
+
+            elif cmd == 'SOH':
+                client_socket.sendto(b"\x02\x04\x00\xA6\x00\x01\xD1\xDA", addr)
+
+            else:
+                pass
+
+            print("Send")
+
+        except socket.timeout:
+            print('REQUEST TIMED OUT')
+            client_socket.close()
+
+    def recvData(command_type, cmd):
+        print("command type >>>> {}".format(command_type))
+        print("cmd >>>> {}".format(cmd))
+        ss = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        ss.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        ss.bind(conn)
+        flag = True
+        
+        while flag:
+            message, address = ss.recvfrom(1024)
+            hexmsg = message.hex()
+            print(hexmsg)
+            rawdata = ('0' * ((int(hexmsg[4:6]) * 2) - len(hexmsg[6:-4]))) + hexmsg[6:-4]
+            data = ''
+            # check case
+            if command_type == '1':
+                data = str((((int(rawdata, 16) + 0x8000) & 0xFFFF) - 0x8000) / 10)
+                ss.close()
+                flag = False
+
+            elif command_type == '2':
+                data = str(int(rawdata, 16))
+                ss.close()
+                flag = False
+
+            elif command_type == '3':
+                data = str(int(rawdata, 16) / 10)
+                ss.close()
+                flag = False
+            else:
+                flag = False
 
 
+            data_list.update({cmd: data})
+            print("Data is {} ".format(data))
 
+        print("End Session")
+
+
+    t1 = Thread(target=sendData, args=(cmd,))
+    t2 = Thread(target=recvData, args=(command_type,cmd,))
+
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
 
 
 def main():
-    """Main method called to start the agent."""
-    from gevent import monkey
-
-    monkey.patch_all()
+    """Main method called to start the agent."""    
+    
     utils.vip_main(Invertertelnetagent,
                    version=__version__)
-
 
 if __name__ == '__main__':
     # Entry point for script
@@ -237,3 +243,4 @@ if __name__ == '__main__':
         sys.exit(main())
     except KeyboardInterrupt:
         pass
+
