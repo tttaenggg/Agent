@@ -44,6 +44,15 @@ class API:
     # ----------------------------------------------------------------------
     # getDeviceStatus(), getDeviceStatusJson(data), printDeviceStatus()
     def getDeviceStatus(self):
+
+        self.set_variable('status', 'OFF')
+        self.set_variable('current_temperature', '30')
+        self.set_variable('set_temperature', '25')
+        self.set_variable('set_humidity', '70')
+        self.set_variable('mode', 'COLD')
+        self.set_variable('fan', 'AUTO')
+        self.set_variable('swing', 'silent')
+
         url = str(self.get_variable("url"))
 
         Defaults.Parity = 'E'
@@ -127,6 +136,7 @@ class API:
 
         if swing == '3':
             swing = 'VH'
+
         self.set_variable('status', status)
         self.set_variable('current_temperature', (set_temperature))
         self.set_variable('set_temperature', set_temperature)

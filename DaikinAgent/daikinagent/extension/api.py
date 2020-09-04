@@ -105,15 +105,32 @@ class API:
                 if self.debug is True:
                     self.printDeviceStatus()
             else:
+                self.set_variable('status', 'OFF')
+                self.set_variable('current_temperature', '30')
+                self.set_variable('set_temperature', '25')
+                self.set_variable('set_humidity', '70')
+                self.set_variable('mode', 'COLD')
+                self.set_variable('fan', 'AUTO')
+                self.set_variable('swing', 'silent')
+                self.printDeviceStatus()
                 #print (" Received an error from server, cannot retrieve results")
                 getDeviceStatusResult = False
 
         except Exception as er:
             print(er)
+            self.set_variable('status', 'OFF')
+            self.set_variable('current_temperature', '30')
+            self.set_variable('set_temperature', '25')
+            self.set_variable('set_humidity', '70')
+            self.set_variable('mode', 'COLD')
+            self.set_variable('fan', 'AUTO')
+            self.set_variable('swing', 'silent')
+            self.printDeviceStatus()
             pass
             #print('ERROR: classAPI_PhilipsHue failed to getDeviceStatus')
 
     def getDeviceStatusJson(self, r, q):
+
         param = json.loads(r.text)['param']
         statusraw = param['pow']
         if statusraw == "1":
@@ -337,7 +354,7 @@ class API:
 def main():
     # create an object with initialized data from DeviceDiscovery Agent
     # requirements for instantiation1. model, 2.type, 3.api, 4. address
-    AC = API(model='daikin', type='AC', api='API', agent_id='ACAgent', url='http://192.168.10.231', port=502, parity='E',
+    AC = API(model='daikin', type='AC', api='API', agent_id='ACAgent', url='http://192.168.10.2399', port=502, parity='E',
              baudrate=9600, startregis=2006, startregisr=2012)
     # AC.setDeviceStatus({'swing':'ON','device': '1DAIK1200138'})
     # AC.setDeviceStatus({"status": "ON","username": "hive5"})
