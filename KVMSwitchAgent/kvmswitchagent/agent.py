@@ -18,7 +18,7 @@ _log = logging.getLogger(__name__)
 utils.setup_logging()
 __version__ = "0.1"
 
-DEFAULT_MESSAGE = 'I am a kvm switch Agent'
+DEFAULT_MESSAGE = 'I am a Kvm Switch Agent'
 DEFAULT_AGENTID = "KVMSwitchAgent"
 DEFAULT_HEARTBEAT_PERIOD = 5
 
