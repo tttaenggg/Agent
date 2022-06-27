@@ -152,6 +152,7 @@ class Sceneagent(Agent):
                     time.sleep(5)
                 else:
                     data = {"topic": pub_topic, "body": pub_body,"id": i}
+                    time.sleep(1)
                     # self.sendCommand(data=data)
 
                     # asyncio.run(self.sendCommand(device))
