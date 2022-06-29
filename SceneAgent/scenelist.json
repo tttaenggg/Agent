@@ -282,8 +282,16 @@
                     "device_type" : "plug"
                 },
                 {
+                    "device_control" : {"device_id" : "PR101001", "status" : "POWER"},
+                    "device_type" : "projector"
+                },
+                {
                     "device_control" : {"device_id" : "SP101004", "status" : "OFF"},
                     "device_type" : "plug"
+                },
+                {
+                    "device_control" : {"device_id" : "PR101001", "status" : "POWER"},
+                    "device_type" : "projector"
                 }
             ]
         },
