@@ -191,11 +191,11 @@
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "MT03", "status" : "OFF"},
+                    "device_control" : {"device_id" : "MT03", "status" : "LOW"},
                     "device_type" : "lighting"
                 },
                 {
-                    "device_control" : {"device_id" : "MT04", "status" : "OFF"},
+                    "device_control" : {"device_id" : "MT04", "status" : "LOW"},
                     "device_type" : "lighting"
                 },
                 {
