@@ -1,0 +1,10 @@
+{
+  # VOLTTRON config files are JSON with support for python style comments.
+  "agentid": "dragent", #Integers
+  "message": "Hello From DR Agent", #strings
+  "log-level": "INFO",
+  "drlistpath": "/Agent/DRAgent/drlist.json",
+  "drlogspath": "/Agent/DRAgent/drlogs.json",
+  "drhistorypath": "/Agent/DRAgent/drhistory.json",
+  "scenelistpath": "/Agent/DRAgent/scenelist.json"
+}
