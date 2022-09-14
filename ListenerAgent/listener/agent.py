@@ -150,7 +150,7 @@ class ListenerAgent(Agent):
 
             _log.info(">>> : Thread Started")
             self.url_rabbitmq = os.environ.get('CLOUDAMQP_URL',
-                                               'amqp://zlfcmyqb:ma5_8XUI2NyatDHgFW-Z2PBmfFG1_9ID@mustang.rmq.cloudamqp.com/zlfcmyqb')
+                                               'amqps://zqysevyy:bUutmMMy3eJhK3J7Y58IYD3LdfSncjjv@armadillo.rmq.cloudamqp.com/zqysevyy')
 
             self.params = pika.URLParameters(self.url_rabbitmq)
             self.connection = pika.BlockingConnection(self.params)

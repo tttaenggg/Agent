@@ -79,12 +79,18 @@ class Invertertelnetagent(Agent):
             # db.child(gateway_id).child('devicetype').child('inverter').child(devices[0]).child('BMS_BATTERY_STATUS').set(inverter.variables['BMS_batt_status'])
 
             db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('DT').set(datetime.now().replace(microsecond=0).isoformat())
-            db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('BATTERY_POWER').set(all_data['batt_P'])
-            db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('PV_TOTAL_POWER').set(all_data['PV_total_P'])
-            db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('batt_percen').set(all_data['batt_percen'])
-            db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('load_act_P').set(all_data['load_act_P'])
-            db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('grid_P').set(all_data['output_P'])
-            db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('SOH').set(all_data['SOH'])
+            if (float(all_data['batt_P']) <= 100):
+                db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('BATTERY_POWER').set(all_data['batt_P'])
+            if (float(all_data['PV_total_P']) <= 100):
+                db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('PV_TOTAL_POWER').set(all_data['PV_total_P'])
+            if (float(all_data['batt_percen']) <= 100):
+                db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('batt_percen').set(all_data['batt_percen'])
+            if (float(all_data['load_act_P']) <= 100):
+                db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('load_act_P').set(all_data['load_act_P'])
+            if (float(all_data['output_P']) <= 100):
+                db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('grid_P').set(all_data['output_P'])
+            if (float(all_data['SOH']) <= 100):
+                db.child(gateway_id).child('devicetype').child('inverter').child('IN202001').child('SOH').set(all_data['SOH'])
 
 
         except Exception as err:
@@ -145,8 +151,8 @@ class Invertertelnetagent(Agent):
 
         # firebase
         self.update_firebase(data_list)
-        
-        
+
+
 def polling_data(cmd, command_type):
     def sendData(cmd):
         try:
@@ -169,7 +175,7 @@ def polling_data(cmd, command_type):
                 client_socket.sendto(b"\x02\x04\x00\x6C\x00\x01\xF1\xE4", addr)
 
             elif cmd == 'output_P':
-                client_socket.sendto(b"\x02\x04\x00\x71\x00\x01\x61\xE2", addr)
+                client_socket.sendto(b"\x02\x04\x00\x13\x00\x01\xC0\x3C", addr)
 
             elif cmd == 'SOH':
                 client_socket.sendto(b"\x02\x04\x00\xA6\x00\x01\xD1\xDA", addr)
@@ -190,7 +196,6 @@ def polling_data(cmd, command_type):
         ss.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         ss.bind(conn)
         flag = True
-        
         while flag:
             message, address = ss.recvfrom(1024)
             hexmsg = message.hex()
@@ -232,8 +237,8 @@ def polling_data(cmd, command_type):
 
 
 def main():
-    """Main method called to start the agent."""    
-    
+    """Main method called to start the agent."""
+
     utils.vip_main(Invertertelnetagent,
                    version=__version__)
 
