@@ -1,0 +1,765 @@
+{
+    "topic" : "web/control/",
+    "scenelist" : [
+        {
+            "scene_id" : "fl1_scene011",
+            "scene_room" : "eo_room",
+            "scene_name" : "welcome",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "EO01", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "EO02", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC103001", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC103002", "status" : "ON"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene012",
+            "scene_room" : "eo_room",
+            "scene_name" : "goodbye",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "EO01", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "EO02", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC103001", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC103002", "status" : "OFF"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene013",
+            "scene_room" : "eo_room",
+            "scene_name" : "automatic",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "EO01", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "EO02", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC103001", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC103002", "status" : "OFF"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene021",
+            "scene_room" : "auditorium",
+            "scene_name" : "welcome",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "MT01", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT02", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT03", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT04", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101001", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101002", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101003", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101004", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SCWELALL", "status" : "DOWN"},
+                    "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101001", "status" : "ON"},
+                    "device_type" : "plug"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101004", "status" : "ON"},
+                    "device_type" : "plug"
+                }
+
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene022",
+            "scene_room" : "auditorium",
+            "scene_name" : "show battery",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "PT101001", "status" : "DOWN"},
+                    "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "MT01", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT02", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT03", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT04", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101001", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101002", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101003", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101004", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SC999ALL", "status" : "UP"},
+                    "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101001", "status" : "ON"},
+                    "device_type" : "plug"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101004", "status" : "ON"},
+                    "device_type" : "plug"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene023",
+            "scene_room" : "auditorium",
+            "scene_name" : "meeting",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "MT01", "status" : "LOW"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT02", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT03", "status" : "LOW"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT04", "status" : "LOW"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101001", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101002", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101003", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101004", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SCWELALL", "status" : "DOWN"},
+                    "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101001", "status" : "ON"},
+                    "device_type" : "plug"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101004", "status" : "ON"},
+                    "device_type" : "plug"
+                },
+                {
+                    "device_control" : {"device_id" : "PR101001", "status" : "POWER"},
+                    "device_type" : "projector"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene024",
+            "scene_room" : "auditorium",
+            "scene_name" : "goodbye",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "PT101001", "status" : "UP"},
+                    "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "MT01", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT02", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT03", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MT04", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101001", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101002", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101003", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC101004", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SC999ALL", "status" : "DOWN"},
+                    "device_type" : "curtain"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101001", "status" : "OFF"},
+                    "device_type" : "plug"
+                },
+                {
+                    "device_control" : {"device_id" : "PR101001", "status" : "POWER"},
+                    "device_type" : "projector"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101004", "status" : "OFF"},
+                    "device_type" : "plug"
+                },
+                {
+                    "device_control" : {"device_id" : "PR101001", "status" : "POWER"},
+                    "device_type" : "projector"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene031",
+            "scene_room" : "bedroom",
+            "scene_name" : "welcome",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "BD01", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC104001", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101002", "status" : "ON"},
+                    "device_type" : "plug"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene032",
+            "scene_room" : "bedroom",
+            "scene_name" : "goodnight",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "BD01", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC104001", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101002", "status" : "ON"},
+                    "device_type" : "plug"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene033",
+            "scene_room" : "bedroom",
+            "scene_name" : "goodbye",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "BD01", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC104001", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "SP101002", "status" : "OFF"},
+                    "device_type" : "plug"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene041",
+            "scene_room" : "hallway_fl1",
+            "scene_name" : "automatic",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "L1T", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC1", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC2", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC3", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC4", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H1", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H2", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H3", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene042",
+            "scene_room" : "hallway_fl1",
+            "scene_name" : "welcome",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "L1T", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC1", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC2", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC3", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC4", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H1", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H2", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H3", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl1_scene043",
+            "scene_room" : "hallway_fl1",
+            "scene_name" : "goodbye",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "L1T", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC1", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC2", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC3", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1WC4", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H1", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H2", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L1H3", "status" : "OFF"},
+                    "device_type" : "lighting"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene011",
+            "scene_room" : "office1",
+            "scene_name" : "welcome",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "OF1", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "OF12", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC201001", "status" : "ON"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC201002", "status" : "ON"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene012",
+            "scene_room" : "office1",
+            "scene_name" : "goodbye",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "OF1", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "OF12", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC201001", "status" : "OFF"},
+                    "device_type" : "ac"
+                },
+                {
+                    "device_control" : {"device_id" : "AC201002", "status" : "OFF"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene013",
+            "scene_room" : "office1",
+            "scene_name" : "curtain open",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "SC888ALL", "status" : "UP"},
+                    "device_type" : "curtain"
+                }
+
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene014",
+            "scene_room" : "office1",
+            "scene_name" : "curtain close",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "SC888ALL", "status" : "DOWN"},
+                    "device_type" : "curtain"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene021",
+            "scene_room" : "office2",
+            "scene_name" : "welcome",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "OF2", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "OF22", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC203002", "status" : "ON"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene022",
+            "scene_room" : "office2",
+            "scene_name" : "goodbye",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "OF2", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "OF22", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC203002", "status" : "OFF"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene023",
+            "scene_room" : "office2",
+            "scene_name" : "curtain open",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "SC101005", "status" : "UP"},
+                    "device_type" : "curtain"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene024",
+            "scene_room" : "office2",
+            "scene_name" : "curtain close",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "SC101005", "status" : "DOWN"},
+                    "device_type" : "curtain"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene031",
+            "scene_room" : "mgc",
+            "scene_name" : "welcome",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "MGC", "status" : "HIGH"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MGC2", "status" : "HIGH"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC202001", "status" : "OFF"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene032",
+            "scene_room" : "mgc",
+            "scene_name" : "automatic",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "MGC", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MGC2", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC202001", "status" : "ON"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene033",
+            "scene_room" : "mgc",
+            "scene_name" : "goodbye",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "MGC", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "MGC2", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "AC202001", "status" : "OFF"},
+                    "device_type" : "ac"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene041",
+            "scene_room" : "hallway_fl2",
+            "scene_name" : "welcome",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "L2H", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H1", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H2", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H3", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC1", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC2", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC3", "status" : "MEDIUM"},
+                    "device_type" : "lighting"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene042",
+            "scene_room" : "hallway_fl2",
+            "scene_name" : "automatic",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "L2H", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H1", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H2", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H3", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC1", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC2", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC3", "status" : "AUTOMATIC"},
+                    "device_type" : "lighting"
+                }
+            ]
+        },
+        {
+            "scene_id" : "fl2_scene043",
+            "scene_room" : "hallway_fl2",
+            "scene_name" : "goodbye",
+            "scenecontrol" : [
+                {
+                    "device_control" : {"device_id" : "L2H", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H1", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H2", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2H3", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC1", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC2", "status" : "OFF"},
+                    "device_type" : "lighting"
+                },
+                {
+                    "device_control" : {"device_id" : "L2WC3", "status" : "OFF"},
+                    "device_type" : "lighting"
+                }
+            ]
+        }
+    ],
+    "Description" : "Scene List Configuration"
+}
